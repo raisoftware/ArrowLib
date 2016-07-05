@@ -24,6 +24,8 @@ public interface Arrow<K, V>
 
 	Set<Map.Entry<K, V>> relations();
 
+	Set<Map.Entry<V, K>> inverseRelations();
+
 	void remove( K source, V target );
 
 	Set2 sources();
@@ -31,5 +33,7 @@ public interface Arrow<K, V>
 	Set2 targets();
 
 	Set2 targets( K source );
+
+	Arrow inverse();
 
 }

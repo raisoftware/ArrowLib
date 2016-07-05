@@ -2,8 +2,11 @@ package ArrowLib;
 
 enum ArrowName
 {
+	Objects2Arrows,
 	Contains,
-	IsContainedBy
+	IsContainedBy,
+	Square,
+	SquareRoot
 }
 
 public class ArrowBuilder

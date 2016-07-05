@@ -31,53 +31,43 @@ public class ArrowImpl<K, V> implements Arrow<K, V>
 	@Override
 	public void connect( K source, Collection<? extends V> targets )
 	{
-		map.putAll( source, targets );
-
-//		this.sources.add( source );
-//		this.targets.addAll( targets );
-//
-//		for( V target : targets )
-//		{
-//			this.relations.add( new Pair( source, target ) );
-//		}
+		map.connect( source, targets );
 	}
 
 	@Override
 	public void connect( K source, V target )
 	{
-		map.put( source, target );
-//		this.sources.add( source );
-//		this.targets.add( target );
-//		this.relations.add( new Pair( source, target ) );
+		map.connect( source, target );
 	}
 
 	@Override
 	public Set2 sources()
 	{
-		return null;
+		return map.sources();
 	}
 
 	@Override
 	public Set2 targets()
 	{
-		return null;
+		return map.targets();
 	}
 
 	@Override
 	public Set<Map.Entry<K, V>> relations()
 	{
-		return null;
+		return map.relations();
 	}
 
 	@Override
 	public Set2 targets( K source )
 	{
-		return null;
+		return map.targets( source );
 	}
 
-	Arrow inverse()
+	@Override
+	public Arrow inverse()
 	{
-		return null;
+		return new ArrowInversor( this );
 	}
 
 	@Override
@@ -90,5 +80,11 @@ public class ArrowImpl<K, V> implements Arrow<K, V>
 	public ArrowConfig config()
 	{
 		return config;
+	}
+
+	@Override
+	public Set<Map.Entry<V, K>> inverseRelations()
+	{
+		return map.inverseRelations();
 	}
 }

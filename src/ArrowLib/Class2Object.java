@@ -1,10 +1,12 @@
 package ArrowLib;
 
-import java.util.Collection;
-import java.util.Set;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
+import java.util.*;
 
-public class FirstRule implements Arrow//TOFIX this interface is supposed to be an ArrowListener or something, not an actual Arrow
+public class Class2Object implements Arrow
 {
+	private final SetMultimap<Class, Object> class2SrcObj = HashMultimap.create();
 
 	@Override
 	public ArrowConfig config()
@@ -15,19 +17,22 @@ public class FirstRule implements Arrow//TOFIX this interface is supposed to be 
 	@Override
 	public void connect( Object source, Collection targets )
 	{
-		System.out.println( "Connect!!!" + source + "   " + targets );
+		if( !targets.isEmpty() )
+		{
+			class2SrcObj.put( source.getClass(), source );
+		}
 	}
 
 	@Override
 	public void connect( Object source, Object target )
 	{
-		System.out.println( "Connect!!!" + source + "   " + target );
+		class2SrcObj.put( source.getClass(), source );
 	}
 
 	@Override
 	public Set relations()
 	{
-		return null;
+		return class2SrcObj.entries();
 	}
 
 	@Override

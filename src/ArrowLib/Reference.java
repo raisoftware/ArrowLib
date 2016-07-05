@@ -1,16 +1,11 @@
 package ArrowLib;
 
-enum ObjectEnum
-{
-	RootObject
-};
-
 public class Reference
 {
-	ObjectEnum nick;
+	ObjectName name;
 	ArrowName domainName;
 
-	//e de tip Object asta??
+	//TOFIX e de tip Object asta??
 	public Object value()
 	{
 		return null;//arrow.eval( nick );

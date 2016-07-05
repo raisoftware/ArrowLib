@@ -37,6 +37,11 @@ public class ManyToManyMap<K, V> implements Arrow<K, V>
 		return changed;
 	}
 
+	public Set<Entry<V, K>> inverseRelations()
+	{
+		return valuesToKeys.entries();
+	}
+
 	@Override
 	public ArrowConfig config()
 	{
@@ -105,6 +110,12 @@ public class ManyToManyMap<K, V> implements Arrow<K, V>
 	public Set2 targets( Object source )
 	{
 		//TOFIX
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Arrow inverse()
+	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 }
