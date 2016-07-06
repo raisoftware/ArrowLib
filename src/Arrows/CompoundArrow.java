@@ -1,4 +1,4 @@
-package ArrowLib;
+package Arrows;
 
 import java.util.*;
 
@@ -60,13 +60,6 @@ public class CompoundArrow implements Arrow
 	}
 
 	@Override
-	public Set inverseRelations()
-	{
-		//expensive
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
 	public void remove( Object source, Object target )
 	{
 		//dfs sau bfs. pretty expensive but needed
@@ -74,21 +67,15 @@ public class CompoundArrow implements Arrow
 	}
 
 	@Override
-	public Set2 sources()
+	public Set sources()
 	{
 		return arrows.get( 0 ).sources();
 	}
 
 	@Override
-	public Set2 targets()
+	public Set targets()
 	{
 		return arrows.get( arrows.size() - 1 ).targets();
-	}
-
-	@Override
-	public Set2 targets( Object source )
-	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
@@ -96,6 +83,18 @@ public class CompoundArrow implements Arrow
 	{
 		// this one might be easy
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Set eval( Object source )
+	{
+		return null;
+//		Object input = source;
+//		for( Arrow arrow : arrows )
+//		{
+//			Set<Object> returedValues = arrow.eval( input );
+//		}
+//		return input;
 	}
 
 }

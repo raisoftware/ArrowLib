@@ -1,10 +1,12 @@
-package ArrowLib;
+package Arrows;
 
-import java.util.Collection;
-import java.util.Set;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
+import java.util.*;
 
-public class FirstRule implements Arrow//TOFIX this interface is supposed to be an ArrowListener or something, not an actual Arrow
+public class Class2Object implements Arrow
 {
+	private final SetMultimap<Class, Object> class2Obj = HashMultimap.create();
 
 	@Override
 	public ArrowConfig config()
@@ -15,19 +17,28 @@ public class FirstRule implements Arrow//TOFIX this interface is supposed to be 
 	@Override
 	public void connect( Object source, Collection targets )
 	{
-		System.out.println( "Connect!!!" + source + "   " + targets );
+		if( !targets.isEmpty() )
+		{
+			class2Obj.put( source.getClass(), source );
+		}
+
+		for( Object target : targets )
+		{
+			class2Obj.put( target.getClass(), target );
+		}
 	}
 
 	@Override
 	public void connect( Object source, Object target )
 	{
-		System.out.println( "Connect!!!" + source + "   " + target );
+		class2Obj.put( source.getClass(), source );
+		class2Obj.put( target.getClass(), target );
 	}
 
 	@Override
 	public Set relations()
 	{
-		return null;
+		return class2Obj.entries();
 	}
 
 	@Override
@@ -37,33 +48,27 @@ public class FirstRule implements Arrow//TOFIX this interface is supposed to be 
 	}
 
 	@Override
-	public Set2 sources()
+	public Set sources()
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
-	public Set2 targets()
+	public Set targets()
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public Set2 targets( Object source )
-	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public Set inverseRelations()
-	{
-		return null;
 	}
 
 	@Override
 	public Arrow inverse()
 	{
 		return null;
+	}
+
+	@Override
+	public Set eval( Object source )
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

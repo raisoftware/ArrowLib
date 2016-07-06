@@ -1,4 +1,4 @@
-package ArrowLib;
+package Arrows;
 
 public class Set2<K, V>
 {

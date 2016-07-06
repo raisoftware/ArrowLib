@@ -1,13 +1,6 @@
-package ArrowLib;
+package Arrows;
 
-enum ArrowName
-{
-	Objects2Arrows,
-	Contains,
-	IsContainedBy,
-	Square,
-	SquareRoot
-}
+import Arrows.Impl.ManyToManyArrow;
 
 public class ArrowBuilder
 {
@@ -70,6 +63,6 @@ public class ArrowBuilder
 
 	public Arrow end()
 	{
-		return new ArrowImpl( arrowConfig );
+		return new ManyToManyArrow();// arrowConfig );
 	}
 }

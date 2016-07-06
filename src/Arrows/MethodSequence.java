@@ -1,4 +1,4 @@
-package ArrowLib;
+package Arrows;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;

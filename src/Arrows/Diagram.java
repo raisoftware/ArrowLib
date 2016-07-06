@@ -1,12 +1,12 @@
-package ArrowLib;
+package Arrows;
 
 import java.util.*;
 
-import static ArrowLib.ArrowName.*;
+import static Arrows.ArrowName.*;
 
 public class Diagram
 {
-	Map<ArrowName, Arrow> arrows = new HashMap();
+	Arrows arrows = new Arrows();
 
 	public static void main( String args[] )
 	{
@@ -22,10 +22,8 @@ public class Diagram
 		Arrow squareArrow = arrowBuilder.name( Square ).inverseName( SquareRoot ).
 			domain( Float.class ).codomain( Float.class ).end();
 
-		arrows.put( arrow.config().getName(), arrow );
-		arrows.put( arrow.config().getInverseName(), arrow.inverse() );
-		arrows.put( squareArrow.config().getName(), squareArrow );
-		arrows.put( squareArrow.config().getInverseName(), squareArrow.inverse() );
+		arrows.add( arrow );
+		arrows.add( squareArrow );
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );
@@ -33,7 +31,7 @@ public class Diagram
 		chars.add( 'r' );
 
 		MethodSequence<Arrow> sequence = new MethodSequence();
-		sequence.subscribe( new FirstRule() );
+		//sequence.subscribe( new FirstRule() );
 		Arrow class2Object = new Class2Object();
 		sequence.subscribe( class2Object );
 
@@ -55,41 +53,4 @@ public class Diagram
 		//sequence.subscribe( new ObjectsArrowsRule() );
 		//MethodSequence arrowsSequence = sequence.createPublisher()
 	}
-
-	class Objects
-	{
-		Arrow objects2Arrows;//  = arrows[Objects] // edit
-
-		public Objects()
-		{
-			objects2Arrows = new ArrowBuilder().name( ArrowName.Objects2Arrows ).end();
-		}
-
-		void register( Object object ) // obtains class config from ClassConfig arrow then calls register
-		{
-
-		}
-
-		void register( Object object, ObjectConfig config ) //    objectsArrow.connect( name, value )
-		{
-			objects2Arrows.connect( object, null );
-		}
-
-		void remove( Object obj ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
-		{
-
-		}
-
-//		// query
-//		Set objects()
-//		{
-//			return arrow.targets();
-//		}
-//
-//		Object[] objects( Class clazz ) // return classes.eval( clazz )
-//		{
-//			classes.eval( clazz );
-//		}
-	}
-
 }

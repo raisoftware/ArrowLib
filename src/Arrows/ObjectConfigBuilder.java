@@ -1,4 +1,4 @@
-package ArrowLib;
+package Arrows;
 
 public class ObjectConfigBuilder
 {
