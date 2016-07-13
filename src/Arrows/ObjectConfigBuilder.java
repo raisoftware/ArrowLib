@@ -3,7 +3,7 @@ package Arrows;
 public class ObjectConfigBuilder
 {
 	private boolean enabled;
-	private ObjectName name;
+	private Enum name;
 	private boolean trackInboundArrows;
 	private boolean trackOutboundArrows;
 	private boolean trackClass;
@@ -18,7 +18,7 @@ public class ObjectConfigBuilder
 		return this;
 	}
 
-	public ObjectConfigBuilder name( ObjectName name )
+	public ObjectConfigBuilder name( Enum name )
 	{
 		this.name = name;
 		return this;

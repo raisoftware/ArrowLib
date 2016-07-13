@@ -1,36 +1,14 @@
 package Arrows;
 
-public class Set2<K, V>
+public interface Set2<K, V>
 {
-	K source;
-	Arrow<K, V> arrow;
+	void add( V target );
 
-	public Set2( K source, Arrow<K, V> arrow )
-	{
-		this.source = source;
-		this.arrow = arrow;
-	}
+	void remove( V target );
 
-	void add( V target )
-	{
-		arrow.connect( source, target );
-	}
+	boolean contains( V target );
 
-	void remove( V target )
-	{
-		arrow.remove( source, target );
-	}
+	int size();
 
-	void contains( V target )
-	{
-		//arrow.targets( source );
-	}
-
-	int size()
-	{
-		return 0;
-		//arrow.targets(source).size();
-	}
-
-	//iterator() : Iterator
+	// iterator() : Iterator
 }

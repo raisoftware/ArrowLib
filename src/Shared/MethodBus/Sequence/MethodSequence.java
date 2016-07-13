@@ -1,4 +1,4 @@
-package Arrows;
+package Shared.MethodBus.Sequence;
 
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -7,7 +7,13 @@ import java.util.List;
 public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 {
 
-	private final List<ListenerType> eventListeners = new ArrayList<ListenerType>();
+	public static enum ExecutionTime
+	{
+		ExecuteBefore, ExecuteAfter
+	};
+
+	private final List<ListenerType> preEventListeners = new ArrayList<ListenerType>();
+	private final List<ListenerType> postEventListeners = new ArrayList<ListenerType>();
 
 	public MethodSequence()
 	{
@@ -24,16 +30,24 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 //    }
 //
 	@SuppressWarnings( "unchecked" )
-	public synchronized void subscribe( ListenerType listener )
+	public synchronized void subscribe( ListenerType listener, ExecutionTime executionTime )
+
 	{
-		if( !eventListeners.contains( listener ) )
-			eventListeners.add( listener );
+		if( executionTime == ExecutionTime.ExecuteBefore && !preEventListeners.contains( listener ) )
+		{
+			preEventListeners.add( listener );
+		}
+		else if( executionTime == ExecutionTime.ExecuteAfter && !postEventListeners.contains( listener ) )
+		{
+			postEventListeners.add( listener );
+		}
 	}
 
 	@SuppressWarnings( "unchecked" )
 	public void unsubscribe( ListenerType listener )
 	{
-		eventListeners.remove( listener );
+		preEventListeners.remove( listener );
+		postEventListeners.remove( listener );
 	}
 
 	@SuppressWarnings( "unchecked" )
@@ -55,15 +69,22 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 	}
 
 	@Override
-	public void publishEvent( final MethodCall event )
+	public Object publishEvent( final MethodCall event, final ListenerType targetObject )
 	{
 		try
 		{
-			if( eventListeners.size() == 0 )
+			if( preEventListeners.size() == 0 && postEventListeners.size() == 0 )
 				deadMethodHandler();
 
-			for( ListenerType listener : eventListeners )
+			for( ListenerType listener : preEventListeners )
 				event.method().invoke( listener, event.parameters() );
+
+			Object returnedObject = event.method().invoke( targetObject, event.parameters() );
+
+			for( ListenerType listener : postEventListeners )
+				event.method().invoke( listener, event.parameters() );
+
+			return returnedObject;
 		}
 		catch( Throwable e )
 		{

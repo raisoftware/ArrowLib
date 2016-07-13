@@ -1,31 +1,27 @@
 package Arrows.Impl;
 
-import Arrows.ObjectConfig;
-import Arrows.ArrowName;
-import Arrows.Arrow;
-import Arrows.ArrowBuilder;
-import Arrows.Objects;
+import Arrows.*;
 
 public class ObjectsImpl implements Objects
 {
 
-	Arrow objects2Arrows;//  = arrows[Objects] // edit
+	Arrow object2Arrow;//  = arrows[Objects] // edit
 
-	public ObjectsImpl()
+	public ObjectsImpl( Arrow object2Arrow )
 	{
-		objects2Arrows = new ArrowBuilder().name( ArrowName.Objects2Arrows ).end();
+		this.object2Arrow = object2Arrow;
 	}
 
 	@Override
-	public void register( Object object ) // obtains class config from ClassConfig arrow then calls register
+	public void add( Object object ) // obtains class config from ClassConfig arrow then calls add
 	{
 
 	}
 
 	@Override
-	public void register( Object object, ObjectConfig config ) //    objectsArrow.connect( name, value )
+	public void add( Object object, ObjectConfig config ) //    objectsArrow.connect( name, value )
 	{
-		objects2Arrows.connect( object, null );
+		object2Arrow.connect( object, null );
 	}
 
 	@Override
@@ -40,8 +36,19 @@ public class ObjectsImpl implements Objects
 //			return arrow.targets();
 //		}
 //
-//		Object[] objects( Class clazz ) // return classes.eval( clazz )
+//		Object[] objects( Class clazz ) // return classes.targets( clazz )
 //		{
-//			classes.eval( clazz );
+//			classes.targets( clazz );
 //		}
+	@Override
+	public boolean contains( Object object )
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public int size()
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
 }

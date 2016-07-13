@@ -1,4 +1,4 @@
-package Arrows;
+package Shared.MethodBus.Sequence;
 
 import java.lang.reflect.Method;
 

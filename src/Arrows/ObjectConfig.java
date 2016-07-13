@@ -1,20 +1,15 @@
 package Arrows;
 
-enum ObjectName
-{
-	RootObject
-};
-
 public class ObjectConfig
 {
 	boolean enabled;
-	ObjectName name;
+	Enum name;
 	boolean trackInboundArrows;
 	boolean trackOutboundArrows;
 	boolean trackClass;
 
 	public ObjectConfig( boolean enabled,
-		ObjectName name,
+		Enum name,
 		boolean trackInboundArrows,
 		boolean trackOutboundArrows,
 		boolean trackClass )
@@ -31,8 +26,7 @@ public class ObjectConfig
 		return enabled;
 	}
 
-	ObjectName name()
-
+	Enum name()
 	{
 		return name;
 	}

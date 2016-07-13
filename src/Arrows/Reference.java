@@ -2,8 +2,8 @@ package Arrows;
 
 public class Reference
 {
-	ObjectName name;
-	ArrowName domainName;
+	Enum name;
+	Enum domainName;
 
 	//TOFIX e de tip Object asta??
 	public Object value()

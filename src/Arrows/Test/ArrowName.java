@@ -1,8 +1,7 @@
-package Arrows;
+package Arrows.Test;
 
 public enum ArrowName
 {
-	Objects2Arrows,
 	Contains,
 	IsContainedBy,
 	Square,

@@ -1,5 +1,7 @@
-package Arrows;
+package Arrows.Impl;
 
+import Arrows.Arrow;
+import Arrows.ArrowConfig;
 import java.util.*;
 
 public class CompoundArrow implements Arrow
@@ -86,15 +88,21 @@ public class CompoundArrow implements Arrow
 	}
 
 	@Override
-	public Set eval( Object source )
+	public Set targets( Object source )
 	{
 		return null;
 //		Object input = source;
 //		for( Arrow arrow : arrows )
 //		{
-//			Set<Object> returedValues = arrow.eval( input );
+//			Set<Object> returedValues = arrow.targets( input );
 //		}
 //		return input;
+	}
+
+	@Override
+	public Object target( Object source ) throws Exception
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

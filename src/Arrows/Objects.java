@@ -1,21 +1,25 @@
 package Arrows;
 
-import Arrows.ObjectConfig;
+public interface Objects extends Set2
+{
 
-public interface Objects {
+	@Override
+	void add( Object object );
 
-	void register( Object object );
+	void add( Object object, ObjectConfig config );
 
-	void register( Object object, ObjectConfig config );
+	@Override
+	boolean contains( Object object );
 
+	@Override
 	void remove( Object obj );
 	//		// query
-	//		Set objects()
+	//		Iterator objects()
 	//		{
 	//			return arrow.targets();
 	//		}
 	//
-	//		Object[] objects( Class clazz ) // return classes.eval( clazz )
+	//		Iterator objects( Class clazz ) // return classes.eval( clazz )
 	//		{
 	//			classes.eval( clazz );
 	//		}

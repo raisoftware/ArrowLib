@@ -6,19 +6,19 @@ public class ArrowBuilder
 {
 	ArrowConfig arrowConfig;
 
-	public ArrowBuilder()
+	public ArrowBuilder( Arrows arrows )
 	{
-		arrowConfig = new ArrowConfig();
+		arrowConfig = new ArrowConfig( arrows );
 		//add mandatory params
 	}
 
-	public ArrowBuilder name( ArrowName name )
+	public ArrowBuilder name( Enum name )
 	{
 		arrowConfig.setName( name );
 		return this;
 	}
 
-	public ArrowBuilder inverseName( ArrowName inverseName )
+	public ArrowBuilder inverseName( Enum inverseName )
 	{
 		arrowConfig.setInverseName( inverseName );
 		return this;
@@ -61,8 +61,20 @@ public class ArrowBuilder
 		return this;
 	}
 
+	public ArrowBuilder arrows( Arrows arrows )
+	{
+		arrowConfig.setArrows( arrows );
+		return this;
+	}
+
 	public Arrow end()
 	{
-		return new ManyToManyArrow();// arrowConfig );
+		Arrow arrow = new ManyToManyArrow();
+		Arrows arrows = arrowConfig.getArrows();
+		if( arrows != null )
+		{
+			arrows.add( arrowConfig.getName(), arrowConfig.getInverseName(), arrow );
+		}
+		return arrow;
 	}
 }

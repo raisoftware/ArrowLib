@@ -11,10 +11,10 @@ public class ManyToManyArrowTest
 {
 	ManyToManyArrow<String, Character> arrow;
 
-	String word1 = "Something";
-	String word2 = "altceva";
-	String word3 = "classes";
-	String word3Again = "classes";
+	private final String word1 = "Something";
+	private final String word2 = "altceva";
+	private final String word3 = "classes";
+	private final String word3Again = "classes";
 
 	public ManyToManyArrowTest()
 	{
@@ -67,7 +67,6 @@ public class ManyToManyArrowTest
 	@After
 	public void tearDown()
 	{
-
 	}
 
 	@Test
@@ -77,14 +76,14 @@ public class ManyToManyArrowTest
 
 		for( String word : arrow.sources() )
 		{
-			Set<Character> image = arrow.eval( word );
+			Set<Character> image = arrow.targets( word );
 			for( int i = 0; i < word.length(); ++i )
 			{
 				Character letter = word.charAt( i );
 				assertTrue( allTargets.contains( letter ) );
 				assertTrue( image.contains( letter ) );
 
-				assertTrue( arrow.inverse().eval( letter ).contains( word ) );
+				assertTrue( arrow.inverse().targets( letter ).contains( word ) );
 			}
 		}
 	}
@@ -116,16 +115,16 @@ public class ManyToManyArrowTest
 	@Test
 	public void test1()
 	{
-		assertEquals( arrow.inverse().eval( 'i' ).size(), 1 );
-		assertEquals( arrow.inverse().eval( 'e' ).size(), 3 );
-		assertEquals( arrow.inverse().eval( 'v' ).size(), 1 );
-		assertEquals( arrow.inverse().eval( 'S' ).size(), 1 );
-		assertEquals( arrow.inverse().eval( 't' ).size(), 2 );
+		assertEquals( arrow.inverse().targets( 'i' ).size(), 1 );
+		assertEquals( arrow.inverse().targets( 'e' ).size(), 3 );
+		assertEquals( arrow.inverse().targets( 'v' ).size(), 1 );
+		assertEquals( arrow.inverse().targets( 'S' ).size(), 1 );
+		assertEquals( arrow.inverse().targets( 't' ).size(), 2 );
 
-		assertEquals( arrow.eval( word1 ).size(), word1.length() );
+		assertEquals( arrow.targets( word1 ).size(), word1.length() );
 		assertEquals( arrow.inverse().targets(), arrow.inverse().inverse().inverse().targets() );
 
-		assertTrue( arrow.eval( word3 ).contains( 's' ) );
+		assertTrue( arrow.targets( word3 ).contains( 's' ) );
 
 		assertEquals( arrow.sources(), arrow.inverse().targets() );
 		assertTrue( arrow.sources().contains( word1 ) );
@@ -136,19 +135,35 @@ public class ManyToManyArrowTest
 	}
 
 	@Test
-	public void checkDuplicates()
+	public void testDuplicates()
 	{
 		//check that 's' appears in a single word
-		assertEquals( arrow.inverse().eval( 's' ).size(), 1 );
+		assertEquals( arrow.inverse().targets( 's' ).size(), 1 );
 
-		//check that duplicate letters don't matter and that eval returns the right result
-		Set<Character> letters = arrow.eval( word3 );
+		//check that duplicate letters don't matter and that targets returns the right result
+		Set<Character> letters = arrow.targets( word3 );
 		assertEquals( letters.size(), 5 );
 		assertTrue( letters.contains( 'c' ) );
 		assertTrue( letters.contains( 'l' ) );
 		assertTrue( letters.contains( 'a' ) );
 		assertTrue( letters.contains( 's' ) );
 		assertTrue( letters.contains( 'e' ) );
+	}
+
+	@Test
+	public void testRemoval()
+	{
+		arrow.inverse().remove( 's', null );
+
+		assertEquals( arrow.inverse().targets( 's' ).size(), 0 );
+
+		arrow.remove( word1, 'e' );
+		assertFalse( arrow.targets( word1 ).contains( 'e' ) );
+		assertEquals( arrow.inverse().targets( 'e' ).size(), 2 );
+
+		arrow.remove( word3, null );
+		assertTrue( arrow.targets( word3 ).isEmpty() );
 
 	}
+
 }

@@ -2,23 +2,25 @@ package Arrows;
 
 public class ArrowConfig
 {
-	private ArrowName name;
-	private ArrowName inverseName;
+	private Enum name;
+	private Enum inverseName;
 	private boolean enabled = true;
 	private boolean invertible = true;
 	private Class domain = Object.class;
 	private Class codomain = Object.class;
 	private boolean allowMultipleSources = true;
 	private boolean allowMultipleTargets = true;
+	private Arrows arrows = null;
 
-	public ArrowConfig( ArrowName name,
-		ArrowName inverseName,
+	public ArrowConfig( Enum name,
+		Enum inverseName,
 		boolean enabled,
 		boolean invertible,
 		Class domain,
 		Class codomain,
 		boolean allowMultipleSources,
-		boolean allowMultipleTargets )
+		boolean allowMultipleTargets,
+		Arrows arrows )
 	{
 		this.name = name;
 		this.inverseName = inverseName;
@@ -28,28 +30,30 @@ public class ArrowConfig
 		this.codomain = codomain;
 		this.allowMultipleSources = allowMultipleSources;
 		this.allowMultipleTargets = allowMultipleTargets;
+		this.arrows = arrows;
 	}
 
-	public ArrowConfig()
+	public ArrowConfig( Arrows arrows )
 	{
+		this.arrows = arrows;
 	}
 
-	public ArrowName getName()
+	public Enum getName()
 	{
 		return name;
 	}
 
-	public void setName( ArrowName name )
+	public void setName( Enum name )
 	{
 		this.name = name;
 	}
 
-	public ArrowName getInverseName()
+	public Enum getInverseName()
 	{
 		return inverseName;
 	}
 
-	public void setInverseName( ArrowName inverseName )
+	public void setInverseName( Enum inverseName )
 	{
 		this.inverseName = inverseName;
 	}
@@ -112,6 +116,16 @@ public class ArrowConfig
 	public void setAllowMultipleTargets( boolean allowMultipleTargets )
 	{
 		this.allowMultipleTargets = allowMultipleTargets;
+	}
+
+	public void setArrows( Arrows arrows )
+	{
+		this.arrows = arrows;
+	}
+
+	public Arrows getArrows()
+	{
+		return this.arrows;
 	}
 
 }

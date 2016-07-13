@@ -93,9 +93,18 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public Set<V> eval( K source )
+	public Set<V> targets( K source )
 	{
 		return keysToValues.get( source );
+	}
+
+	@Override
+	public V target( K source ) throws Exception
+	{
+		Set<V> targets = keysToValues.get( source );
+		if( targets.size() != 1 )
+			throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
+		return targets.iterator().next();
 	}
 
 	private final class InverseManyToManyMap implements Arrow<V, K>
@@ -113,7 +122,7 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		}
 
 		@Override
-		public Set<K> eval( V source )
+		public Set<K> targets( V source )
 		{
 			return valuesToKeys.get( source );
 		}
@@ -158,6 +167,15 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		public void remove( V source, K target )
 		{
 			ManyToManyArrow.this.remove( target, source );
+		}
+
+		@Override
+		public K target( V source ) throws Exception
+		{
+			Set<K> targets = valuesToKeys.get( source );
+			if( targets.size() != 1 )
+				throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
+			return targets.iterator().next();
 		}
 	}
 }

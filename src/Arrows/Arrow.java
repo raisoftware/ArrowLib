@@ -19,7 +19,9 @@ public interface Arrow<K, V>
 
 	Set<V> targets();
 
-	Set<V> eval( K source );
+	Set<V> targets( K source );
+
+	V target( K source ) throws Exception;
 
 	Arrow inverse();
 
