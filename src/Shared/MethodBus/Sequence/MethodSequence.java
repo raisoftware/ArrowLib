@@ -32,7 +32,6 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 	@SuppressWarnings( "unchecked" )
 	@Override
 	public synchronized void subscribe( ListenerType listener, ExecutionTime executionTime )
-
 	{
 		if( executionTime == ExecutionTime.ExecuteBefore && !preEventListeners.contains( listener ) )
 		{

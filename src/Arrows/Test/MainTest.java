@@ -6,10 +6,6 @@ import Arrows.Impl.*;
 import static Arrows.Test.ObjectName.*;
 import static Arrows.Arrows.StandardArrowName.*;
 
-import Shared.MethodBus.Sequence.MethodSequence;
-
-import static Shared.MethodBus.Sequence.MethodSequence.*;
-
 import java.util.ArrayList;
 
 import static Arrows.Test.ArrowName.*;
@@ -20,16 +16,12 @@ public class MainTest
 	{
 		Diagram diagram = new Diagram();
 
-		MethodSequence<Arrow> sequence = new MethodSequence();
-
 		//Create class2ObjectRule
-		Class2ObjectRule class2ObjectRule = diagram.class2ObjectRule();
-		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
+		diagram.addClass2ObjectRule();
 		//------------------------------------------------
 
 		//Create ObjectRegistrarRule
-		ObjectRegistrarRule objectRegistrarRule = diagram.objectRegistrarRule();
-		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
+		diagram.objectRegistrarRule();
 		//------------------------------
 
 		//create custom arrows
@@ -45,19 +37,16 @@ public class MainTest
 		chars.add( 'r' );
 		//----------------------------------------------------
 
-		//Add proxies over the custom arrows
-		Arrow arrowProxy = sequence.createPublisher( arrow, Arrow.class );
-		Arrow squareArrowProxy = sequence.createPublisher( squareArrow, Arrow.class );
+		//test arrows
+		arrow.connect( "sir", chars );
+		squareArrow.connect( "irs", chars );
 
-		arrowProxy.connect( "sir", chars );
-		arrowProxy.connect( "irs", chars );
+		squareArrow.connect( 9, 81 );
+		squareArrow.connect( 2, 4 );
+		squareArrow.connect( 7, 49 );
 
-		squareArrowProxy.connect( 9, 81 );
-		squareArrowProxy.connect( 2, 4 );
-		squareArrowProxy.connect( 7, 49 );
-
-		System.out.println( "Direct:" + squareArrowProxy.inverse().inverse().inverse().inverse().relations() );
-		System.out.println( "reverse:" + squareArrowProxy.inverse().relations() );
+		System.out.println( "Direct:" + squareArrow.inverse().inverse().inverse().inverse().relations() );
+		System.out.println( "reverse:" + squareArrow.inverse().relations() );
 		//----------------------------------------------------
 
 		//Test class2ObjectRule

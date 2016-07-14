@@ -1,6 +1,7 @@
 package Arrows;
 
 import Arrows.Impl.ManyToManyArrow;
+import Shared.MethodBus.Sequence.MethodSequence;
 
 public class Arrows
 {
@@ -16,9 +17,11 @@ public class Arrows
 
 	Arrow<Enum, Arrow> name2arrow;
 	ArrowConfig defaultArrowConfig;
+	MethodSequence methodSequence;
 
-	public Arrows()
+	public Arrows( MethodSequence<Arrow> methodSequence )
 	{
+		this.methodSequence = methodSequence;
 		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name );
 
 		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
@@ -46,6 +49,11 @@ public class Arrows
 	public ArrowConfig defaultArrowConfig()
 	{
 		return defaultArrowConfig;
+	}
+
+	public MethodSequence<Arrow> methodSequence()
+	{
+		return methodSequence;
 	}
 
 }

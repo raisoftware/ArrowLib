@@ -1,6 +1,7 @@
 package Arrows;
 
 import Arrows.Impl.ManyToManyArrow;
+import Shared.MethodBus.Sequence.MethodSequence;
 
 public class ArrowBuilder implements ArrowConfig
 {
@@ -68,8 +69,10 @@ public class ArrowBuilder implements ArrowConfig
 	public Arrow end()
 	{
 		Arrow arrow = new ManyToManyArrow( this );
-		arrows.add( name, inverseName, arrow );
-		return arrow;
+		MethodSequence<Arrow> methodSequence = arrows.methodSequence();
+		Arrow arrowProxy = methodSequence.createPublisher( arrow, Arrow.class );
+		arrows.add( name, inverseName, arrowProxy );
+		return arrowProxy;
 	}
 
 	@Override
