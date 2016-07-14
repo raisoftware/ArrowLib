@@ -1,30 +1,17 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import java.util.Collection;
+import java.util.Set;
 
-import static Arrows.Arrows.StandardArrowName.*;
-
-import java.util.*;
-
-public class Class2ObjectRule implements ArrowListener
+public class ObjectRegistrarRule implements ArrowListener
 {
-	private Arrow<Class, Object> class2Object = null;
 
-	public Class2ObjectRule( Arrows arrows )
-	{
-		try
-		{
-			this.class2Object = arrows.arrow( Class2Object );
-		}
-		catch( Exception ex )
-		{
-			ex.printStackTrace();
-		}
-	}
+	Objects objects;
 
-	Arrow<Class, Object> arrow()
+	public ObjectRegistrarRule( Objects objects )
 	{
-		return class2Object;
+		this.objects = objects;
 	}
 
 	@Override
@@ -39,11 +26,11 @@ public class Class2ObjectRule implements ArrowListener
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		class2Object.connect( source.getClass(), targets );
+		objects.add( source );
 
 		for( Object target : targets )
 		{
-			class2Object.connect( target.getClass(), target );
+			objects.add( target );
 		}
 	}
 
@@ -52,8 +39,8 @@ public class Class2ObjectRule implements ArrowListener
 	{
 		if( source == null || target == null )
 			return;
-		class2Object.connect( source.getClass(), source );
-		class2Object.connect( target.getClass(), target );
+		objects.add( source );
+		objects.add( target );
 	}
 
 	@Override
@@ -96,5 +83,4 @@ public class Class2ObjectRule implements ArrowListener
 	{
 		return null;
 	}
-
 }

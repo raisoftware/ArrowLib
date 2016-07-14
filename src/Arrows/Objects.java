@@ -1,18 +1,24 @@
 package Arrows;
 
-public interface Objects extends Set2
+public interface Objects// extends Set2
 {
+	public static enum StandardObjectName
+	{
+		Unnamed
+	};
 
-	@Override
+	void create( Object object, ObjectConfig objectConfig ) throws Exception;
+
+	//@Override
 	void add( Object object );
 
 	void add( Object object, ObjectConfig config );
 
-	@Override
+	//@Override
 	boolean contains( Object object );
 
-	@Override
-	void remove( Object obj );
+	//@Override
+	void remove( Object object );
 	//		// query
 	//		Iterator objects()
 	//		{

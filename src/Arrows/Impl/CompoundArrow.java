@@ -27,7 +27,7 @@ public class CompoundArrow implements Arrow
 		if( !arrows.isEmpty() )
 		{
 			Arrow last = arrows.get( arrows.size() - 1 );
-			if( !last.config().getCodomain().equals( arrow.config().getDomain() ) )
+			if( !last.config().codomain().equals( arrow.config().domain() ) )
 				throw new Exception( "Domain type of the arrow does not match codomain type of the last arrow" );
 		}
 		arrows.add( arrow );

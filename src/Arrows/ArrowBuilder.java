@@ -2,79 +2,172 @@ package Arrows;
 
 import Arrows.Impl.ManyToManyArrow;
 
-public class ArrowBuilder
+public class ArrowBuilder implements ArrowConfig
 {
-	ArrowConfig arrowConfig;
+	private Enum name;
+	private Enum inverseName;
+	private boolean enabled = true;
+	private boolean invertible = true;
+	private Class domain = Object.class;
+	private Class codomain = Object.class;
+	private boolean allowsMultipleSources = true;
+	private boolean allowsMultipleTargets = true;
+	private Arrows arrows = null;
 
-	public ArrowBuilder( Arrows arrows )
-	{
-		arrowConfig = new ArrowConfig( arrows );
-		//add mandatory params
-	}
+	InverseArrowConfig inverseConfig = new InverseArrowConfig();
 
-	public ArrowBuilder name( Enum name )
+	public ArrowConfig arrowConfig()
 	{
-		arrowConfig.setName( name );
 		return this;
 	}
 
-	public ArrowBuilder inverseName( Enum inverseName )
+	public ArrowBuilder( Arrows arrows, Enum name, Enum inverseName )
 	{
-		arrowConfig.setInverseName( inverseName );
-		return this;
+		this.arrows = arrows;
+		this.name = name;
+		this.inverseName = inverseName;
 	}
 
 	// if disabled returns the NullArrow() arrow which ignores all changes done to the arrow
-	public ArrowBuilder enable( boolean enabled )
+	public ArrowBuilder enabled( boolean enabled )
 	{
-		arrowConfig.setEnabled( enabled );
+		this.enabled = enabled;
 		return this;
 	}
 
 	public ArrowBuilder invertible( boolean enabled )
 	{
-		arrowConfig.setInvertible( enabled );
+		this.invertible = enabled;
 		return this;
 	}
 
 	public ArrowBuilder domain( Class allowedClasses )
 	{
-		arrowConfig.setDomain( allowedClasses );
+		this.domain = allowedClasses;
 		return this;
 	}
 
 	public ArrowBuilder codomain( Class allowedClasses )
 	{
-		arrowConfig.setCodomain( allowedClasses );
+		this.codomain = allowedClasses;
 		return this;
 	}
 
-	public ArrowBuilder allowMultipleSources( boolean allow )
+	public ArrowBuilder allowssMultipleSources( boolean allow )
 	{
-		arrowConfig.setAllowMultipleSources( allow );
+		this.allowsMultipleSources = allow;
 		return this;
 	}
 
 	public ArrowBuilder allowMultipleTargets( boolean allow )
 	{
-		arrowConfig.setAllowMultipleTargets( allow );
-		return this;
-	}
-
-	public ArrowBuilder arrows( Arrows arrows )
-	{
-		arrowConfig.setArrows( arrows );
+		this.allowsMultipleTargets = allow;
 		return this;
 	}
 
 	public Arrow end()
 	{
-		Arrow arrow = new ManyToManyArrow();
-		Arrows arrows = arrowConfig.getArrows();
-		if( arrows != null )
-		{
-			arrows.add( arrowConfig.getName(), arrowConfig.getInverseName(), arrow );
-		}
+		Arrow arrow = new ManyToManyArrow( this );
+		arrows.add( name, inverseName, arrow );
 		return arrow;
+	}
+
+	@Override
+	public boolean allowsMultipleSources()
+	{
+		return allowsMultipleSources;
+	}
+
+	@Override
+	public boolean allowsMultipleTargets()
+	{
+		return allowsMultipleTargets;
+	}
+
+	@Override
+	public Arrows arrows()
+	{
+		return arrows;
+	}
+
+	@Override
+	public Class codomain()
+	{
+		return codomain;
+	}
+
+	@Override
+	public Class domain()
+	{
+		return domain;
+	}
+
+	@Override
+	public boolean enabled()
+	{
+		return enabled;
+	}
+
+	@Override
+	public boolean invertible()
+	{
+		return invertible;
+	}
+
+	@Override
+	public ArrowConfig inverse()
+	{
+		return inverseConfig;
+	}
+
+	private final class InverseArrowConfig implements ArrowConfig
+	{
+		@Override
+		public boolean allowsMultipleSources()
+		{
+			return allowsMultipleTargets;
+		}
+
+		@Override
+		public boolean allowsMultipleTargets()
+		{
+			return allowsMultipleSources;
+		}
+
+		@Override
+		public Arrows arrows()
+		{
+			return arrows;
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return domain;
+		}
+
+		@Override
+		public Class domain()
+		{
+			return codomain;
+		}
+
+		@Override
+		public boolean enabled()
+		{
+			return enabled;
+		}
+
+		@Override
+		public boolean invertible()
+		{
+			return invertible;
+		}
+
+		@Override
+		public ArrowConfig inverse()
+		{
+			return ArrowBuilder.this;
+		}
 	}
 }

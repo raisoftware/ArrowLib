@@ -1,49 +1,16 @@
 package Arrows;
 
-public class ObjectConfig
+public interface ObjectConfig
 {
-	boolean enabled;
-	Enum name;
-	boolean trackInboundArrows;
-	boolean trackOutboundArrows;
-	boolean trackClass;
 
-	public ObjectConfig( boolean enabled,
-		Enum name,
-		boolean trackInboundArrows,
-		boolean trackOutboundArrows,
-		boolean trackClass )
-	{
-		this.enabled = enabled;
-		this.name = name;
-		this.trackInboundArrows = trackInboundArrows;
-		this.trackOutboundArrows = trackOutboundArrows;
-		this.trackClass = trackClass;
-	}
+	boolean enabled();
 
-	boolean enabled()
-	{
-		return enabled;
-	}
+	Enum name();
 
-	Enum name()
-	{
-		return name;
-	}
+	boolean tracksClass();
 
-	boolean trackInboundArrows()
-	{
-		return trackInboundArrows;
-	}
+	boolean tracksInboundArrows();
 
-	boolean trackOutboundArrows()
-	{
-		return trackOutboundArrows;
-	}
-
-	boolean trackClass()
-	{
-		return trackClass;
-	}
+	boolean tracksOutboundArrows();
 
 }

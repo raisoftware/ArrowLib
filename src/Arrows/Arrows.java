@@ -6,30 +6,46 @@ public class Arrows
 {
 	public static enum StandardArrowName
 	{
-		Class2Object, Object2Class, Object2Arrow, Arrow2Object
+		DefaultName, InverseDefaultName,
+		Name2Arrow, Arrow2Name,
+		Class2Object, Object2Class,
+		Name2Object, Object2Name,
+		Object2Config, Config2Object,
+		Object2Arrow, Arrow2Object
 	}
 
-	Arrow<Enum, Arrow> arrows = new ManyToManyArrow();
+	Arrow<Enum, Arrow> name2arrow;
+	ArrowConfig defaultArrowConfig;
 
 	public Arrows()
 	{
+		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name );
 
+		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
+		name2arrow = new ManyToManyArrow( arrowConfig );
+
+		defaultArrowConfig = create( StandardArrowName.DefaultName, StandardArrowName.InverseDefaultName ).arrowConfig();
 	}
 
-	public ArrowBuilder create()
+	public final ArrowBuilder create( Enum arrowName, Enum inverseArrowName )
 	{
-		return new ArrowBuilder( this );
+		return new ArrowBuilder( this, arrowName, inverseArrowName );
 	}
 
 	public void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )
 	{
-		arrows.connect( arrowName, arrow );
-		arrows.connect( arrowInverseName, arrow.inverse() );
+		name2arrow.connect( arrowName, arrow );
+		name2arrow.connect( arrowInverseName, arrow.inverse() );
 	}
 
-	public Arrow<Enum, Arrow> arrow( Enum arrowName ) throws Exception
+	public Arrow arrow( Enum arrowName ) throws Exception
 	{
-		return arrows.target( arrowName );
+		return name2arrow.target( arrowName );
+	}
+
+	public ArrowConfig defaultArrowConfig()
+	{
+		return defaultArrowConfig;
 	}
 
 }

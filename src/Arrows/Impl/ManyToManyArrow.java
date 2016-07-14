@@ -13,6 +13,13 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 
 	Arrow<V, K> inverseArrow = new InverseManyToManyMap();
 
+	private final ArrowConfig config;
+
+	public ManyToManyArrow( ArrowConfig config )
+	{
+		this.config = config;
+	}
+
 	private boolean put( K key, V value )
 	{
 		return keysToValues.put( key, value ) && valuesToKeys.put( value, key );
@@ -47,7 +54,7 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	@Override
 	public ArrowConfig config()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return config;
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		@Override
 		public ArrowConfig config()
 		{
-			throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+			return config.inverse();
 		}
 
 		@Override

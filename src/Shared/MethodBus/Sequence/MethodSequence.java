@@ -12,8 +12,8 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 		ExecuteBefore, ExecuteAfter
 	};
 
-	private final List<ListenerType> preEventListeners = new ArrayList<ListenerType>();
-	private final List<ListenerType> postEventListeners = new ArrayList<ListenerType>();
+	private final List<ListenerType> preEventListeners = new ArrayList<>();
+	private final List<ListenerType> postEventListeners = new ArrayList<>();
 
 	public MethodSequence()
 	{
@@ -30,6 +30,7 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 //    }
 //
 	@SuppressWarnings( "unchecked" )
+	@Override
 	public synchronized void subscribe( ListenerType listener, ExecutionTime executionTime )
 
 	{
@@ -44,6 +45,7 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 	}
 
 	@SuppressWarnings( "unchecked" )
+	@Override
 	public void unsubscribe( ListenerType listener )
 	{
 		preEventListeners.remove( listener );

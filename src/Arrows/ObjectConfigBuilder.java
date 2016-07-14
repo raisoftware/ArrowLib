@@ -1,18 +1,18 @@
 package Arrows;
 
-public class ObjectConfigBuilder
+public class ObjectConfigBuilder implements ObjectConfig
 {
-	private boolean enabled;
-	private Enum name;
-	private boolean trackInboundArrows;
-	private boolean trackOutboundArrows;
-	private boolean trackClass;
+	private boolean enabled = true;
+	private Enum name = Objects.StandardObjectName.Unnamed;
+	private boolean tracksInboundArrows = true;
+	private boolean tracksOutboundArrows = true;
+	private boolean tracksClass = true;
 
 	public ObjectConfigBuilder()
 	{
 	}
 
-	public ObjectConfigBuilder enable( boolean enabled )
+	public ObjectConfigBuilder enabled( boolean enabled )
 	{
 		this.enabled = enabled;
 		return this;
@@ -24,28 +24,57 @@ public class ObjectConfigBuilder
 		return this;
 	}
 
-	public ObjectConfigBuilder trackInboundArrows( boolean trackInboundArrows )
+	public ObjectConfigBuilder tracksInboundArrows( boolean tracksInboundArrows )
 	{
-		this.trackInboundArrows = trackInboundArrows;
+		this.tracksInboundArrows = tracksInboundArrows;
 		return this;
 	}
 
-	public ObjectConfigBuilder trackOutboundArrows( boolean trackOutboundArrows )
+	public ObjectConfigBuilder tracksOutboundArrows( boolean tracksOutboundArrows )
 	{
-		this.trackOutboundArrows = trackOutboundArrows;
+		this.tracksOutboundArrows = tracksOutboundArrows;
 		return this;
 	}
 
-	public ObjectConfigBuilder trackClass( boolean trackClass )
+	public ObjectConfigBuilder tracksClass( boolean tracksClass )
 	{
-		this.trackClass = trackClass;
+		this.tracksClass = tracksClass;
 		return this;
 	}
 
 	public ObjectConfig end()
 	{
-		return new ObjectConfig( enabled, name, trackInboundArrows,
-			trackOutboundArrows, trackClass );
+		return this;
+	}
+
+	@Override
+	public boolean enabled()
+	{
+		return enabled;
+	}
+
+	@Override
+	public Enum name()
+	{
+		return name;
+	}
+
+	@Override
+	public boolean tracksClass()
+	{
+		return tracksClass;
+	}
+
+	@Override
+	public boolean tracksInboundArrows()
+	{
+		return tracksInboundArrows;
+	}
+
+	@Override
+	public boolean tracksOutboundArrows()
+	{
+		return tracksOutboundArrows;
 	}
 
 }
