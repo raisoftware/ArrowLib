@@ -7,7 +7,9 @@ public interface Objects// extends Set2
 		Unnamed
 	};
 
-	void create( Object object, ObjectConfig objectConfig ) throws Exception;
+	ObjectConfigBuilder create();
+
+	void addNewObject( Object object, ObjectConfig objectConfig ) throws Exception;
 
 	//@Override
 	void add( Object object );

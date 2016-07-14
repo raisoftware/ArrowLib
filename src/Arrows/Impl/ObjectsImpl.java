@@ -8,7 +8,7 @@ import static Arrows.Arrows.StandardArrowName.*;
 
 public class ObjectsImpl implements Objects
 {
-	final ObjectConfig defaultObjectConfig = new ObjectConfigBuilder().end();
+	final ObjectConfig defaultObjectConfig = new ObjectConfigBuilderImpl().end();
 	Arrow<Enum, Object> name2Object = null;
 	Arrow<Object, ObjectConfig> object2Config = null;
 
@@ -31,7 +31,7 @@ public class ObjectsImpl implements Objects
 		{
 			try
 			{
-				create( object, objectConfig );
+				addNewObject( object, objectConfig );
 			}
 			catch( Exception ex )
 			{
@@ -42,6 +42,12 @@ public class ObjectsImpl implements Objects
 			name2Object.connect( StandardObjectName.Unnamed, object );
 			object2Config.connect( object, objectConfig );
 		}
+	}
+
+	@Override
+	public ObjectConfigBuilder create()
+	{
+		return new ObjectConfigBuilderImpl();
 	}
 
 	@Override
@@ -85,7 +91,7 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void create( Object object, ObjectConfig objectConfig ) throws Exception
+	public void addNewObject( Object object, ObjectConfig objectConfig ) throws Exception
 	{
 		if( contains( object ) )
 			throw new Exception( "Object already registered." );

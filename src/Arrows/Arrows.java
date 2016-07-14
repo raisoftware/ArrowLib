@@ -1,5 +1,6 @@
 package Arrows;
 
+import Arrows.Impl.ArrowBuilderImpl;
 import Arrows.Impl.ManyToManyArrow;
 import Shared.MethodBus.Sequence.MethodSequence;
 
@@ -32,7 +33,7 @@ public class Arrows
 
 	public final ArrowBuilder create( Enum arrowName, Enum inverseArrowName )
 	{
-		return new ArrowBuilder( this, arrowName, inverseArrowName );
+		return new ArrowBuilderImpl( this, arrowName, inverseArrowName );
 	}
 
 	public void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )

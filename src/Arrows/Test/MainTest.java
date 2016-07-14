@@ -56,7 +56,7 @@ public class MainTest
 		//----------
 
 		//Test ObjectRegistrarRule
-		ObjectConfig rootObjConfig = new ObjectConfigBuilder().name( RootObject ).end();
+		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		diagram.objects().add( 's', rootObjConfig );
 		diagram.objects().add( "sir", rootObjConfig );
 		diagram.objects().add( 'r', rootObjConfig );

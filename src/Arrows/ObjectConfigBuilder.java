@@ -1,80 +1,17 @@
 package Arrows;
 
-public class ObjectConfigBuilder implements ObjectConfig
+public interface ObjectConfigBuilder
 {
-	private boolean enabled = true;
-	private Enum name = Objects.StandardObjectName.Unnamed;
-	private boolean tracksInboundArrows = true;
-	private boolean tracksOutboundArrows = true;
-	private boolean tracksClass = true;
 
-	public ObjectConfigBuilder()
-	{
-	}
+	ObjectConfigBuilder enabled( boolean enabled );
 
-	public ObjectConfigBuilder enabled( boolean enabled )
-	{
-		this.enabled = enabled;
-		return this;
-	}
+	ObjectConfigBuilder name( Enum name );
 
-	public ObjectConfigBuilder name( Enum name )
-	{
-		this.name = name;
-		return this;
-	}
+	ObjectConfigBuilder tracksClass( boolean tracksClass );
 
-	public ObjectConfigBuilder tracksInboundArrows( boolean tracksInboundArrows )
-	{
-		this.tracksInboundArrows = tracksInboundArrows;
-		return this;
-	}
+	ObjectConfigBuilder tracksInboundArrows( boolean tracksInboundArrows );
 
-	public ObjectConfigBuilder tracksOutboundArrows( boolean tracksOutboundArrows )
-	{
-		this.tracksOutboundArrows = tracksOutboundArrows;
-		return this;
-	}
+	ObjectConfigBuilder tracksOutboundArrows( boolean tracksOutboundArrows );
 
-	public ObjectConfigBuilder tracksClass( boolean tracksClass )
-	{
-		this.tracksClass = tracksClass;
-		return this;
-	}
-
-	public ObjectConfig end()
-	{
-		return this;
-	}
-
-	@Override
-	public boolean enabled()
-	{
-		return enabled;
-	}
-
-	@Override
-	public Enum name()
-	{
-		return name;
-	}
-
-	@Override
-	public boolean tracksClass()
-	{
-		return tracksClass;
-	}
-
-	@Override
-	public boolean tracksInboundArrows()
-	{
-		return tracksInboundArrows;
-	}
-
-	@Override
-	public boolean tracksOutboundArrows()
-	{
-		return tracksOutboundArrows;
-	}
-
+	ObjectConfig end();
 }

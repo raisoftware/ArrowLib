@@ -15,10 +15,8 @@ public interface ArrowConfig
 
 	boolean enabled();
 
-	//Enum inverseName();
 	boolean invertible();
 
-	//Enum name();
 	ArrowConfig inverse();
 
 }
