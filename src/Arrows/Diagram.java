@@ -3,6 +3,7 @@ package Arrows;
 import Arrows.Impl.Rule.ObjectRegistrarRule;
 import Arrows.Impl.Rule.Class2ObjectRule;
 import Arrows.Impl.*;
+import Arrows.Impl.Rule.*;
 import Shared.MethodBus.Sequence.MethodSequence;
 import Shared.MethodBus.Sequence.MethodSequence.ExecutionTime;
 
@@ -12,7 +13,7 @@ public class Diagram
 {
 	Arrows arrows;
 	Objects objects;
-	MethodSequence<Arrow> sequence;
+	MethodSequence<Arrow, ArrowListener> sequence;
 
 	public Diagram()
 	{
@@ -27,6 +28,12 @@ public class Diagram
 
 		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
 		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).canBeListenedTo( false ).end();
+
+		ArrowBuilder inboundArrowsBuilder = arrows.create( InboundArrow2Object, Object2InboundArrow );
+		object2configBuilder.domain( Arrow.class ).codomain( Object.class ).canBeListenedTo( false ).end();
+
+		ArrowBuilder outboundArrowsBuilder = arrows.create( OutboundArrow2Object, Object2OutboundArrow );
+		object2configBuilder.domain( Arrow.class ).codomain( Object.class ).canBeListenedTo( false ).end();
 
 		objects = new ObjectsImpl( arrows );
 
@@ -50,9 +57,15 @@ public class Diagram
 		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
 	}
 
-	public void objectRegistrarRule()
+	public void addObjectRegistrarRule()
 	{
-		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( objects );
+		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
 		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
+	}
+
+	public void addArrow2ObjectRule()
+	{
+		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows, objects );
+		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteBefore );
 	}
 }

@@ -97,4 +97,9 @@ public class Class2ObjectRule implements ArrowListener
 		return null;
 	}
 
+	@Override
+	public void setTargetObject( Arrow target )
+	{
+	}
+
 }

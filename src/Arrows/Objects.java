@@ -22,7 +22,7 @@ public interface Objects// extends Set2
 	boolean contains( Object object );
 
 	//@Override
-	void remove( Object object );
+	void remove( Object object, boolean cascade );
 
 	Iterator objects( Class clazz );
 

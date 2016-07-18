@@ -13,14 +13,15 @@ public class Arrows
 		Class2Object, Object2Class,
 		Name2Object, Object2Name,
 		Object2Config, Config2Object,
-		Object2Arrow, Arrow2Object
+		InboundArrow2Object, Object2InboundArrow,
+		OutboundArrow2Object, Object2OutboundArrow
 	}
 
 	Arrow<Enum, Arrow> name2arrow;
 	final private ArrowConfig defaultArrowConfig;
 	final private MethodSequence methodSequence;
 
-	public Arrows( MethodSequence<Arrow> methodSequence )
+	public Arrows( MethodSequence<Arrow, ArrowListener> methodSequence )
 	{
 		this.methodSequence = methodSequence;
 		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name );
@@ -53,7 +54,7 @@ public class Arrows
 		return defaultArrowConfig;
 	}
 
-	public MethodSequence<Arrow> methodSequence()
+	public MethodSequence<Arrow, ArrowListener> methodSequence()
 	{
 		return methodSequence;
 	}

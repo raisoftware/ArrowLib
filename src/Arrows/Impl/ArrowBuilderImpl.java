@@ -1,10 +1,6 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.ArrowBuilder;
-import Arrows.ArrowConfig;
-import Arrows.Arrows;
-import Arrows.Impl.ManyToManyArrow;
+import Arrows.*;
 import Shared.MethodBus.Sequence.MethodSequence;
 
 public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
@@ -84,8 +80,8 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 		Arrow arrow = new ManyToManyArrow( this );
 		if( canBeListenedTo )
 		{
-			MethodSequence<Arrow> methodSequence = arrows.methodSequence();
-			Arrow arrowProxy = methodSequence.createPublisher( arrow, Arrow.class );
+			MethodSequence<Arrow, ArrowListener> methodSequence = arrows.methodSequence();
+			Arrow arrowProxy = methodSequence.createPublisher( arrow, ArrowListener.class );
 			arrow = arrowProxy;
 		}
 		arrows.add( name, inverseName, arrow );

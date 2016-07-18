@@ -16,12 +16,10 @@ public class MainTest
 	{
 		Diagram diagram = new Diagram();
 
-		//Create class2ObjectRule
+		//Create rules
 		diagram.addClass2ObjectRule();
-		//------------------------------------------------
-
-		//Create ObjectRegistrarRule
-		diagram.objectRegistrarRule();
+		diagram.addObjectRegistrarRule();
+		diagram.addArrow2ObjectRule();
 		//------------------------------
 
 		//create custom arrows

@@ -81,7 +81,7 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void remove( Object obj ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
+	public void remove( Object obj, boolean cascade ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
 	{
 
 	}

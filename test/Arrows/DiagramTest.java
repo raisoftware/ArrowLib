@@ -46,7 +46,8 @@ public class DiagramTest
 		diagram = new Diagram();
 
 		diagram.addClass2ObjectRule();
-		diagram.objectRegistrarRule();
+		diagram.addObjectRegistrarRule();
+		diagram.addArrow2ObjectRule();
 
 		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		ObjectConfig coolestObjConfig = diagram.objects().create().name( CoolestObject ).end();
@@ -129,6 +130,20 @@ public class DiagramTest
 
 		System.out.println( name2Object.inverse() );
 		System.out.println( object2Config );
+
+	}
+
+	@Test
+	public void testArrow2ObjectRule() throws Exception
+	{
+//		Arrows arrows = diagram.arrows();
+//		Arrow<Enum, Arrow> arrow2Object = arrows.arrow( StandardArrowName.OutboundArrow2Object );
+//		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
+//
+//		Arrow<Enum, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
+//		Arrow<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
+//
+//		assertEquals( name2Object.target( RootObject ), 2 );
 
 	}
 }

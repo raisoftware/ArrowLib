@@ -5,9 +5,8 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
+public class MethodSequence<TargetObjectType, ListenerType extends MethodProxy<TargetObjectType>> implements MethodBus<TargetObjectType, ListenerType>
 {
-
 	public static enum ExecutionTime
 	{
 		ExecuteBefore, ExecuteAfter
@@ -54,7 +53,7 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 
 	@SuppressWarnings( "unchecked" )
 	@Override
-	public ListenerType createPublisher( ListenerType targetObject, Class<ListenerType> eventListenerClass )
+	public ListenerType createPublisher( TargetObjectType targetObject, Class<ListenerType> eventListenerClass )
 	{
 		//if( !( targetObject instanceof eventListenerClass ) )
 		//	throw new Exception( "Create Publisher failed" );
@@ -70,21 +69,28 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 			handler );
 	}
 
+	private void invokeOnListeners( final List<ListenerType> eventListeners, final MethodCall event, final TargetObjectType targetObject ) throws Throwable
+	{
+		for( ListenerType listener : eventListeners )
+		{
+			listener.setTargetObject( targetObject );
+			event.method().invoke( listener, event.parameters() );
+		}
+	}
+
 	@Override
-	public Object publishEvent( final MethodCall event, final ListenerType targetObject )
+	public Object publishEvent( final MethodCall event, final TargetObjectType targetObject )
 	{
 		try
 		{
 			if( preEventListeners.isEmpty() && postEventListeners.isEmpty() )
 				deadMethodHandler();
 
-			for( ListenerType listener : preEventListeners )
-				event.method().invoke( listener, event.parameters() );
+			invokeOnListeners( preEventListeners, event, targetObject );
 
 			Object returnedObject = event.method().invoke( targetObject, event.parameters() );
 
-			for( ListenerType listener : postEventListeners )
-				event.method().invoke( listener, event.parameters() );
+			invokeOnListeners( postEventListeners, event, targetObject );
 
 			return returnedObject;
 		}
