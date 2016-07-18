@@ -1,5 +1,6 @@
 package Shared.MethodBus.Sequence;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 	{
 	}
 
-	public void deadMethodHandler()
+	private void deadMethodHandler()
 	{
 
 	}
@@ -74,7 +75,7 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 	{
 		try
 		{
-			if( preEventListeners.size() == 0 && postEventListeners.size() == 0 )
+			if( preEventListeners.isEmpty() && postEventListeners.isEmpty() )
 				deadMethodHandler();
 
 			for( ListenerType listener : preEventListeners )
@@ -87,10 +88,21 @@ public class MethodSequence<ListenerType> implements MethodBus<ListenerType>
 
 			return returnedObject;
 		}
+		catch( InvocationTargetException e )
+		{
+			if( e.getCause() instanceof Exception )
+			{
+				throw new RuntimeException( e.getCause().getMessage(), e.getCause() );
+			}
+			else
+			{
+				throw new RuntimeException( e.getMessage(), e.getCause() );
+
+			}
+		}
 		catch( Throwable e )
 		{
 			throw new RuntimeException( e.getMessage(), e );
 		}
-
 	}
 }

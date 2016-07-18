@@ -1,5 +1,7 @@
 package Arrows;
 
+import java.util.Iterator;
+
 public interface Objects// extends Set2
 {
 	public static enum StandardObjectName
@@ -21,15 +23,9 @@ public interface Objects// extends Set2
 
 	//@Override
 	void remove( Object object );
-	//		// query
-	//		Iterator objects()
-	//		{
-	//			return arrow.targets();
-	//		}
-	//
-	//		Iterator objects( Class clazz ) // return classes.eval( clazz )
-	//		{
-	//			classes.eval( clazz );
-	//		}
+
+	Iterator objects( Class clazz );
+
+	Iterator objects();
 
 }

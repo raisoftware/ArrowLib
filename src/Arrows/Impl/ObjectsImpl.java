@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,6 +12,7 @@ public class ObjectsImpl implements Objects
 	final ObjectConfig defaultObjectConfig = new ObjectConfigBuilderImpl().end();
 	Arrow<Enum, Object> name2Object = null;
 	Arrow<Object, ObjectConfig> object2Config = null;
+	Arrow<Class, Object> class2Object = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{
@@ -18,6 +20,7 @@ public class ObjectsImpl implements Objects
 		{
 			this.name2Object = arrows.arrow( Name2Object );
 			this.object2Config = arrows.arrow( Object2Config );
+			this.class2Object = arrows.arrow( Class2Object );
 		}
 		catch( Exception ex )
 		{
@@ -39,8 +42,23 @@ public class ObjectsImpl implements Objects
 		}
 		else
 		{
-			name2Object.connect( StandardObjectName.Unnamed, object );
-			object2Config.connect( object, objectConfig );
+			try
+			{
+				if( name2Object.inverse().target( object ) == StandardObjectName.Unnamed )
+				{
+					//replace
+					name2Object.inverse().remove( object, null );
+					object2Config.remove( object, null );
+					name2Object.connect( objectConfig.name(), object );
+					object2Config.connect( object, objectConfig );
+				}
+				else if( objectConfig.name() != StandardObjectName.Unnamed )
+					throw new Exception( "Object registered twice, should remove first." );
+			}
+			catch( Exception ex )
+			{
+				Logger.getLogger( ObjectsImpl.class.getName() ).log( Level.SEVERE, null, ex );
+			}
 		}
 	}
 
@@ -68,20 +86,22 @@ public class ObjectsImpl implements Objects
 
 	}
 
-//		// query
-//		Set objects()
-//		{
-//			return arrow.targets();
-//		}
-//
-//		Object[] objects( Class clazz ) // return classes.targets( clazz )
-//		{
-//			classes.targets( clazz );
-//		}
+	@Override
+	public Iterator objects()
+	{
+		return name2Object.targets().iterator();
+	}
+
+	@Override
+	public Iterator objects( Class clazz )
+	{
+		return class2Object.targets( clazz ).iterator();
+	}
+
 	@Override
 	public boolean contains( Object object )
 	{
-		return name2Object.sources().contains( object );
+		return name2Object.targets().contains( object );
 	}
 
 	//@Override
@@ -98,4 +118,5 @@ public class ObjectsImpl implements Objects
 		name2Object.connect( objectConfig.name(), object );
 		object2Config.connect( object, objectConfig );
 	}
+
 }

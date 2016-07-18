@@ -33,7 +33,9 @@ public class ManyToManyArrowTest
 	@Before
 	public void setUp()
 	{
-		arrow = new ManyToManyArrow();
+		Diagram diagram = new Diagram();
+
+		arrow = new ManyToManyArrow( diagram.arrows().defaultArrowConfig() );
 
 		List<Character> chars = new ArrayList();
 		chars.add( 'S' );

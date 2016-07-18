@@ -23,6 +23,6 @@ public interface Arrow<K, V>
 
 	V target( K source ) throws Exception;
 
-	Arrow inverse();
+	Arrow<V, K> inverse();
 
 }

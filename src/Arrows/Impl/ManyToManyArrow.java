@@ -114,6 +114,12 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		return targets.iterator().next();
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
+	}
+
 	private final class InverseManyToManyMap implements Arrow<V, K>
 	{
 		@Override
@@ -183,6 +189,12 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 			if( targets.size() != 1 )
 				throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
 			return targets.iterator().next();
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
 		}
 	}
 }

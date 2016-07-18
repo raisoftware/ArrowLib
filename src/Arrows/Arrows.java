@@ -17,8 +17,8 @@ public class Arrows
 	}
 
 	Arrow<Enum, Arrow> name2arrow;
-	ArrowConfig defaultArrowConfig;
-	MethodSequence methodSequence;
+	final private ArrowConfig defaultArrowConfig;
+	final private MethodSequence methodSequence;
 
 	public Arrows( MethodSequence<Arrow> methodSequence )
 	{
@@ -27,6 +27,7 @@ public class Arrows
 
 		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
 		name2arrow = new ManyToManyArrow( arrowConfig );
+		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
 
 		defaultArrowConfig = create( StandardArrowName.DefaultName, StandardArrowName.InverseDefaultName ).arrowConfig();
 	}

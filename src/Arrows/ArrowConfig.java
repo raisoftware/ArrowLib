@@ -17,6 +17,8 @@ public interface ArrowConfig
 
 	boolean invertible();
 
+	boolean canBeListenedTo();
+
 	ArrowConfig inverse();
 
 }

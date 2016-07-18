@@ -1,5 +1,7 @@
 package Arrows;
 
+import Arrows.Impl.Rule.ObjectRegistrarRule;
+import Arrows.Impl.Rule.Class2ObjectRule;
 import Arrows.Impl.*;
 import Shared.MethodBus.Sequence.MethodSequence;
 import Shared.MethodBus.Sequence.MethodSequence.ExecutionTime;
@@ -16,9 +18,15 @@ public class Diagram
 	{
 		sequence = new MethodSequence();
 		arrows = new Arrows( sequence );
-		arrows().add( Class2Object, Object2Class, new ManyToManyArrow( arrows.defaultArrowConfig() ) );
-		arrows().add( Name2Object, Object2Name, new ManyToManyArrow( arrows.defaultArrowConfig() ) );
-		arrows().add( Object2Config, Config2Object, new ManyToManyArrow( arrows.defaultArrowConfig() ) );
+
+		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
+		class2objectBuilder.domain( Enum.class ).codomain( Arrow.class ).canBeListenedTo( false ).end();
+
+		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
+		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).canBeListenedTo( false ).end();
+
+		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
+		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).canBeListenedTo( false ).end();
 
 		objects = new ObjectsImpl( arrows );
 

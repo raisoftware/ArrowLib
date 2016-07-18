@@ -5,5 +5,7 @@ public enum ArrowName
 	Contains,
 	IsContainedBy,
 	Square,
-	SquareRoot
+	SquareRoot,
+	Stringify,
+	Destringify
 }

@@ -1,4 +1,4 @@
-package Arrows.Impl;
+package Arrows.Impl.Rule;
 
 import Arrows.*;
 import java.util.Collection;

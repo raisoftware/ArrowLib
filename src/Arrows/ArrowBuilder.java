@@ -19,4 +19,5 @@ public interface ArrowBuilder
 
 	ArrowBuilder invertible( boolean enabled );
 
+	ArrowBuilder canBeListenedTo( boolean enabled );
 }

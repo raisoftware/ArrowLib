@@ -2,5 +2,7 @@ package Arrows.Test;
 
 public enum ObjectName
 {
-	RootObject
+	RootObject,
+	BestObject,
+	CoolestObject
 }
