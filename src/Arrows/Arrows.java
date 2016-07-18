@@ -24,7 +24,7 @@ public class Arrows
 	public Arrows( MethodSequence<Arrow, ArrowListener> methodSequence )
 	{
 		this.methodSequence = methodSequence;
-		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name );
+		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
 
 		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
 		name2arrow = new ManyToManyArrow( arrowConfig );

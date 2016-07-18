@@ -13,7 +13,8 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	private Class codomain = Object.class;
 	private boolean allowsMultipleSources = true;
 	private boolean allowsMultipleTargets = true;
-	private boolean canBeListenedTo = true;
+	private boolean listenable = true;
+	private boolean readOnly = true;
 	private Arrows arrows = null;
 
 	InverseArrowConfig inverseConfig = new InverseArrowConfig();
@@ -78,7 +79,7 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	public Arrow end()
 	{
 		Arrow arrow = new ManyToManyArrow( this );
-		if( canBeListenedTo )
+		if( listenable )
 		{
 			MethodSequence<Arrow, ArrowListener> methodSequence = arrows.methodSequence();
 			Arrow arrowProxy = methodSequence.createPublisher( arrow, ArrowListener.class );
@@ -138,15 +139,28 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	}
 
 	@Override
-	public boolean canBeListenedTo()
+	public boolean listenable()
 	{
-		return canBeListenedTo;
+		return listenable;
 	}
 
 	@Override
-	public ArrowBuilder canBeListenedTo( boolean enabled )
+	public ArrowBuilder listenable( boolean enabled )
 	{
-		this.canBeListenedTo = enabled;
+		this.listenable = enabled;
+		return this;
+	}
+
+	@Override
+	public boolean readOnly()
+	{
+		return readOnly;
+	}
+
+	@Override
+	public ArrowBuilder readOnly( boolean enabled )
+	{
+		this.readOnly = enabled;
 		return this;
 	}
 
@@ -201,9 +215,15 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 		}
 
 		@Override
-		public boolean canBeListenedTo()
+		public boolean listenable()
 		{
-			return canBeListenedTo;
+			return listenable;
+		}
+
+		@Override
+		public boolean readOnly()
+		{
+			return readOnly;
 		}
 	}
 }

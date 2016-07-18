@@ -1,7 +1,6 @@
 package Arrows.Test;
 
 import Arrows.*;
-import Arrows.Impl.*;
 
 import static Arrows.Test.ObjectName.*;
 import static Arrows.Arrows.StandardArrowName.*;
@@ -70,7 +69,7 @@ public class MainTest
 
 		//sequence.subscribe( new ObjectsArrowsRule() );
 		//MethodSequence arrowsSequence = sequence.createPublisher()
-		diagram.arrows().add( Class2Object, Object2Class, new ManyToManyArrow( diagram.arrows().defaultArrowConfig() ) );
+		//diagram.arrows().add( Class2Object, Object2Class, new ManyToManyArrow( diagram.arrows().defaultArrowConfig() ) );
 	}
 
 }

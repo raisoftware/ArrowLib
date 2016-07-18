@@ -23,8 +23,8 @@ public class Arrow2ObjectRule implements ArrowListener
 
 		try
 		{
-			this.inboundArrow2object = arrows.arrow( OutboundArrow2Object );
-			this.outboundArrow2object = arrows.arrow( InboundArrow2Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{

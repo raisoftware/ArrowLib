@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.Arrow;
 import Arrows.ArrowConfig;
+
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -60,6 +61,10 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	@Override
 	public void connect( K source, Collection<? extends V> targets )
 	{
+		if( !config.allowsMultipleTargets() && sources().contains( source ) )
+		{
+			System.out.println( "Arrow does not allow multiple targets! source:" + source + "  targets: " + targets );
+		}
 		boolean mapChanged = keysToValues.putAll( source, targets );
 
 		for( V target : targets )
@@ -72,6 +77,11 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	@Override
 	public void connect( K source, V target )
 	{
+		if( !config.allowsMultipleTargets() && sources().contains( source ) )
+		{
+			System.out.println( "Arrow does not allow multiple targets! source:" + source + "  target: " + target );
+			//throw new Exception( "Arrow does not allow multiple targets! source:" + source + "  target: " + target );
+		}
 		put( source, target );
 	}
 

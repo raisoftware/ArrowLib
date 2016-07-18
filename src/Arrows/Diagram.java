@@ -21,19 +21,19 @@ public class Diagram
 		arrows = new Arrows( sequence );
 
 		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
-		class2objectBuilder.domain( Enum.class ).codomain( Arrow.class ).canBeListenedTo( false ).end();
+		class2objectBuilder.domain( Enum.class ).codomain( Arrow.class ).listenable( false ).end();
 
 		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
-		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).canBeListenedTo( false ).end();
+		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).listenable( false ).end();
 
 		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
-		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).canBeListenedTo( false ).end();
+		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).listenable( false ).end();
 
 		ArrowBuilder inboundArrowsBuilder = arrows.create( InboundArrow2Object, Object2InboundArrow );
-		object2configBuilder.domain( Arrow.class ).codomain( Object.class ).canBeListenedTo( false ).end();
+		inboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
 
 		ArrowBuilder outboundArrowsBuilder = arrows.create( OutboundArrow2Object, Object2OutboundArrow );
-		object2configBuilder.domain( Arrow.class ).codomain( Object.class ).canBeListenedTo( false ).end();
+		outboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
 
 		objects = new ObjectsImpl( arrows );
 
