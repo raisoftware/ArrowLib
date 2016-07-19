@@ -11,14 +11,14 @@ import java.util.function.BiPredicate;
 public class FilterArrow<K, V> implements Arrow<K, V>
 {
 	private Arrow<K, V> arrow;
-	private BiPredicate<K, V> bipredicate;
+	private BiPredicate<K, V> filter;
 
 
 
-	public FilterArrow( Arrow<K, V> arrow, BiPredicate<K, V> bipredicate )
+	public FilterArrow( Arrow<K, V> arrow, BiPredicate<K, V> filter )
 	{
 		this.arrow = arrow;
-		this.bipredicate = bipredicate;
+		this.filter = filter;
 	}
 
 
@@ -71,7 +71,7 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 		{
 			for( V target : arrow.targets( source ) )
 			{
-				if( bipredicate.test( source, target ) )
+				if( filter.test( source, target ) )
 				{
 					filteredSources.add( source );
 					break;
@@ -103,7 +103,7 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 
 		for( V target : arrow.targets( source ) )
 		{
-			if( bipredicate.test( source, target ) )
+			if( filter.test( source, target ) )
 			{
 				filteredTargets.add( target );
 			}

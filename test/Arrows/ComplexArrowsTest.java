@@ -5,6 +5,7 @@ import java.util.function.BiPredicate;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
+import static Arrows.Utils.TestsUtils.*;
 import static org.junit.Assert.*;
 
 public class ComplexArrowsTest
@@ -32,23 +33,6 @@ public class ComplexArrowsTest
 	{
 	}
 
-	private void connectWordToLetters( Arrow arrow, String word )
-	{
-		for( int i = 0; i < word.length(); ++i )
-		{
-			arrow.connect( word, word.charAt( i ) );
-		}
-	}
-
-	private void connectLettersToUpperCaseLetters( Arrow arrow, String word )
-	{
-		for( int i = 0; i < word.length(); ++i )
-		{
-			char c = word.charAt( i );
-			arrow.connect( c, Character.toUpperCase( c ) );
-		}
-	}
-
 	@Before
 	public void setUp()
 	{
@@ -70,7 +54,7 @@ public class ComplexArrowsTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow, word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow, word4 );
 
-		BiPredicate<String, Character> bipredicate = new BiPredicate<String, Character>()
+		BiPredicate<String, Character> filter = new BiPredicate<String, Character>()
 		{
 			@Override
 			public boolean test( String source, Character target )
@@ -79,7 +63,7 @@ public class ComplexArrowsTest
 			}
 		};
 
-		filterArrow = Arrows.filter( containsArrow, bipredicate );
+		filterArrow = Arrows.filter( containsArrow, filter );
 	}
 
 	@After
@@ -136,16 +120,5 @@ public class ComplexArrowsTest
 		assertTrue( word4Results.isEmpty() );
 
 		//System.out.println( "fArrow Sources=" + sources + " targets =" + targets + " results=" + overResults );
-	}
-
-	@Test
-	public void testCompoundArrow()
-	{
-
-//		List<Arrow> list = new ArrayList<>();
-//		list.add( containsArrow.inverse() );
-//		list.add( fArrow );
-//		CompoundArrow cArrow = new CompoundArrow( list );
-//		Set results = cArrow.targets( 'r' );
 	}
 }

@@ -9,5 +9,7 @@ public enum ArrowName
 	Stringify,
 	Destringify,
 	ToUpperCase,
-	ToLowerCase
+	ToLowerCase,
+	ToUpperCase2,
+	ToLowerCase2,
 }

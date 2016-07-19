@@ -1,7 +1,6 @@
 package Arrows;
 
-import Arrows.Impl.FilterArrow;
-import Arrows.Impl.JoinArrow;
+import Arrows.Impl.*;
 import Shared.MethodBus.Sequence.MethodSequence;
 import java.util.function.BiPredicate;
 
@@ -27,21 +26,24 @@ public interface Arrows
 	ArrowConfig defaultArrowConfig();
 
 	MethodSequence<Arrow, ArrowListener> methodSequence();
-	
-	static Arrow filter(Arrow arrow, BiPredicate bipredicate)
+
+	static Arrow filter( Arrow arrow, BiPredicate filter )
 	{
-		return new FilterArrow(arrow, bipredicate);
+		return new FilterArrow( arrow, filter );
 	}
-	static Arrow join(Arrow... arrows)
+
+	static Arrow join( Arrow... arrows )
 	{
-		return new JoinArrow(arrows);
+		return new JoinArrow( arrows );
 	}
-	static Arrow union(Arrow... arrows)
+
+	static Arrow union( Arrow... arrows )
 	{
-		return null;
+		return new UnionArrow( arrows );
 	}
-	static Arrow intersect(Arrow... arrows)
+
+	static Arrow intersect( Arrow... arrows )
 	{
-		return null;
+		return new IntersectArrow( arrows );
 	}
 }
