@@ -1,71 +1,17 @@
 package Arrows;
 
-import Arrows.Impl.Rule.ObjectRegistrarRule;
-import Arrows.Impl.Rule.Class2ObjectRule;
-import Arrows.Impl.*;
-import Arrows.Impl.Rule.*;
-import Shared.MethodBus.Sequence.MethodSequence;
-import Shared.MethodBus.Sequence.MethodSequence.ExecutionTime;
-
-import static Arrows.Arrows.StandardArrowName.*;
-
-public class Diagram
+public interface Diagram
 {
-	Arrows arrows;
-	Objects objects;
-	MethodSequence<Arrow, ArrowListener> sequence;
+	void addArrow2ObjectRule();
 
-	public Diagram()
-	{
-		sequence = new MethodSequence();
-		arrows = new Arrows( sequence );
+	//	reference( nick : Enum, domain : Arrow ) : Reference
+	//	Set2 set2( Object source, arrow : Arrow ) :
+	void addClass2ObjectRule();
 
-		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
-		class2objectBuilder.domain( Enum.class ).codomain( Arrow.class ).listenable( false ).end();
+	void addObjectRegistrarRule();
 
-		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
-		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).listenable( false ).end();
+	Arrows arrows();
 
-		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
-		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).listenable( false ).end();
+	Objects objects();
 
-		ArrowBuilder inboundArrowsBuilder = arrows.create( InboundArrow2Object, Object2InboundArrow );
-		inboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
-
-		ArrowBuilder outboundArrowsBuilder = arrows.create( OutboundArrow2Object, Object2OutboundArrow );
-		outboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
-
-		objects = new ObjectsImpl( arrows );
-
-	}
-
-	public final Arrows arrows()
-	{
-		return arrows;
-	}
-
-	public Objects objects()
-	{
-		return objects;
-	}
-
-//	reference( nick : Enum, domain : Arrow ) : Reference
-//	Set2 set2( Object source, arrow : Arrow ) :
-	public void addClass2ObjectRule()
-	{
-		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
-		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
-	}
-
-	public void addObjectRegistrarRule()
-	{
-		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
-		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
-	}
-
-	public void addArrow2ObjectRule()
-	{
-		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows, objects );
-		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteBefore );
-	}
 }

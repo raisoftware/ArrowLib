@@ -5,20 +5,16 @@
  */
 package Arrows;
 
-import static Arrows.Arrows.StandardArrowName.*;
-
 import Arrows.Arrows.StandardArrowName;
 
-import static Arrows.Objects.StandardObjectName.*;
+import static Arrows.Arrows.StandardArrowName.*;
 
 import java.util.*;
-
-import static Arrows.Test.ObjectName.*;
-
-import static Arrows.Test.ArrowName.*;
-
 import org.junit.*;
 
+import static Arrows.Objects.StandardObjectName.*;
+import static Arrows.Test.ArrowName.*;
+import static Arrows.Test.ObjectName.*;
 import static org.junit.Assert.*;
 
 public class DiagramTest
@@ -43,7 +39,7 @@ public class DiagramTest
 	@Before
 	public void setUp()
 	{
-		diagram = new Diagram();
+		diagram = DiagramFactory.create();
 
 		diagram.addClass2ObjectRule();
 		diagram.addObjectRegistrarRule();

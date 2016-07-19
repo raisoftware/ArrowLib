@@ -1,0 +1,151 @@
+package Arrows;
+
+import java.util.Set;
+import java.util.function.BiPredicate;
+import org.junit.*;
+
+import static Arrows.Test.ArrowName.*;
+import static org.junit.Assert.*;
+
+public class ComplexArrowsTest
+{
+	private Diagram diagram;
+	private Arrow<String, Character> containsArrow;
+	private Arrow<Character, Character> toUpperCaseArrow;
+	private Arrow<String, Character> filterArrow;
+	private final String word1 = "something";
+	private final String word2 = "extra";
+	private final String word3 = "stuff";
+	private final String word4 = "over";
+
+	public ComplexArrowsTest()
+	{
+	}
+
+	@BeforeClass
+	public static void setUpClass()
+	{
+	}
+
+	@AfterClass
+	public static void tearDownClass()
+	{
+	}
+
+	private void connectWordToLetters( Arrow arrow, String word )
+	{
+		for( int i = 0; i < word.length(); ++i )
+		{
+			arrow.connect( word, word.charAt( i ) );
+		}
+	}
+
+	private void connectLettersToUpperCaseLetters( Arrow arrow, String word )
+	{
+		for( int i = 0; i < word.length(); ++i )
+		{
+			char c = word.charAt( i );
+			arrow.connect( c, Character.toUpperCase( c ) );
+		}
+	}
+
+	@Before
+	public void setUp()
+	{
+		diagram = DiagramFactory.create();
+
+		diagram.addClass2ObjectRule();
+		diagram.addObjectRegistrarRule();
+		diagram.addArrow2ObjectRule();
+
+		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).end();
+		connectWordToLetters( containsArrow, word1 );
+		connectWordToLetters( containsArrow, word2 );
+		connectWordToLetters( containsArrow, word3 );
+		connectWordToLetters( containsArrow, word4 );
+
+		toUpperCaseArrow = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
+		connectLettersToUpperCaseLetters( toUpperCaseArrow, word1 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow, word2 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow, word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow, word4 );
+
+		BiPredicate<String, Character> bipredicate = new BiPredicate<String, Character>()
+		{
+			@Override
+			public boolean test( String source, Character target )
+			{
+				return !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
+			}
+		};
+
+		filterArrow = Arrows.filter( containsArrow, bipredicate );
+	}
+
+	@After
+	public void tearDown()
+	{
+	}
+
+	@Test
+	public void testFilterArrow()
+	{
+
+		Set<String> sources = filterArrow.sources();
+		assertEquals( sources.size(), 3 );
+		assertTrue( sources.contains( word1 ) );
+		assertTrue( sources.contains( word2 ) );
+		assertTrue( sources.contains( word3 ) );
+
+		Set<Character> targets = filterArrow.targets();
+		assertEquals( targets.size(), 11 );
+		assertFalse( targets.contains( 'o' ) );
+		assertFalse( targets.contains( 'v' ) );
+		assertFalse( targets.contains( 'e' ) );
+		assertFalse( targets.contains( 'r' ) );
+		assertTrue( targets.contains( 's' ) );
+		assertTrue( targets.contains( 'm' ) );
+		assertTrue( targets.contains( 'x' ) );
+
+		Set<Character> word1Results = filterArrow.targets( word1 );// "something"
+		assertEquals( word1Results.size(), 7 );
+		assertFalse( word1Results.contains( 'o' ) );
+		assertFalse( word1Results.contains( 'e' ) );
+		assertTrue( word1Results.contains( 's' ) );
+		assertTrue( word1Results.contains( 'm' ) );
+		assertTrue( word1Results.contains( 't' ) );
+		assertTrue( word1Results.contains( 'h' ) );
+		assertTrue( word1Results.contains( 'i' ) );
+		assertTrue( word1Results.contains( 'n' ) );
+		assertTrue( word1Results.contains( 'g' ) );
+
+		Set<Character> word2Results = filterArrow.targets( word2 );// "extra"
+		assertEquals( word2Results.size(), 3 );
+		assertTrue( word2Results.contains( 'x' ) );
+		assertTrue( word2Results.contains( 't' ) );
+		assertTrue( word2Results.contains( 'a' ) );
+
+		Set<Character> word3Results = filterArrow.targets( word3 );// "stuff"
+		assertEquals( word3Results.size(), 4 );
+		assertTrue( word3Results.contains( 's' ) );
+		assertTrue( word3Results.contains( 't' ) );
+		assertTrue( word3Results.contains( 'u' ) );
+		assertTrue( word3Results.contains( 'f' ) );
+
+		Set<Character> word4Results = filterArrow.targets( word4 );//"over"
+		assertTrue( word4Results.isEmpty() );
+
+		//System.out.println( "fArrow Sources=" + sources + " targets =" + targets + " results=" + overResults );
+	}
+
+	@Test
+	public void testCompoundArrow()
+	{
+
+//		List<Arrow> list = new ArrayList<>();
+//		list.add( containsArrow.inverse() );
+//		list.add( fArrow );
+//		CompoundArrow cArrow = new CompoundArrow( list );
+//		Set results = cArrow.targets( 'r' );
+	}
+}

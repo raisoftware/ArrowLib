@@ -2,7 +2,6 @@ package Arrows;
 
 import Arrows.Impl.ManyToManyArrow;
 import java.util.*;
-
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -33,7 +32,7 @@ public class ManyToManyArrowTest
 	@Before
 	public void setUp()
 	{
-		Diagram diagram = new Diagram();
+		Diagram diagram = DiagramFactory.create();
 
 		arrow = new ManyToManyArrow( diagram.arrows().defaultArrowConfig() );
 

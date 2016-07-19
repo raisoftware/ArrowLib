@@ -4,22 +4,22 @@ import Arrows.Arrow;
 import Arrows.ArrowConfig;
 import java.util.*;
 
-public class CompoundArrow implements Arrow
+public class JoinArrow implements Arrow
 {
 	List<Arrow> arrows = new ArrayList<>();
 
-	public CompoundArrow( List<Arrow> arrows ) throws Exception
+	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
-		if( arrows == null || arrows.isEmpty() )
+		if( arrows == null || arrows.length == 0 )
 			throw new IllegalArgumentException( "Empty arrow list" );
 
-		for( Arrow arrow : arrows )
+		for( int i = 0; i < arrows.length; ++i )
 		{
-			addArrow( arrow );
+			addArrow( arrows[i] );
 		}
 	}
 
-	public final void addArrow( Arrow arrow ) throws Exception
+	public final void addArrow( Arrow arrow ) throws IllegalArgumentException
 	{
 		if( arrow == null )
 			throw new IllegalArgumentException( "Arrow is null" );
@@ -28,7 +28,7 @@ public class CompoundArrow implements Arrow
 		{
 			Arrow last = arrows.get( arrows.size() - 1 );
 			if( !last.config().codomain().equals( arrow.config().domain() ) )
-				throw new Exception( "Domain type of the arrow does not match codomain type of the last arrow" );
+				throw new IllegalArgumentException( "Domain type of the arrow does not match codomain type of the last arrow" );
 		}
 		arrows.add( arrow );
 	}
@@ -90,13 +90,30 @@ public class CompoundArrow implements Arrow
 	@Override
 	public Set targets( Object source )
 	{
-		return null;
-//		Object input = source;
-//		for( Arrow arrow : arrows )
-//		{
-//			Set<Object> returedValues = arrow.targets( input );
-//		}
-//		return input;
+		List<Object> oldResults = new ArrayList<>();
+
+		List<Object> newResults = new ArrayList<>();
+		newResults.add( source );
+
+		Iterator<Arrow> arrowIt = arrows.iterator();
+
+		while( arrowIt.hasNext() )
+		{
+			List<Object> aux = oldResults;
+			oldResults = newResults;
+			newResults = aux;
+			newResults.clear();
+
+			Arrow arrow = arrowIt.next();
+
+			for( Object input : oldResults )
+			{
+				newResults.addAll( arrow.targets( input ) );
+			}
+		}
+
+		Set results = new HashSet( newResults );
+		return results;
 	}
 
 	@Override

@@ -7,5 +7,7 @@ public enum ArrowName
 	Square,
 	SquareRoot,
 	Stringify,
-	Destringify
+	Destringify,
+	ToUpperCase,
+	ToLowerCase
 }

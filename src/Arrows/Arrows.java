@@ -1,10 +1,11 @@
 package Arrows;
 
-import Arrows.Impl.ArrowBuilderImpl;
-import Arrows.Impl.ManyToManyArrow;
+import Arrows.Impl.FilterArrow;
+import Arrows.Impl.JoinArrow;
 import Shared.MethodBus.Sequence.MethodSequence;
+import java.util.function.BiPredicate;
 
-public class Arrows
+public interface Arrows
 {
 	public static enum StandardArrowName
 	{
@@ -17,46 +18,30 @@ public class Arrows
 		OutboundArrow2Object, Object2OutboundArrow
 	}
 
-	Arrow<Enum, Arrow> name2arrow;
-	final private ArrowConfig defaultArrowConfig;
-	final private MethodSequence methodSequence;
+	void add( Enum arrowName, Enum arrowInverseName, Arrow arrow );
 
-	public Arrows( MethodSequence<Arrow, ArrowListener> methodSequence )
+	Arrow arrow( Enum arrowName ) throws Exception;
+
+	ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
+
+	ArrowConfig defaultArrowConfig();
+
+	MethodSequence<Arrow, ArrowListener> methodSequence();
+	
+	static Arrow filter(Arrow arrow, BiPredicate bipredicate)
 	{
-		this.methodSequence = methodSequence;
-		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
-
-		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
-		name2arrow = new ManyToManyArrow( arrowConfig );
-		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
-
-		defaultArrowConfig = create( StandardArrowName.DefaultName, StandardArrowName.InverseDefaultName ).arrowConfig();
+		return new FilterArrow(arrow, bipredicate);
 	}
-
-	public final ArrowBuilder create( Enum arrowName, Enum inverseArrowName )
+	static Arrow join(Arrow... arrows)
 	{
-		return new ArrowBuilderImpl( this, arrowName, inverseArrowName );
+		return new JoinArrow(arrows);
 	}
-
-	public void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )
+	static Arrow union(Arrow... arrows)
 	{
-		name2arrow.connect( arrowName, arrow );
-		name2arrow.connect( arrowInverseName, arrow.inverse() );
+		return null;
 	}
-
-	public Arrow arrow( Enum arrowName ) throws Exception
+	static Arrow intersect(Arrow... arrows)
 	{
-		return name2arrow.target( arrowName );
+		return null;
 	}
-
-	public ArrowConfig defaultArrowConfig()
-	{
-		return defaultArrowConfig;
-	}
-
-	public MethodSequence<Arrow, ArrowListener> methodSequence()
-	{
-		return methodSequence;
-	}
-
 }

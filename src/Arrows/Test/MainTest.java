@@ -1,19 +1,17 @@
 package Arrows.Test;
 
 import Arrows.*;
+import java.util.*;
 
-import static Arrows.Test.ObjectName.*;
 import static Arrows.Arrows.StandardArrowName.*;
-
-import java.util.ArrayList;
-
 import static Arrows.Test.ArrowName.*;
+import static Arrows.Test.ObjectName.*;
 
 public class MainTest
 {
 	public static void main( String args[] ) throws Exception
 	{
-		Diagram diagram = new Diagram();
+		Diagram diagram = DiagramFactory.create();
 
 		//Create rules
 		diagram.addClass2ObjectRule();
@@ -36,7 +34,9 @@ public class MainTest
 
 		//test arrows
 		arrow.connect( "sir", chars );
-		squareArrow.connect( "irs", chars );
+		arrow.connect( "irs", chars );
+		arrow.connect( "ra", 'r' );
+		arrow.connect( "ra", 'a' );
 
 		squareArrow.connect( 9, 81 );
 		squareArrow.connect( 2, 4 );
@@ -55,21 +55,19 @@ public class MainTest
 		//Test ObjectRegistrarRule
 		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		diagram.objects().add( 's', rootObjConfig );
-		diagram.objects().add( "sir", rootObjConfig );
-		diagram.objects().add( 'r', rootObjConfig );
 		Arrow name2Object = diagram.arrows().arrow( Name2Object );
 		Arrow object2Config = diagram.arrows().arrow( Object2Config );
 		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );
 		System.out.println( "object2Config.relations()" + object2Config.relations() );
 		//----------
 
-		Arrow containsArrow = diagram.arrows().arrow( Contains );
+		Arrow<String, Character> containsArrow = diagram.arrows().arrow( Contains );
 
 		System.out.println( "" + containsArrow.relations() );
 
-		//sequence.subscribe( new ObjectsArrowsRule() );
-		//MethodSequence arrowsSequence = sequence.createPublisher()
-		//diagram.arrows().add( Class2Object, Object2Class, new ManyToManyArrow( diagram.arrows().defaultArrowConfig() ) );
+		Arrow joinArrow = Arrows.join( containsArrow.inverse() );
+		Set results = joinArrow.targets( 'r' );
+		System.out.println( "results:" + results );
 	}
 
 }
