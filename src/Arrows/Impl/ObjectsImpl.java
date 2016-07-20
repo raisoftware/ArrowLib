@@ -81,33 +81,15 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void remove( Object obj, boolean cascade ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
-	{
-
-	}
-
-	@Override
-	public Iterator objects()
-	{
-		return name2Object.targets().iterator();
-	}
-
-	@Override
-	public Iterator objects( Class clazz )
-	{
-		return class2Object.targets( clazz ).iterator();
-	}
-
-	@Override
 	public boolean contains( Object object )
 	{
 		return name2Object.targets().contains( object );
 	}
 
-	//@Override
+	@Override
 	public int size()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return name2Object.targets().size();
 	}
 
 	@Override
@@ -117,6 +99,30 @@ public class ObjectsImpl implements Objects
 			throw new Exception( "Object already registered." );
 		name2Object.connect( objectConfig.name(), object );
 		object2Config.connect( object, objectConfig );
+	}
+
+	@Override
+	public void remove( Object obj, boolean cascade ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void remove( Object target )
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Iterator iterator( Class clazz )
+	{
+		return class2Object.targets( clazz ).iterator();
+	}
+
+	@Override
+	public Iterator iterator()
+	{
+		return name2Object.targets().iterator();
 	}
 
 }

@@ -14,9 +14,9 @@ public class MainTest
 		Diagram diagram = DiagramFactory.create();
 
 		//Create rules
-		diagram.addClass2ObjectRule();
-		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
+		diagram.addClass2ObjectHook();
+		diagram.addObjectRegistrarHook();
+		diagram.addArrow2ObjectHook();
 		//------------------------------
 
 		//create custom arrows

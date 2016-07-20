@@ -41,9 +41,9 @@ public class DiagramTest
 	{
 		diagram = DiagramFactory.create();
 
-		diagram.addClass2ObjectRule();
-		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
+		diagram.addClass2ObjectHook();
+		diagram.addObjectRegistrarHook();
+		diagram.addArrow2ObjectHook();
 
 		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		ObjectConfig coolestObjConfig = diagram.objects().create().name( CoolestObject ).end();

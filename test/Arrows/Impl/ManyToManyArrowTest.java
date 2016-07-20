@@ -1,5 +1,7 @@
-package Arrows;
+package Arrows.Impl;
 
+import Arrows.Diagram;
+import Arrows.DiagramFactory;
 import Arrows.Impl.ManyToManyArrow;
 import java.util.*;
 import org.junit.*;

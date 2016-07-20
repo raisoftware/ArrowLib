@@ -2,16 +2,17 @@ package Arrows;
 
 public interface Diagram
 {
-	void addArrow2ObjectRule();
+	void addArrow2ObjectHook();
 
 	//	reference( nick : Enum, domain : Arrow ) : Reference
-	//	Set2 set2( Object source, arrow : Arrow ) :
-	void addClass2ObjectRule();
+	void addClass2ObjectHook();
 
-	void addObjectRegistrarRule();
+	void addObjectRegistrarHook();
 
 	Arrows arrows();
 
 	Objects objects();
+
+	<K, V> Set2<K, V> set2( K source, Arrow<K, V> arrow );
 
 }

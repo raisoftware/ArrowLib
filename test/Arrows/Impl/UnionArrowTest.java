@@ -42,10 +42,6 @@ public class UnionArrowTest
 	{
 		diagram = DiagramFactory.create();
 
-		diagram.addClass2ObjectRule();
-		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
-
 		toUpperCaseArrow1 = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word2 );

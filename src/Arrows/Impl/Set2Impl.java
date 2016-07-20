@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.Arrow;
 import Arrows.Set2;
+import java.util.Iterator;
 
 public class Set2Impl<K, V> implements Set2<K, V>
 {
@@ -29,14 +30,19 @@ public class Set2Impl<K, V> implements Set2<K, V>
 	@Override
 	public int size()
 	{
-		return 0;
-		//arrow.targets(source).size();
+		return arrow.targets( source ).size();
 	}
 
-	//iterator() : Iterator
+	@Override
+	public Iterator<V> iterator()
+	{
+		return arrow.targets( source ).iterator();
+	}
+
+
 	@Override
 	public boolean contains( V target )
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return arrow.targets( source ).contains( target );
 	}
 }

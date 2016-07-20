@@ -38,10 +38,6 @@ public class ComplexArrowsTest
 	{
 		diagram = DiagramFactory.create();
 
-		diagram.addClass2ObjectRule();
-		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
-
 		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).end();
 		connectWordToLetters( containsArrow, word1 );
 		connectWordToLetters( containsArrow, word2 );

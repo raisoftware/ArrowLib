@@ -4,27 +4,33 @@ import Arrows.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Class2ObjectRule implements ArrowListener
+public class Arrow2ObjectHook implements ArrowListener
 {
-	private Arrow<Class, Object> class2Object = null;
 
-	public Class2ObjectRule( Arrows arrows )
+	Objects objects;
+	Arrow listenedArrow = null;
+
+	Arrow<Arrow, Object> inboundArrow2object;
+	Arrow<Arrow, Object> outboundArrow2object;
+
+	public Arrow2ObjectHook( Arrows arrows, Objects objects )
 	{
+
 		try
 		{
-			this.class2Object = arrows.arrow( Class2Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
-			ex.printStackTrace();
+			Logger.getLogger(Arrow2ObjectHook.class.getName() ).log( Level.SEVERE, null, ex );
 		}
-	}
-
-	Arrow<Class, Object> arrow()
-	{
-		return class2Object;
+		this.objects = objects;//TOFIX imi trebuie??
 	}
 
 	@Override
@@ -39,12 +45,8 @@ public class Class2ObjectRule implements ArrowListener
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		class2Object.connect( source.getClass(), targets );
-
-		for( Object target : targets )
-		{
-			class2Object.connect( target.getClass(), target );
-		}
+		outboundArrow2object.connect( listenedArrow, source );
+		inboundArrow2object.connect( listenedArrow, targets );
 	}
 
 	@Override
@@ -52,8 +54,9 @@ public class Class2ObjectRule implements ArrowListener
 	{
 		if( source == null || target == null )
 			return;
-		class2Object.connect( source.getClass(), source );
-		class2Object.connect( target.getClass(), target );
+
+		outboundArrow2object.connect( listenedArrow, source );
+		inboundArrow2object.connect( listenedArrow, target );
 	}
 
 	@Override
@@ -100,6 +103,6 @@ public class Class2ObjectRule implements ArrowListener
 	@Override
 	public void setTargetObject( Arrow target )
 	{
+		this.listenedArrow = target;
 	}
-
 }

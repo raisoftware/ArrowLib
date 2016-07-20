@@ -2,35 +2,18 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 
-import static Arrows.Arrows.StandardArrowName.*;
-
 import java.util.Collection;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Arrow2ObjectRule implements ArrowListener
+public class ObjectRegistrarHook implements ArrowListener
 {
 
 	Objects objects;
-	Arrow listenedArrow = null;
+	//Arrow listenedArrow = null;
 
-	Arrow<Arrow, Object> inboundArrow2object;
-	Arrow<Arrow, Object> outboundArrow2object;
-
-	public Arrow2ObjectRule( Arrows arrows, Objects objects )
+	public ObjectRegistrarHook( Arrows arrows, Objects objects )
 	{
-
-		try
-		{
-			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
-		}
-		catch( Exception ex )
-		{
-			Logger.getLogger( Arrow2ObjectRule.class.getName() ).log( Level.SEVERE, null, ex );
-		}
-		this.objects = objects;//TOFIX imi trebuie??
+		this.objects = objects;
 	}
 
 	@Override
@@ -45,8 +28,12 @@ public class Arrow2ObjectRule implements ArrowListener
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		outboundArrow2object.connect( listenedArrow, source );
-		inboundArrow2object.connect( listenedArrow, targets );
+		objects.add( source );
+
+		for( Object target : targets )
+		{
+			objects.add( target );
+		}
 	}
 
 	@Override
@@ -55,8 +42,8 @@ public class Arrow2ObjectRule implements ArrowListener
 		if( source == null || target == null )
 			return;
 
-		outboundArrow2object.connect( listenedArrow, source );
-		inboundArrow2object.connect( listenedArrow, target );
+		objects.add( source );
+		objects.add( target );
 	}
 
 	@Override
@@ -103,6 +90,6 @@ public class Arrow2ObjectRule implements ArrowListener
 	@Override
 	public void setTargetObject( Arrow target )
 	{
-		this.listenedArrow = target;
+		//this.listenedArrow = target;
 	}
 }

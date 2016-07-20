@@ -1,5 +1,7 @@
 package Arrows;
 
+import java.util.Iterator;
+
 public interface Set2<K, V>
 {
 	void add( V target );
@@ -10,5 +12,5 @@ public interface Set2<K, V>
 
 	int size();
 
-	// iterator() : Iterator
+	Iterator<V> iterator();
 }
