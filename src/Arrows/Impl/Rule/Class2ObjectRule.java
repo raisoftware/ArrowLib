@@ -1,20 +1,19 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
+import java.util.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
-import java.util.*;
-
-public class Class2ObjectHook implements ArrowListener
+public class Class2ObjectRule implements ArrowListener
 {
-	private Arrow<Class, Object> class2Object = null;
+	private EditableArrow<Class, Object> class2Object = null;
 
-	public Class2ObjectHook( Arrows arrows )
+	public Class2ObjectRule( Arrows arrows )
 	{
 		try
 		{
-			this.class2Object = arrows.arrow( Class2Object );
+			this.class2Object = arrows.editableArrow( Class2Object );
 		}
 		catch( Exception ex )
 		{
@@ -39,11 +38,25 @@ public class Class2ObjectHook implements ArrowListener
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		class2Object.connect( source.getClass(), targets );
+		class2Object.connect( source.getClass(), source );
 
 		for( Object target : targets )
 		{
 			class2Object.connect( target.getClass(), target );
+		}
+	}
+
+	@Override
+	public void connect( Collection sources, Object target )
+	{
+		if( target == null || sources == null || sources.isEmpty() )
+			return;
+
+		class2Object.connect( target.getClass(), target );
+
+		for( Object source : sources )
+		{
+			class2Object.connect( source.getClass(), sources );
 		}
 	}
 
@@ -80,7 +93,7 @@ public class Class2ObjectHook implements ArrowListener
 	}
 
 	@Override
-	public Arrow inverse()
+	public EditableArrow inverse()
 	{
 		return null;
 	}
@@ -98,7 +111,7 @@ public class Class2ObjectHook implements ArrowListener
 	}
 
 	@Override
-	public void setTargetObject( Arrow target )
+	public void setTargetObject( EditableArrow target )
 	{
 	}
 

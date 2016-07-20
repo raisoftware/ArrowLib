@@ -1,34 +1,33 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-
-import static Arrows.Arrows.StandardArrowName.*;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Arrow2ObjectHook implements ArrowListener
+import static Arrows.Arrows.StandardArrowName.*;
+
+public class Arrow2ObjectRule implements ArrowListener
 {
 
 	Objects objects;
 	Arrow listenedArrow = null;
 
-	Arrow<Arrow, Object> inboundArrow2object;
-	Arrow<Arrow, Object> outboundArrow2object;
+	EditableArrow<Arrow, Object> inboundArrow2object;
+	EditableArrow<Arrow, Object> outboundArrow2object;
 
-	public Arrow2ObjectHook( Arrows arrows, Objects objects )
+	public Arrow2ObjectRule( Arrows arrows, Objects objects )
 	{
 
 		try
 		{
-			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
+			this.inboundArrow2object = arrows.editableArrow( InboundArrow2Object );
+			this.outboundArrow2object = arrows.editableArrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
-			Logger.getLogger(Arrow2ObjectHook.class.getName() ).log( Level.SEVERE, null, ex );
+			Logger.getLogger(Arrow2ObjectRule.class.getName() ).log( Level.SEVERE, null, ex );
 		}
 		this.objects = objects;//TOFIX imi trebuie??
 	}
@@ -60,6 +59,16 @@ public class Arrow2ObjectHook implements ArrowListener
 	}
 
 	@Override
+	public void connect( Collection sources, Object target )
+	{
+		if( target == null || sources == null || sources.isEmpty() )
+			return;
+
+		outboundArrow2object.connect( listenedArrow, sources );
+		inboundArrow2object.connect( listenedArrow, target );
+	}
+
+	@Override
 	public Set relations()
 	{
 		return null;
@@ -83,7 +92,7 @@ public class Arrow2ObjectHook implements ArrowListener
 	}
 
 	@Override
-	public Arrow inverse()
+	public EditableArrow inverse()
 	{
 		return null;
 	}
@@ -101,7 +110,7 @@ public class Arrow2ObjectHook implements ArrowListener
 	}
 
 	@Override
-	public void setTargetObject( Arrow target )
+	public void setTargetObject( EditableArrow target )
 	{
 		this.listenedArrow = target;
 	}

@@ -21,47 +21,17 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 		this.filter = filter;
 	}
 
-
-
 	@Override
 	public ArrowConfig config()
 	{
 		return arrow.config();
 	}
 
-
-
-	@Override
-	public void connect( K source, Collection<? extends V> targets )
-	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-
-
-	@Override
-	public void connect( K source, V target )
-	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-
-
 	@Override
 	public Set<Map.Entry<K, V>> relations()
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
-
-
-
-	@Override
-	public void remove( K source, V target )
-	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-
 
 	@Override
 	public Set<K> sources()
@@ -81,8 +51,6 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 		return filteredSources;
 	}
 
-
-
 	@Override
 	public Set<V> targets()
 	{
@@ -93,8 +61,6 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 		}
 		return filteredTargets;
 	}
-
-
 
 	@Override
 	public Set<V> targets( K source )
@@ -112,15 +78,11 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 		return filteredTargets;
 	}
 
-
-
 	@Override
 	public V target( K source ) throws Exception
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
-
-
 
 	@Override
 	public Arrow<V, K> inverse()

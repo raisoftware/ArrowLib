@@ -10,17 +10,17 @@ import static Arrows.Arrows.StandardArrowName.*;
 public class ObjectsImpl implements Objects
 {
 	final ObjectConfig defaultObjectConfig = new ObjectConfigBuilderImpl().end();
-	Arrow<Enum, Object> name2Object = null;
-	Arrow<Object, ObjectConfig> object2Config = null;
-	Arrow<Class, Object> class2Object = null;
+	EditableArrow<Enum, Object> name2Object = null;
+	EditableArrow<Object, ObjectConfig> object2Config = null;
+	EditableArrow<Class, Object> class2Object = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{
 		try
 		{
-			this.name2Object = arrows.arrow( Name2Object );
-			this.object2Config = arrows.arrow( Object2Config );
-			this.class2Object = arrows.arrow( Class2Object );
+			this.name2Object = arrows.editableArrow( Name2Object );
+			this.object2Config = arrows.editableArrow( Object2Config );
+			this.class2Object = arrows.editableArrow( Class2Object );
 		}
 		catch( Exception ex )
 		{

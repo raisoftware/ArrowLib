@@ -14,17 +14,17 @@ public class MainTest
 		Diagram diagram = DiagramFactory.create();
 
 		//Create rules
-		diagram.addClass2ObjectHook();
-		diagram.addObjectRegistrarHook();
-		diagram.addArrow2ObjectHook();
+		diagram.addClass2ObjectRule();
+		diagram.addObjectRegistrarRule();
+		diagram.addArrow2ObjectRule();
 		//------------------------------
 
 		//create custom arrows
 		ArrowBuilder containsArrowBuilder = diagram.arrows().create( Contains, IsContainedBy );
-		Arrow arrow = containsArrowBuilder.domain( String.class ).codomain( Character.class ).end();
+		EditableArrow arrow = containsArrowBuilder.domain( String.class ).codomain( Character.class ).end();
 
 		ArrowBuilder squareArrowBuilder = diagram.arrows().create( Square, SquareRoot );
-		Arrow squareArrow = squareArrowBuilder.domain( Float.class ).codomain( Float.class ).end();
+		EditableArrow squareArrow = squareArrowBuilder.domain( Float.class ).codomain( Float.class ).end();
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );

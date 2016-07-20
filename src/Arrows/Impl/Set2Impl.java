@@ -1,15 +1,15 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
+import Arrows.EditableArrow;
 import Arrows.Set2;
 import java.util.Iterator;
 
 public class Set2Impl<K, V> implements Set2<K, V>
 {
 	K source;
-	Arrow<K, V> arrow;
+	EditableArrow<K, V> arrow;
 
-	public Set2Impl( K source, Arrow<K, V> arrow )
+	public Set2Impl( K source, EditableArrow<K, V> arrow )
 	{
 		this.source = source;
 		this.arrow = arrow;

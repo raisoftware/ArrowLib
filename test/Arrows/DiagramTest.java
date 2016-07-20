@@ -41,9 +41,9 @@ public class DiagramTest
 	{
 		diagram = DiagramFactory.create();
 
-		diagram.addClass2ObjectHook();
-		diagram.addObjectRegistrarHook();
-		diagram.addArrow2ObjectHook();
+		diagram.addClass2ObjectRule();
+		diagram.addObjectRegistrarRule();
+		diagram.addArrow2ObjectRule();
 
 		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		ObjectConfig coolestObjConfig = diagram.objects().create().name( CoolestObject ).end();
@@ -52,7 +52,7 @@ public class DiagramTest
 		diagram.objects().add( 2, rootObjConfig );
 		diagram.objects().add( "unu", coolestObjConfig );
 
-		Arrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
+		EditableArrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
 		arrow.connect( 1, "unu" );
 		arrow.connect( 2, "doi" );
 		arrow.connect( 3, "trei" );

@@ -11,7 +11,7 @@ public class DiagramImpl implements Diagram
 {
 	Arrows arrows;
 	Objects objects;
-	MethodSequence<Arrow, ArrowListener> sequence;
+	MethodSequence<EditableArrow, ArrowListener> sequence;
 
 	public DiagramImpl()
 	{
@@ -52,28 +52,28 @@ public class DiagramImpl implements Diagram
 //	reference( nick : Enum, domain : Arrow ) : Reference
 //	Set2 set2( Object source, arrow : Arrow ) :
 	@Override
-	public void addClass2ObjectHook()
+	public void addClass2ObjectRule()
 	{
-		Class2ObjectHook class2ObjectHook = new Class2ObjectHook( arrows );
-		sequence.subscribe( class2ObjectHook, ExecutionTime.ExecuteBefore );
+		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
+		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
 	}
 
 	@Override
-	public void addObjectRegistrarHook()
+	public void addObjectRegistrarRule()
 	{
-		ObjectRegistrarHook objectRegistrarHook = new ObjectRegistrarHook( arrows, objects );
-		sequence.subscribe( objectRegistrarHook, ExecutionTime.ExecuteBefore );
+		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
+		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
 	}
 
 	@Override
-	public void addArrow2ObjectHook()
+	public void addArrow2ObjectRule()
 	{
-		Arrow2ObjectHook arrow2ObjectHook = new Arrow2ObjectHook( arrows, objects );
-		sequence.subscribe( arrow2ObjectHook, ExecutionTime.ExecuteBefore );
+		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows, objects );
+		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteBefore );
 	}
 
 	@Override
-	public <K, V> Set2<K, V> set2( K source, Arrow<K, V> arrow )
+	public <K, V> Set2<K, V> set2( K source, EditableArrow<K, V> arrow )
 	{
 		return new Set2Impl( source, arrow );
 	}

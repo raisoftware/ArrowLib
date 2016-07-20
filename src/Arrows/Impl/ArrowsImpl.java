@@ -5,16 +5,16 @@ import Shared.MethodBus.Sequence.MethodSequence;
 
 public class ArrowsImpl implements Arrows
 {
-	Arrow<Enum, Arrow> name2arrow;
+	EditableArrow<Enum, Arrow> name2arrow;
 	final private ArrowConfig defaultArrowConfig;
 	final private MethodSequence methodSequence;
 
-	public ArrowsImpl( MethodSequence<Arrow, ArrowListener> methodSequence )
+	public ArrowsImpl( MethodSequence<EditableArrow, ArrowListener> methodSequence )
 	{
 		this.methodSequence = methodSequence;
 		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
 
-		ArrowConfig arrowConfig = arrowBuilder.allowMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
+		ArrowConfig arrowConfig = arrowBuilder.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
 		name2arrow = new ManyToManyArrow( arrowConfig );
 		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
 
@@ -41,13 +41,20 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
+	public EditableArrow editableArrow( Enum arrowName ) throws Exception
+	{
+		//TOFIX check from config that this is an EditableArrow
+		return (EditableArrow) name2arrow.target( arrowName );
+	}
+
+	@Override
 	public ArrowConfig defaultArrowConfig()
 	{
 		return defaultArrowConfig;
 	}
 
 	@Override
-	public MethodSequence<Arrow, ArrowListener> methodSequence()
+	public MethodSequence<EditableArrow, ArrowListener> methodSequence()
 	{
 		return methodSequence;
 	}

@@ -41,30 +41,9 @@ public class JoinArrow implements Arrow
 	}
 
 	@Override
-	public void connect( Object source, Collection targets )
-	{
-		//actually unsupported
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void connect( Object source, Object target )
-	{
-		//actually unsupported
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
 	public Set relations()
 	{
 		//expensive
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public void remove( Object source, Object target )
-	{
-		//dfs sau bfs. pretty expensive but needed
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 

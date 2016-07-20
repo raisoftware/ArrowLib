@@ -2,10 +2,13 @@ package Arrows;
 
 import Arrows.Impl.*;
 import Shared.MethodBus.Sequence.MethodSequence;
+import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 public interface Arrows
 {
+
 	public static enum StandardArrowName
 	{
 		DefaultName, InverseDefaultName,
@@ -21,11 +24,14 @@ public interface Arrows
 
 	Arrow arrow( Enum arrowName ) throws Exception;
 
+	EditableArrow editableArrow( Enum arrowName ) throws Exception;
+
+
 	ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
 
 	ArrowConfig defaultArrowConfig();
 
-	MethodSequence<Arrow, ArrowListener> methodSequence();
+	MethodSequence<EditableArrow, ArrowListener> methodSequence();
 
 	static Arrow filter( Arrow arrow, BiPredicate filter )
 	{
@@ -45,5 +51,10 @@ public interface Arrows
 	static Arrow intersect( Arrow... arrows )
 	{
 		return new IntersectArrow( arrows );
+	}
+
+	static <K, V> ComputedArrow<K, V> computedArrow( Function<K, Set<V>> function )
+	{
+		return new ComputedArrowImpl<>( function );
 	}
 }

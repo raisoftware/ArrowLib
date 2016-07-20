@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 public class IntersectArrowTest
 {
 	private Diagram diagram;
-	private Arrow<Character, Character> toUpperCaseArrow1;
-	private Arrow<Character, Character> toUpperCaseArrow2;
+	private EditableArrow<Character, Character> toUpperCaseArrow1;
+	private EditableArrow<Character, Character> toUpperCaseArrow2;
 	private final String word1 = "abcd";
 	private final String word2 = "efgh";
 	private final String word3 = "ijkl";
@@ -52,8 +52,6 @@ public class IntersectArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word4 );
 
 		intersectArrow = Arrows.intersect( toUpperCaseArrow1, toUpperCaseArrow2 );
-
-
 	}
 
 	@After

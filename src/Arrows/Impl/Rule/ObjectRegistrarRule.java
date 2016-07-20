@@ -1,17 +1,15 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-
 import java.util.Collection;
 import java.util.Set;
 
-public class ObjectRegistrarHook implements ArrowListener
+public class ObjectRegistrarRule implements ArrowListener
 {
 
 	Objects objects;
-	//Arrow listenedArrow = null;
 
-	public ObjectRegistrarHook( Arrows arrows, Objects objects )
+	public ObjectRegistrarRule( Arrows arrows, Objects objects )
 	{
 		this.objects = objects;
 	}
@@ -33,6 +31,20 @@ public class ObjectRegistrarHook implements ArrowListener
 		for( Object target : targets )
 		{
 			objects.add( target );
+		}
+	}
+
+	@Override
+	public void connect( Collection sources, Object target )
+	{
+		if( target == null || sources == null || sources.isEmpty() )
+			return;
+
+		objects.add( target );
+
+		for( Object source : sources )
+		{
+			objects.add( source );
 		}
 	}
 
@@ -70,7 +82,7 @@ public class ObjectRegistrarHook implements ArrowListener
 	}
 
 	@Override
-	public Arrow inverse()
+	public EditableArrow inverse()
 	{
 		return null;
 	}
@@ -88,8 +100,7 @@ public class ObjectRegistrarHook implements ArrowListener
 	}
 
 	@Override
-	public void setTargetObject( Arrow target )
+	public void setTargetObject( EditableArrow target )
 	{
-		//this.listenedArrow = target;
 	}
 }

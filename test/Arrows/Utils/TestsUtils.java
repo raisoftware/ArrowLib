@@ -1,11 +1,11 @@
 package Arrows.Utils;
 
-import Arrows.Arrow;
+import Arrows.EditableArrow;
 
 
 public class TestsUtils
 {
-	public static void connectWordToLetters( Arrow arrow, String word )
+	public static void connectWordToLetters( EditableArrow arrow, String word )
 	{
 		for( int i = 0; i < word.length(); ++i )
 		{
@@ -13,7 +13,7 @@ public class TestsUtils
 		}
 	}
 
-	public static void connectLettersToUpperCaseLetters( Arrow arrow, String word )
+	public static void connectLettersToUpperCaseLetters( EditableArrow arrow, String word )
 	{
 		for( int i = 0; i < word.length(); ++i )
 		{

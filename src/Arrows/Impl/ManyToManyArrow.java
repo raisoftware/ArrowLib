@@ -1,18 +1,16 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.ArrowConfig;
-
+import Arrows.*;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class ManyToManyArrow<K, V> implements Arrow<K, V>
+public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 {
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	Arrow<V, K> inverseArrow = new InverseManyToManyMap();
+	EditableArrow<V, K> inverseArrow = new InverseManyToManyMap();
 
 	private final ArrowConfig config;
 
@@ -56,6 +54,12 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	public ArrowConfig config()
 	{
 		return config;
+	}
+
+	@Override
+	public void connect( Collection<? extends K> sources, V target )
+	{
+		inverse().connect( target, sources() );
 	}
 
 	@Override
@@ -104,12 +108,6 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public Arrow inverse()
-	{
-		return inverseArrow;
-	}
-
-	@Override
 	public Set<V> targets( K source )
 	{
 		return keysToValues.get( source );
@@ -130,7 +128,13 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
 	}
 
-	private final class InverseManyToManyMap implements Arrow<V, K>
+	@Override
+	public EditableArrow<V, K> inverse()
+	{
+		return inverseArrow;
+	}
+
+	private final class InverseManyToManyMap implements EditableArrow<V, K>
 	{
 		@Override
 		public Set<V> sources()
@@ -151,7 +155,7 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		}
 
 		@Override
-		public Arrow inverse()
+		public EditableArrow<K, V> inverse()
 		{
 			return ManyToManyArrow.this;
 		}
@@ -205,6 +209,13 @@ public class ManyToManyArrow<K, V> implements Arrow<K, V>
 		public String toString()
 		{
 			return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
+		}
+
+		@Override
+		public void connect( Collection<? extends V> sources, K target )
+		{
+			//TOFIX catch the exception and return the right message
+			inverse().connect( target, sources );
 		}
 	}
 }

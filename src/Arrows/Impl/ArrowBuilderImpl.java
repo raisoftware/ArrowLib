@@ -62,27 +62,27 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	}
 
 	@Override
-	public ArrowBuilder allowssMultipleSources( boolean allow )
+	public ArrowBuilder allowsMultipleSources( boolean allow )
 	{
 		this.allowsMultipleSources = allow;
 		return this;
 	}
 
 	@Override
-	public ArrowBuilder allowMultipleTargets( boolean allow )
+	public ArrowBuilder allowsMultipleTargets( boolean allow )
 	{
 		this.allowsMultipleTargets = allow;
 		return this;
 	}
 
 	@Override
-	public Arrow end()
+	public EditableArrow end()
 	{
-		Arrow arrow = new ManyToManyArrow( this );
+		EditableArrow arrow = new ManyToManyArrow( this );
 		if( listenable )
 		{
-			MethodSequence<Arrow, ArrowListener> methodSequence = arrows.methodSequence();
-			Arrow arrowProxy = methodSequence.createPublisher( arrow, ArrowListener.class );
+			MethodSequence<EditableArrow, ArrowListener> methodSequence = arrows.methodSequence();
+			EditableArrow arrowProxy = methodSequence.createPublisher( arrow, ArrowListener.class );
 			arrow = arrowProxy;
 		}
 		arrows.add( name, inverseName, arrow );

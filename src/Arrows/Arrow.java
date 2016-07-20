@@ -5,23 +5,18 @@ import java.util.*;
 public interface Arrow<K, V>
 {
 
-	ArrowConfig			config();
+	ArrowConfig config();
 
-	void				connect( K source, V target );
-	void				connect( K source, Collection<? extends V> targets );
-	//void				connect( Collection<? extends K> sources, V target );
+	Set<K> sources();
 
-	void				remove( K source, V target );
+	Set<V> targets();
 
+	V target( K source ) throws Exception;
 
-	Set<K>				sources();
-	Set<V>				targets();
-
-	V					target( K source ) throws Exception;
-	Set<V>				targets( K source );
+	Set<V> targets( K source );
 
 	Set<Map.Entry<K, V>> relations();
 
-	Arrow<V, K>			inverse();
+	Arrow<V, K> inverse();
 
 }

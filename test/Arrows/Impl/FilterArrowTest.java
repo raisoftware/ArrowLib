@@ -1,5 +1,10 @@
-package Arrows;
+package Arrows.Impl;
 
+import Arrows.Arrow;
+import Arrows.Arrows;
+import Arrows.Diagram;
+import Arrows.DiagramFactory;
+import Arrows.EditableArrow;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import org.junit.*;
@@ -8,18 +13,17 @@ import static Arrows.Test.ArrowName.*;
 import static Arrows.Utils.TestsUtils.*;
 import static org.junit.Assert.*;
 
-public class ComplexArrowsTest
+public class FilterArrowTest
 {
 	private Diagram diagram;
-	private Arrow<String, Character> containsArrow;
-	private Arrow<Character, Character> toUpperCaseArrow;
+	private EditableArrow<String, Character> containsArrow;
 	private Arrow<String, Character> filterArrow;
 	private final String word1 = "something";
 	private final String word2 = "extra";
 	private final String word3 = "stuff";
 	private final String word4 = "over";
 
-	public ComplexArrowsTest()
+	public FilterArrowTest()
 	{
 	}
 
@@ -43,12 +47,6 @@ public class ComplexArrowsTest
 		connectWordToLetters( containsArrow, word2 );
 		connectWordToLetters( containsArrow, word3 );
 		connectWordToLetters( containsArrow, word4 );
-
-		toUpperCaseArrow = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
-		connectLettersToUpperCaseLetters( toUpperCaseArrow, word1 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow, word2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow, word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow, word4 );
 
 		BiPredicate<String, Character> filter = new BiPredicate<String, Character>()
 		{
@@ -114,7 +112,5 @@ public class ComplexArrowsTest
 
 		Set<Character> word4Results = filterArrow.targets( word4 );//"over"
 		assertTrue( word4Results.isEmpty() );
-
-		//System.out.println( "fArrow Sources=" + sources + " targets =" + targets + " results=" + overResults );
 	}
 }
