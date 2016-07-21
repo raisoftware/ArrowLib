@@ -55,8 +55,8 @@ public class MethodSequence<TargetObjectType, ListenerType extends MethodProxy<T
 	@Override
 	public ListenerType createPublisher( TargetObjectType targetObject, Class<ListenerType> eventListenerClass )
 	{
-		//if( !( targetObject instanceof eventListenerClass ) )
-		//	throw new Exception( "Create Publisher failed" );
+//		if( !( targetObject instanceof eventListenerClass ) )
+//			throw new Exception( "Create Publisher failed" );
 
 		TargetProxy handler = new TargetProxy<ListenerType>( this, targetObject );
 

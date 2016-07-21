@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Arrows.Utils.ExceptionUtils;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -10,7 +11,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	EditableArrow<V, K> inverseArrow = new InverseManyToManyMap();
+	EditableArrow<V, K> inverseArrow = new InverseManyToManyArrow();
 
 	private final ArrowConfig config;
 
@@ -118,7 +119,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 	{
 		Set<V> targets = keysToValues.get( source );
 		if( targets.size() != 1 )
-			throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
+			throw ExceptionUtils.targetsNumberException( targets.size() );
 		return targets.iterator().next();
 	}
 
@@ -134,7 +135,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		return inverseArrow;
 	}
 
-	private final class InverseManyToManyMap implements EditableArrow<V, K>
+	private final class InverseManyToManyArrow implements EditableArrow<V, K>
 	{
 		@Override
 		public Set<V> sources()
@@ -201,7 +202,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		{
 			Set<K> targets = valuesToKeys.get( source );
 			if( targets.size() != 1 )
-				throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
+				throw ExceptionUtils.targetsNumberException( targets.size() );
 			return targets.iterator().next();
 		}
 

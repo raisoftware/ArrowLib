@@ -27,7 +27,7 @@ public class Arrow2ObjectRule implements ArrowListener
 		}
 		catch( Exception ex )
 		{
-			Logger.getLogger(Arrow2ObjectRule.class.getName() ).log( Level.SEVERE, null, ex );
+			Logger.getLogger( Arrow2ObjectRule.class.getName() ).log( Level.SEVERE, null, ex );
 		}
 		this.objects = objects;//TOFIX imi trebuie??
 	}
@@ -77,6 +77,14 @@ public class Arrow2ObjectRule implements ArrowListener
 	@Override
 	public void remove( Object source, Object target )
 	{
+		if( target == null || source == null )
+			return;
+
+		if( listenedArrow.inverse().targets( target ).isEmpty() )
+			inboundArrow2object.remove( listenedArrow, target );
+
+		if( listenedArrow.targets( source ).isEmpty() )
+			outboundArrow2object.remove( listenedArrow, source );
 	}
 
 	@Override

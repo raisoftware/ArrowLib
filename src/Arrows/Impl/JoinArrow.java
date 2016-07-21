@@ -1,12 +1,17 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.ArrowConfig;
+import Arrows.*;
+import Arrows.Utils.ArrowUtils;
+import Arrows.Utils.ExceptionUtils;
 import java.util.*;
 
 public class JoinArrow implements Arrow
 {
 	List<Arrow> arrows = new ArrayList<>();
+	List<Arrow> arrowsInverse = new LinkedList<>();
+
+	Arrow inverseArrow = new InverseJoinArrow();
+	EditableArrowConfig arrowConfig = new ArrowBuilderImpl();
 
 	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -30,21 +35,32 @@ public class JoinArrow implements Arrow
 			if( !last.config().codomain().equals( arrow.config().domain() ) )
 				throw new IllegalArgumentException( "Domain type of the arrow does not match codomain type of the last arrow" );
 		}
+
 		arrows.add( arrow );
+
+		if( arrow.config().invertible() )
+		{
+			arrowsInverse.add( 0, arrow.inverse() );
+		}
+		else
+		{
+			arrowConfig.invertible( false );
+		}
+
 	}
 
 	@Override
 	public ArrowConfig config()
 	{
-		//might need to get one as parameter on creation
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		Class domain = arrows.get( 0 ).config().domain();
+		Class codomain = arrows.get( arrows.size() - 1 ).config().codomain();
+		return arrowConfig.domain( domain ).codomain( codomain ).arrowConfig();
 	}
 
 	@Override
-	public Set relations()
+	public Set<Map.Entry> relations()
 	{
-		//expensive
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.generateRelations( this );
 	}
 
 	@Override
@@ -62,19 +78,25 @@ public class JoinArrow implements Arrow
 	@Override
 	public Arrow inverse()
 	{
-		// this one might be easy
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		assert ( arrowConfig.invertible() );
+		return inverseArrow;
 	}
 
 	@Override
 	public Set targets( Object source )
+	{
+		return targets( arrows, source );
+	}
+
+
+	private static Set targets( List<Arrow> arrowsList, Object source )
 	{
 		List<Object> oldResults = new ArrayList<>();
 
 		List<Object> newResults = new ArrayList<>();
 		newResults.add( source );
 
-		Iterator<Arrow> arrowIt = arrows.iterator();
+		Iterator<Arrow> arrowIt = arrowsList.iterator();
 
 		while( arrowIt.hasNext() )
 		{
@@ -98,7 +120,63 @@ public class JoinArrow implements Arrow
 	@Override
 	public Object target( Object source ) throws Exception
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		Set targets = targets( source );
+		if( targets.size() != 1 )
+			throw ExceptionUtils.targetsNumberException( targets.size() );
+		return targets.iterator().next();
+
+	}
+
+	private final class InverseJoinArrow implements Arrow
+	{
+
+		@Override
+		public ArrowConfig config()
+		{
+			Class codomain = arrows.get( 0 ).config().domain();
+			Class domain = arrows.get( arrows.size() - 1 ).config().codomain();
+			return arrowConfig.domain( domain ).codomain( codomain ).arrowConfig();
+		}
+
+		@Override
+		public Set sources()
+		{
+			return arrowsInverse.get( 0 ).sources();
+		}
+
+		@Override
+		public Set targets()
+		{
+			return arrowsInverse.get( arrowsInverse.size() - 1 ).targets();
+		}
+
+		@Override
+		public Object target( Object source ) throws Exception
+		{
+			Set targets = targets( source );
+			if( targets.size() != 1 )
+				throw ExceptionUtils.targetsNumberException( targets.size() );
+			return targets.iterator().next();
+		}
+
+		@Override
+		public Set targets( Object source )
+		{
+			return JoinArrow.targets( arrowsInverse, source );
+		}
+
+		@Override
+		public Set relations()
+		{
+			return ArrowUtils.generateRelations( this );
+		}
+
+		@Override
+		public Arrow inverse()
+		{
+			return JoinArrow.this;
+		}
+
 	}
 
 }

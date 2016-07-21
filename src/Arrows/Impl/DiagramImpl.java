@@ -69,7 +69,7 @@ public class DiagramImpl implements Diagram
 	public void addArrow2ObjectRule()
 	{
 		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows, objects );
-		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteBefore );
+		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteAfter );
 	}
 
 	@Override

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Arrows;
 
 import Arrows.Arrows.StandardArrowName;
@@ -43,7 +38,6 @@ public class DiagramTest
 
 		diagram.addClass2ObjectRule();
 		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
 
 		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
 		ObjectConfig coolestObjConfig = diagram.objects().create().name( CoolestObject ).end();
@@ -99,7 +93,6 @@ public class DiagramTest
 	{
 		Arrows arrows = diagram.arrows();
 		Arrow<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
-		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
 
 		Arrow<Enum, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
 		Arrow<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
@@ -124,30 +117,9 @@ public class DiagramTest
 		assertEquals( object2Name.target( 3 ), BestObject );
 		assertEquals( object2Name.target( "doi" ), Unnamed );
 
+
+
 		System.out.println( name2Object.inverse() );
 		System.out.println( object2Config );
-
-	}
-
-	@Test
-	public void testArrow2ObjectRule() throws Exception
-	{
-		Arrows arrows = diagram.arrows();
-		Arrow<Arrow, Object> object2outboundArrow = arrows.arrow( StandardArrowName.Object2OutboundArrow );
-		Arrow<Object, Arrow> outboundArrow2object = object2outboundArrow.inverse();
-
-		Arrow<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
-		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
-
-		Set sources = outboundArrow2object.targets( stringifyArrow );
-		assertTrue( sources.contains( 1 ) );
-		assertFalse( sources.contains( "unu" ) );
-
-		Arrow<Arrow, Object> object2inboundArrow = arrows.arrow( StandardArrowName.Object2InboundArrow );
-		Arrow<Object, Arrow> inboundArrow2object = object2inboundArrow.inverse();
-
-		Set targets = inboundArrow2object.targets( stringifyArrow );
-		assertTrue( targets.contains( "doi" ) );
-		assertFalse( targets.contains( 2 ) );
 	}
 }

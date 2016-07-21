@@ -58,7 +58,6 @@ public class JoinArrowTest
 
 		joinIdentityArrow = Arrows.join( toUpperCaseArrow1, toUpperCaseArrow1.inverse() );
 		joinUpperCaseArrow = Arrows.join( toUpperCaseArrow1, toUpperCaseArrow1.inverse(), toUpperCaseArrow2 );
-
 	}
 
 	@After
@@ -129,6 +128,18 @@ public class JoinArrowTest
 				assertEquals( results.size(), 1 );
 				assertEquals( results.iterator().next(), Character.toUpperCase( c ) );
 			}
+		}
+	}
+
+	@Test
+	public void testInverse() throws Exception
+	{
+		for( int i = 0; i < mergedWord34.length(); ++i )
+		{
+			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
+			Set results = joinUpperCaseArrow.inverse().targets( c );
+			assertEquals( results.size(), 1 );
+			assertTrue( results.contains( Character.toLowerCase( c ) ) );
 		}
 	}
 

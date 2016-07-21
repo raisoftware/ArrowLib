@@ -43,8 +43,12 @@ public class ArrowsImpl implements Arrows
 	@Override
 	public EditableArrow editableArrow( Enum arrowName ) throws Exception
 	{
-		//TOFIX check from config that this is an EditableArrow
-		return (EditableArrow) name2arrow.target( arrowName );
+		Arrow arrow = name2arrow.target( arrowName );
+		if( arrow.config().readOnly() )
+		{
+			throw new Exception( "Arrow is read-only." );
+		}
+		return (EditableArrow) arrow;
 	}
 
 	@Override

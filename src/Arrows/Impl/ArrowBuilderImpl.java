@@ -3,10 +3,10 @@ package Arrows.Impl;
 import Arrows.*;
 import Shared.MethodBus.Sequence.MethodSequence;
 
-public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
+public class ArrowBuilderImpl implements ArrowBuilder
 {
-	private final Enum name;
-	private final Enum inverseName;
+	private Enum name = null;
+	private Enum inverseName = null;
 	private boolean enabled = true;
 	private boolean invertible = true;
 	private Class domain = Object.class;
@@ -14,7 +14,7 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	private boolean allowsMultipleSources = true;
 	private boolean allowsMultipleTargets = true;
 	private boolean listenable = true;
-	private boolean readOnly = true;
+	private boolean readOnly = false;
 	private Arrows arrows = null;
 
 	InverseArrowConfig inverseConfig = new InverseArrowConfig();
@@ -23,6 +23,11 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	public ArrowConfig arrowConfig()
 	{
 		return this;
+	}
+
+	public ArrowBuilderImpl()
+	{
+		this.listenable = false;
 	}
 
 	public ArrowBuilderImpl( Arrows arrows, Enum name, Enum inverseName )
@@ -78,6 +83,7 @@ public class ArrowBuilderImpl implements ArrowConfig, ArrowBuilder
 	@Override
 	public EditableArrow end()
 	{
+		assert ( name != null && inverseName != null && arrows != null );
 		EditableArrow arrow = new ManyToManyArrow( this );
 		if( listenable )
 		{
