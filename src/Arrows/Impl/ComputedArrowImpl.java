@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Arrows.Utils.ArrowUtils;
 import java.util.*;
 import java.util.function.Function;
 
@@ -74,7 +75,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public Set<Map.Entry<K, V>> relations()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.generateRelations( this );
 	}
 
 	@Override

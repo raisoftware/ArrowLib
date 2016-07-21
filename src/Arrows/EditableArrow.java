@@ -12,5 +12,6 @@ public interface EditableArrow<K, V> extends Arrow<K, V>
 
 	void remove( K source, V target );
 
+	@Override
 	EditableArrow<V, K> inverse();
 }

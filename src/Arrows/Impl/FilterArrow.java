@@ -10,8 +10,8 @@ import java.util.function.BiPredicate;
 
 public class FilterArrow<K, V> implements Arrow<K, V>
 {
-	private Arrow<K, V> arrow;
-	private BiPredicate<K, V> filter;
+	private final Arrow<K, V> arrow;
+	private final BiPredicate<K, V> filter;
 
 
 

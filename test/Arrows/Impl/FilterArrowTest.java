@@ -1,10 +1,6 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.Arrows;
-import Arrows.Diagram;
-import Arrows.DiagramFactory;
-import Arrows.EditableArrow;
+import Arrows.*;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import org.junit.*;
@@ -42,20 +38,13 @@ public class FilterArrowTest
 	{
 		diagram = DiagramFactory.create();
 
-		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).end();
+		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
 		connectWordToLetters( containsArrow, word1 );
 		connectWordToLetters( containsArrow, word2 );
 		connectWordToLetters( containsArrow, word3 );
 		connectWordToLetters( containsArrow, word4 );
 
-		BiPredicate<String, Character> filter = new BiPredicate<String, Character>()
-		{
-			@Override
-			public boolean test( String source, Character target )
-			{
-				return !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
-			}
-		};
+		BiPredicate<String, Character> filter = (String source, Character target) -> !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
 
 		filterArrow = Arrows.filter( containsArrow, filter );
 	}

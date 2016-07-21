@@ -74,17 +74,17 @@ public class DiagramTest
 
 		//Test class2Object
 		Arrow class2Object = arrows.arrow( StandardArrowName.Class2Object );
-		Set<Integer> ints = class2Object.targets( String.class );
+		Set<String> strings = class2Object.targets( String.class );
 
 		for( String target : stringifyArrow.targets() )
 		{
-			assertTrue( ints.contains( target ) );
+			assertTrue( strings.contains( target ) );
 		}
 
-		Set<String> strings = class2Object.targets( Integer.class );
+		Set<Integer> ints = class2Object.targets( Integer.class );
 		for( Integer source : stringifyArrow.sources() )
 		{
-			assertTrue( strings.contains( source ) );
+			assertTrue( ints.contains( source ) );
 		}
 	}
 
@@ -92,7 +92,6 @@ public class DiagramTest
 	public void testObjectRegistrarRule() throws Exception
 	{
 		Arrows arrows = diagram.arrows();
-		Arrow<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
 
 		Arrow<Enum, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
 		Arrow<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );

@@ -11,7 +11,7 @@ public class JoinArrow implements Arrow
 	List<Arrow> arrowsInverse = new LinkedList<>();
 
 	Arrow inverseArrow = new InverseJoinArrow();
-	EditableArrowConfig arrowConfig = new ArrowBuilderImpl();
+	EditableArrowConfig arrowConfig = new ArrowBuilderImpl().readOnly( true );
 
 	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -127,6 +127,15 @@ public class JoinArrow implements Arrow
 
 	}
 
+	@Override
+	public String toString()
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append( "JoinArrow:" );
+		stringBuilder.append( arrows.toString() );
+		return stringBuilder.toString();
+	}
+
 	private final class InverseJoinArrow implements Arrow
 	{
 
@@ -177,6 +186,14 @@ public class JoinArrow implements Arrow
 			return JoinArrow.this;
 		}
 
+		@Override
+		public String toString()
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append( "JoinArrow:" );
+			stringBuilder.append( arrowsInverse.toString() );
+			return stringBuilder.toString();
+		}
 	}
 
 }

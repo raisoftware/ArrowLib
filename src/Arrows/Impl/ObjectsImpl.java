@@ -38,6 +38,7 @@ public class ObjectsImpl implements Objects
 			}
 			catch( Exception ex )
 			{
+				assert ( false );
 			}
 		}
 		else

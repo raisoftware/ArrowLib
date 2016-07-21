@@ -19,7 +19,7 @@ public class DiagramImpl implements Diagram
 		arrows = new ArrowsImpl( sequence );
 
 		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
-		class2objectBuilder.domain( Enum.class ).codomain( Arrow.class ).listenable( false ).end();
+		class2objectBuilder.domain( Class.class ).codomain( Object.class ).listenable( false ).end();
 
 		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
 		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).listenable( false ).end();

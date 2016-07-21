@@ -100,6 +100,10 @@ public class MethodSequence<TargetObjectType, ListenerType extends MethodProxy<T
 			{
 				throw new RuntimeException( e.getCause().getMessage(), e.getCause() );
 			}
+			else if( e.getTargetException() != null )
+			{
+				throw new RuntimeException( e.getTargetException().getMessage(), e.getCause() );
+			}
 			else
 			{
 				throw new RuntimeException( e.getMessage(), e.getCause() );

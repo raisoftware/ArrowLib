@@ -28,7 +28,7 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )
+	public final void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )
 	{
 		name2arrow.connect( arrowName, arrow );
 		name2arrow.connect( arrowInverseName, arrow.inverse() );

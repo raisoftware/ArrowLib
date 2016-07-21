@@ -66,10 +66,14 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 	@Override
 	public void connect( K source, Collection<? extends V> targets )
 	{
-		if( !config.allowsMultipleTargets() && sources().contains( source ) )
+		assert ( config().domain().isInstance( source ) ) : source + " not of type " + config().domain();
+		for( V target : targets )
 		{
-			System.out.println( "Arrow does not allow multiple targets! source:" + source + "  targets: " + targets );
+			assert ( config().codomain().isInstance( target ) ) : target + " not of type " + config().codomain();
 		}
+
+		checkforMultipleSourcesTargets( this, source, targets );
+
 		boolean mapChanged = keysToValues.putAll( source, targets );
 
 		for( V target : targets )
@@ -82,11 +86,15 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 	@Override
 	public void connect( K source, V target )
 	{
-		if( !config.allowsMultipleTargets() && sources().contains( source ) )
+		assert ( config().domain().isInstance( source ) ) : source + " not of type " + config().domain();
+		assert ( config().codomain().isInstance( target ) ) : target + " not of type " + config().codomain();
+
+		if( ( !config.allowsMultipleTargets() && sources().contains( source ) )
+			|| ( !config.allowsMultipleSources() && sources().contains( source ) ) )
 		{
-			System.out.println( "Arrow does not allow multiple targets! source:" + source + "  target: " + target );
-			//throw new Exception( "Arrow does not allow multiple targets! source:" + source + "  target: " + target );
+			throw ExceptionUtils.multipleSourcesTargetsException( source, target );
 		}
+
 		put( source, target );
 	}
 
@@ -135,6 +143,26 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		return inverseArrow;
 	}
 
+	private static void checkforMultipleSourcesTargets( Arrow arrow, Object source, Collection<? extends Object> targets )
+	{
+		ArrowConfig arrowConfig = arrow.config();
+		if( !arrowConfig.allowsMultipleTargets() && arrow.sources().contains( source ) )
+		{
+			throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
+		}
+		if( !arrowConfig.allowsMultipleTargets() )
+		{
+			for( Object target : targets )
+			{
+				if( arrow.targets().contains( target ) )
+				{
+					throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
+				}
+			}
+		}
+	}
+
+
 	private final class InverseManyToManyArrow implements EditableArrow<V, K>
 	{
 		@Override
@@ -170,6 +198,14 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( V source, Collection<? extends K> targets )
 		{
+			assert ( config().domain().isInstance( source ) );
+			for( K target : targets )
+			{
+				assert ( config().codomain().isInstance( target ) );
+			}
+
+			checkforMultipleSourcesTargets( this, source, targets );
+
 			boolean mapChanged = valuesToKeys.putAll( source, targets );
 
 			for( K target : targets )
@@ -182,7 +218,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( V source, K target )
 		{
-			put( target, source );
+			ManyToManyArrow.this.connect( target, source );
 		}
 
 		@Override
@@ -215,7 +251,6 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( Collection<? extends V> sources, K target )
 		{
-			//TOFIX catch the exception and return the right message
 			inverse().connect( target, sources );
 		}
 	}

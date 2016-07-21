@@ -2,7 +2,6 @@ package Shared.MethodBus;
 
 import Shared.MethodBus.Implementation.PersistentMethodBus;
 import Shared.MethodBus.Implementation.PersistentMethodBus.Mode;
-import Shared.MethodBus.Implementation.SyncMethodBus;
 
 public class MethodBusExample
 {
