@@ -35,6 +35,9 @@ public class DiagramImpl implements Diagram
 
 		objects = new ObjectsImpl( arrows );
 
+		addClass2ObjectRule();
+		addObjectRegistrarRule();
+		addArrow2ObjectRule();
 	}
 
 	@Override
@@ -50,31 +53,28 @@ public class DiagramImpl implements Diagram
 	}
 
 //	reference( nick : Enum, domain : Arrow ) : Reference
-//	Set2 set2( Object source, arrow : Arrow ) :
-	@Override
-	public void addClass2ObjectRule()
-	{
-		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
-		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
-	}
-
-	@Override
-	public void addObjectRegistrarRule()
-	{
-		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
-		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
-	}
-
-	@Override
-	public void addArrow2ObjectRule()
-	{
-		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows, objects );
-		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteAfter );
-	}
 
 	@Override
 	public <K, V> Set2<K, V> set2( K source, EditableArrow<K, V> arrow )
 	{
 		return new Set2Impl( source, arrow );
+	}
+
+	private void addClass2ObjectRule()
+	{
+		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
+		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
+	}
+
+	private void addObjectRegistrarRule()
+	{
+		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
+		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
+	}
+
+	private void addArrow2ObjectRule()
+	{
+		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows );
+		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteAfter );
 	}
 }

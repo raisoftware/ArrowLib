@@ -52,9 +52,7 @@ public class JoinArrow implements Arrow
 	@Override
 	public ArrowConfig config()
 	{
-		Class domain = arrows.get( 0 ).config().domain();
-		Class codomain = arrows.get( arrows.size() - 1 ).config().codomain();
-		return arrowConfig.domain( domain ).codomain( codomain ).arrowConfig();
+		return config( arrows );
 	}
 
 	@Override
@@ -136,15 +134,24 @@ public class JoinArrow implements Arrow
 		return stringBuilder.toString();
 	}
 
+	private ArrowConfig config( List<Arrow> arrows )
+	{
+		Arrow firstArrow = arrows.get( 0 );
+		Arrow lastArrow = arrows.get( arrows.size() - 1 );
+		Class domain = firstArrow.config().domain();
+		Class codomain = lastArrow.config().codomain();
+		return arrowConfig.domain( domain ).codomain( codomain ).
+			allowsMultipleSources( firstArrow.config().allowsMultipleSources() ).
+			allowsMultipleTargets( lastArrow.config().allowsMultipleTargets() ).arrowConfig();
+	}
+
 	private final class InverseJoinArrow implements Arrow
 	{
 
 		@Override
 		public ArrowConfig config()
 		{
-			Class codomain = arrows.get( 0 ).config().domain();
-			Class domain = arrows.get( arrows.size() - 1 ).config().codomain();
-			return arrowConfig.domain( domain ).codomain( codomain ).arrowConfig();
+			return JoinArrow.this.config( arrowsInverse );
 		}
 
 		@Override

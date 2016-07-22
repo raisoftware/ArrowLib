@@ -43,9 +43,7 @@ public class Arrow2ObjectRuleTest
 	{
 		try
 		{
-			diagram = DiagramFactory.create();
-
-			diagram.addArrow2ObjectRule();
+			diagram = Diagram.create();
 
 			EditableArrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
 			arrow.connect( 1, "one" );

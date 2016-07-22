@@ -11,13 +11,7 @@ public class MainTest
 {
 	public static void main( String args[] ) throws Exception
 	{
-		Diagram diagram = DiagramFactory.create();
-
-		//Create rules
-		diagram.addClass2ObjectRule();
-		diagram.addObjectRegistrarRule();
-		diagram.addArrow2ObjectRule();
-		//------------------------------
+		Diagram diagram = Diagram.create();
 
 		//create custom arrows
 		ArrowBuilder containsArrowBuilder = diagram.arrows().create( Contains, IsContainedBy );

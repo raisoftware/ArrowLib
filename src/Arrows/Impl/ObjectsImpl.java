@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +14,8 @@ public class ObjectsImpl implements Objects
 	EditableArrow<Enum, Object> name2Object = null;
 	EditableArrow<Object, ObjectConfig> object2Config = null;
 	EditableArrow<Class, Object> class2Object = null;
+	EditableArrow<EditableArrow, Object> inboundArrow2object = null;
+	EditableArrow<EditableArrow, Object> outboundArrow2object = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{
@@ -21,6 +24,8 @@ public class ObjectsImpl implements Objects
 			this.name2Object = arrows.editableArrow( Name2Object );
 			this.object2Config = arrows.editableArrow( Object2Config );
 			this.class2Object = arrows.editableArrow( Class2Object );
+			this.inboundArrow2object = arrows.editableArrow( InboundArrow2Object );
+			this.outboundArrow2object = arrows.editableArrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
@@ -76,7 +81,7 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void add( Object object, ObjectConfig config ) //    objectsArrow.connect( name, value )
+	public void add( Object object, ObjectConfig config )
 	{
 		addInternal( object, config );
 	}
@@ -103,9 +108,28 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void remove( Object obj, boolean cascade ) // remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
+	public void remove( Object obj, boolean cascade ) throws Exception// remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		//TOFIX finish this
+		ObjectConfig objConfig = object2Config.target( obj );
+
+		if( objConfig.tracksOutboundArrows() )
+		{
+			Set<EditableArrow> arrows = outboundArrow2object.inverse().targets( obj );
+			for( EditableArrow arrow : arrows )
+			{
+				arrow.remove( obj, null );
+			}
+		}
+
+		if( objConfig.tracksInboundArrows() )
+		{
+			Set<EditableArrow> arrows = inboundArrow2object.inverse().targets( obj );
+			for( EditableArrow arrow : arrows )
+			{
+				arrow.inverse().remove( obj, null );
+			}
+		}
 	}
 
 	@Override

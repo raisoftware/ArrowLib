@@ -38,7 +38,7 @@ public class IntersectArrowTest
 	@Before
 	public void setUp()
 	{
-		diagram = DiagramFactory.create();
+		diagram = Diagram.create();
 
 		toUpperCaseArrow1 = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );

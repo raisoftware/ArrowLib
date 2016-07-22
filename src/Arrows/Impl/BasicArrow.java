@@ -6,8 +6,9 @@ import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
+public class BasicArrow<K, V> implements EditableArrow<K, V>
 {
+	private final static ArrowConfig defaultArrowConfig = new ArrowBuilderImpl();
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
@@ -15,7 +16,12 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 
 	private final ArrowConfig config;
 
-	public ManyToManyArrow( ArrowConfig config )
+	public BasicArrow()
+	{
+		this.config = defaultArrowConfig;
+	}
+
+	public BasicArrow( ArrowConfig config )
 	{
 		this.config = config;
 	}
@@ -143,6 +149,11 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		return inverseArrow;
 	}
 
+	public static ArrowConfig defaultArrowConfig()
+	{
+		return defaultArrowConfig;
+	}
+
 	private static void checkforMultipleSourcesTargets( Arrow arrow, Object source, Collection<? extends Object> targets )
 	{
 		ArrowConfig arrowConfig = arrow.config();
@@ -186,7 +197,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public EditableArrow<K, V> inverse()
 		{
-			return ManyToManyArrow.this;
+			return BasicArrow.this;
 		}
 
 		@Override
@@ -218,7 +229,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( V source, K target )
 		{
-			ManyToManyArrow.this.connect( target, source );
+			BasicArrow.this.connect( target, source );
 		}
 
 		@Override
@@ -230,7 +241,7 @@ public class ManyToManyArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void remove( V source, K target )
 		{
-			ManyToManyArrow.this.remove( target, source );
+			BasicArrow.this.remove( target, source );
 		}
 
 		@Override

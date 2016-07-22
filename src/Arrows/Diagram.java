@@ -1,13 +1,10 @@
 package Arrows;
 
+import Arrows.Impl.DiagramImpl;
+
 public interface Diagram
 {
-	void addArrow2ObjectRule();
-
 	//	reference( nick : Enum, domain : Arrow ) : Reference
-	void addClass2ObjectRule();
-
-	void addObjectRegistrarRule();
 
 	Arrows arrows();
 
@@ -15,4 +12,8 @@ public interface Diagram
 
 	<K, V> Set2<K, V> set2( K source, EditableArrow<K, V> arrow );
 
+	static Diagram create()
+	{
+		return new DiagramImpl();
+	}
 }

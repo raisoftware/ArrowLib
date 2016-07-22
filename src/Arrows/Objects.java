@@ -15,8 +15,7 @@ public interface Objects extends Set2
 
 	void add( Object object, ObjectConfig config );
 
-	//@Override
-	void remove( Object object, boolean cascade );
+	void remove( Object object, boolean cascade ) throws Exception;
 
 	Iterator iterator( Class clazz );
 }

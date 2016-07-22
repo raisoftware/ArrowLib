@@ -36,7 +36,7 @@ public class FilterArrowTest
 	@Before
 	public void setUp()
 	{
-		diagram = DiagramFactory.create();
+		diagram = Diagram.create();
 
 		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
 		connectWordToLetters( containsArrow, word1 );

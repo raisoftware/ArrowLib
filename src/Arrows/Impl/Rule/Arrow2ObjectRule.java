@@ -10,14 +10,12 @@ import static Arrows.Arrows.StandardArrowName.*;
 
 public class Arrow2ObjectRule implements ArrowListener
 {
+	EditableArrow listenedArrow = null;
 
-	Objects objects;
-	Arrow listenedArrow = null;
+	EditableArrow<EditableArrow, Object> inboundArrow2object;
+	EditableArrow<EditableArrow, Object> outboundArrow2object;
 
-	EditableArrow<Arrow, Object> inboundArrow2object;
-	EditableArrow<Arrow, Object> outboundArrow2object;
-
-	public Arrow2ObjectRule( Arrows arrows, Objects objects )
+	public Arrow2ObjectRule( Arrows arrows )
 	{
 
 		try
@@ -29,7 +27,6 @@ public class Arrow2ObjectRule implements ArrowListener
 		{
 			Logger.getLogger( Arrow2ObjectRule.class.getName() ).log( Level.SEVERE, null, ex );
 		}
-		this.objects = objects;//TOFIX imi trebuie??
 	}
 
 	@Override

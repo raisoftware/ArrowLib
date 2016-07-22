@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-public interface Arrows
+public interface Arrows extends Set2
 {
 
 	public static enum StandardArrowName
@@ -29,9 +29,7 @@ public interface Arrows
 
 	ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
 
-	ArrowConfig defaultArrowConfig();
-
-	MethodSequence<EditableArrow, ArrowListener> methodSequence();
+	MethodSequence<EditableArrow, ArrowListener> rules();
 
 	static Arrow filter( Arrow arrow, BiPredicate filter )
 	{

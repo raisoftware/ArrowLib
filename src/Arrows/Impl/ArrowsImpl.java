@@ -2,23 +2,21 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.MethodBus.Sequence.MethodSequence;
+import java.util.Iterator;
 
 public class ArrowsImpl implements Arrows
 {
 	EditableArrow<Enum, Arrow> name2arrow;
-	final private ArrowConfig defaultArrowConfig;
 	final private MethodSequence methodSequence;
 
 	public ArrowsImpl( MethodSequence<EditableArrow, ArrowListener> methodSequence )
 	{
 		this.methodSequence = methodSequence;
-		ArrowBuilder arrowBuilder = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
+		EditableArrowConfig editableArrowConfig = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
 
-		ArrowConfig arrowConfig = arrowBuilder.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
-		name2arrow = new ManyToManyArrow( arrowConfig );
+		ArrowConfig arrowConfig = editableArrowConfig.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
+		name2arrow = new BasicArrow( arrowConfig );
 		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
-
-		defaultArrowConfig = create( StandardArrowName.DefaultName, StandardArrowName.InverseDefaultName ).arrowConfig();
 	}
 
 	@Override
@@ -52,15 +50,39 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public ArrowConfig defaultArrowConfig()
+	public MethodSequence<EditableArrow, ArrowListener> rules()
 	{
-		return defaultArrowConfig;
+		return methodSequence;
 	}
 
 	@Override
-	public MethodSequence<EditableArrow, ArrowListener> methodSequence()
+	public void add( Object target )
 	{
-		return methodSequence;
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void remove( Object target )
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public boolean contains( Object target )
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public int size()
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Iterator iterator()
+	{
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

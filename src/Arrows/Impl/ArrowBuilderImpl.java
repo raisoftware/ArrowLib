@@ -84,11 +84,11 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	public EditableArrow end()
 	{
 		assert ( name != null && inverseName != null && arrows != null );
-		EditableArrow arrow = new ManyToManyArrow( this );
+		EditableArrow arrow = new BasicArrow( this );
 		if( listenable )
 		{
-			MethodSequence<EditableArrow, ArrowListener> methodSequence = arrows.methodSequence();
-			EditableArrow arrowProxy = methodSequence.createPublisher( arrow, ArrowListener.class );
+			MethodSequence<EditableArrow, ArrowListener> rules = arrows.rules();
+			EditableArrow arrowProxy = rules.createPublisher( arrow, ArrowListener.class );
 			arrow = arrowProxy;
 		}
 		arrows.add( name, inverseName, arrow );

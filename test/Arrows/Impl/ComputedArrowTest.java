@@ -38,7 +38,7 @@ public class ComputedArrowTest
 	@Before
 	public void setUp()
 	{
-		diagram = DiagramFactory.create();
+		diagram = Diagram.create();
 
 		Function<String, Set<Character>> function = (String word) ->
 		{

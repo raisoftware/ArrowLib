@@ -1,23 +1,21 @@
 package Arrows.Impl;
 
 import Arrows.Diagram;
-import Arrows.DiagramFactory;
-import Arrows.Impl.ManyToManyArrow;
 import java.util.*;
 import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class ManyToManyArrowTest
+public class BasicArrowTest
 {
-	ManyToManyArrow<String, Character> arrow;
+	BasicArrow<String, Character> arrow;
 
 	private final String word1 = "Something";
 	private final String word2 = "altceva";
 	private final String word3 = "classes";
 	private final String word3Again = "classes";
 
-	public ManyToManyArrowTest()
+	public BasicArrowTest()
 	{
 	}
 
@@ -34,9 +32,9 @@ public class ManyToManyArrowTest
 	@Before
 	public void setUp()
 	{
-		Diagram diagram = DiagramFactory.create();
+		Diagram diagram = Diagram.create();
 
-		arrow = new ManyToManyArrow( diagram.arrows().defaultArrowConfig() );
+		arrow = new BasicArrow();
 
 		List<Character> chars = new ArrayList();
 		chars.add( 'S' );

@@ -1,60 +1,67 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Arrows.Utils.ArrowUtils;
+import Arrows.Utils.ExceptionUtils;
 import java.util.*;
 import java.util.function.Function;
 
 
 public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
-	Set<K> sources = new HashSet<>();
+	EditableArrow<K, V> precomputedArrow;
 	Function<K, Set<V>> function;
+	ArrowConfig arrowConfig;
+
+	Arrow<V, K> inverseArrow = new InverseComputedArrow();
 
 	public ComputedArrowImpl( Function<K, Set<V>> function )
 	{
+
+		EditableArrowConfig editableArrowConfig = new ArrowBuilderImpl();
+		precomputedArrow = new BasicArrow( editableArrowConfig );
+		this.arrowConfig = editableArrowConfig.readOnly( true );
+
+
 		this.function = function;
 	}
 
 	@Override
 	public void addSource( K source )
 	{
-		sources.add( source );
+		precomputedArrow.connect( source, function.apply( source ) );
 	}
 
 	@Override
-	public void addSources( Collection<? extends K> source )
+	public void addSources( Collection<? extends K> sources )
 	{
-		sources.addAll( source );
+		for( K source : sources )
+		{
+			precomputedArrow.connect( source, function.apply( source ) );
+		}
 	}
 
 	@Override
 	public void remove( K source )
 	{
-		sources.remove( source );
+		precomputedArrow.remove( source, null );
 	}
 
 	@Override
 	public Set<K> sources()
 	{
-		return sources;
+		return precomputedArrow.sources();
 	}
 
 	@Override
 	public Set<V> targets()
 	{
-		Set<V> targets = new HashSet<>();
-		for( K source : sources )
-		{
-			targets.addAll( function.apply( source ) );
-		}
-		return targets;
+		return precomputedArrow.targets();
 	}
 
 	@Override
 	public ArrowConfig config()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return arrowConfig;
 	}
 
 	@Override
@@ -62,26 +69,75 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 		Set<V> targets = targets( source );
 		if( targets.size() != 1 )
-			throw new Exception( "Number of targets is " + targets.size() + ". There should only be one target." );
+			throw ExceptionUtils.targetsNumberException( targets.size() );
 		return targets.iterator().next();
 	}
 
 	@Override
 	public Set<V> targets( K source )
 	{
-		return function.apply( source );
+		return precomputedArrow.targets( source );
 	}
 
 	@Override
 	public Set<Map.Entry<K, V>> relations()
 	{
-		return ArrowUtils.generateRelations( this );
+		return precomputedArrow.relations();
 	}
 
 	@Override
 	public Arrow<V, K> inverse()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return inverseArrow;
 	}
 
+	private final class InverseComputedArrow implements Arrow<V, K>
+	{
+
+		@Override
+		public ArrowConfig config()
+		{
+			return arrowConfig;
+		}
+
+		@Override
+		public Set<V> sources()
+		{
+			return precomputedArrow.targets();
+		}
+
+		@Override
+		public Set<K> targets()
+		{
+			return precomputedArrow.sources();
+		}
+
+		@Override
+		public K target( V source ) throws Exception
+		{
+			Set<K> targets = targets( source );
+			if( targets.size() != 1 )
+				throw ExceptionUtils.targetsNumberException( targets.size() );
+			return targets.iterator().next();
+		}
+
+		@Override
+		public Set<K> targets( V source )
+		{
+			return precomputedArrow.inverse().targets( source );
+		}
+
+		@Override
+		public Set<Map.Entry<V, K>> relations()
+		{
+			return precomputedArrow.inverse().relations();
+		}
+
+		@Override
+		public Arrow<K, V> inverse()
+		{
+			return ComputedArrowImpl.this;
+		}
+
+	}
 }
