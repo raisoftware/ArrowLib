@@ -13,7 +13,7 @@ public class Class2ObjectRule implements ArrowListener
 	{
 		try
 		{
-			this.class2Object = arrows.editableArrow( Class2Object );
+			this.class2Object = (EditableArrow) arrows.arrow( Class2Object );
 		}
 		catch( Exception ex )
 		{

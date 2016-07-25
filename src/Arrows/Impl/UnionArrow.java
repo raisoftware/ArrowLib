@@ -2,11 +2,14 @@ package Arrows.Impl;
 
 import Arrows.Arrow;
 import Arrows.ArrowConfig;
+import Arrows.Utils.ArrowUtils;
 import java.util.*;
 
 public class UnionArrow implements Arrow
 {
 	List<Arrow> arrows = new ArrayList<>();
+
+	Arrow inverseArrow = new InverseUnionArrow();
 
 	public UnionArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -37,54 +40,130 @@ public class UnionArrow implements Arrow
 	@Override
 	public Set relations()
 	{
-		//expensive
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.generateRelations( this );
 	}
 
-	@Override
-	public Set sources()
+	private Set unionSources( boolean inverse )
 	{
 		Set unionSources = new HashSet<>();
-		for( Arrow arrow : arrows )
+		for( Arrow arrowInList : arrows )
 		{
+			Arrow arrow = arrowInList;
+			if( inverse )
+			{
+				arrow = arrowInList.inverse();
+			}
 			unionSources.addAll( arrow.sources() );
 		}
 		return unionSources;
 	}
 
-	@Override
-	public Set targets()
+	private Set unionTargets( boolean inverse )
 	{
 		Set unionTargets = new HashSet<>();
-		for( Arrow arrow : arrows )
+		for( Arrow arrowInList : arrows )
 		{
+			Arrow arrow = arrowInList;
+			if( inverse )
+			{
+				arrow = arrowInList.inverse();
+			}
 			unionTargets.addAll( arrow.targets() );
 		}
 		return unionTargets;
 	}
 
-	@Override
-	public Arrow inverse()
-	{
-		// this one might be easy
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public Set targets( Object source )
+	private Set unionTargets( Object source, boolean inverse )
 	{
 		Set unionTargets = new HashSet<>();
-		for( Arrow arrow : arrows )
+		for( Arrow arrowInList : arrows )
 		{
+			Arrow arrow = arrowInList;
+			if( inverse )
+			{
+				arrow = arrowInList.inverse();
+			}
 			unionTargets.addAll( arrow.targets( source ) );
 		}
 		return unionTargets;
 	}
 
+
+	@Override
+	public Set sources()
+	{
+		return unionSources( false );
+	}
+
+	@Override
+	public Set targets()
+	{
+		return unionTargets( false );
+	}
+
+	@Override
+	public Arrow inverse()
+	{
+		return inverseArrow;
+	}
+
+	@Override
+	public Set targets( Object source )
+	{
+		return unionTargets( source, false );
+	}
+
 	@Override
 	public Object target( Object source ) throws Exception
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.target( this, source );
+	}
+
+	private final class InverseUnionArrow implements Arrow
+	{
+
+		@Override
+		public ArrowConfig config()
+		{
+			throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		}
+
+		@Override
+		public Set sources()
+		{
+			return unionSources( true );
+		}
+
+		@Override
+		public Set targets()
+		{
+			return unionTargets( true );
+		}
+
+		@Override
+		public Object target( Object source ) throws Exception
+		{
+			return ArrowUtils.target( this, source );
+		}
+
+		@Override
+		public Set targets( Object source )
+		{
+			return unionTargets( source, true );
+		}
+
+		@Override
+		public Set relations()
+		{
+			return ArrowUtils.generateRelations( this );
+		}
+
+		@Override
+		public Arrow inverse()
+		{
+			return UnionArrow.this;
+		}
+
 	}
 
 }

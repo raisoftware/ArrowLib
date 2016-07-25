@@ -58,7 +58,7 @@ public class Arrow2ObjectRuleTest
 			inboundArrow2object = object2inboundArrow.inverse();
 			name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = arrows.editableArrow( Stringify );
+			editableStringifyArrow = (EditableArrow) arrows.arrow( Stringify );
 		}
 		catch( Exception ex )
 		{

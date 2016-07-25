@@ -2,12 +2,15 @@ package Arrows.Impl;
 
 import Arrows.Arrow;
 import Arrows.ArrowConfig;
+import Arrows.Utils.ArrowUtils;
 import java.util.*;
 
 
 public class IntersectArrow implements Arrow
 {
 	List<Arrow> arrows = new ArrayList<>();
+
+	InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
 
 	public IntersectArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -38,17 +41,51 @@ public class IntersectArrow implements Arrow
 	@Override
 	public Set relations()
 	{
-		//expensive
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.generateRelations( this );
 	}
+
+
 
 	@Override
 	public Set sources()
+	{
+		return intersectSources( false );
+	}
+
+	@Override
+	public Set targets()
+	{
+		return intersectTargets( false );
+	}
+
+	@Override
+	public Arrow inverse()
+	{
+		return inverseArrow;
+	}
+
+	@Override
+	public Set targets( Object source )
+	{
+		return intersectTargets( source, false );
+	}
+
+	@Override
+	public Object target( Object source ) throws Exception
+	{
+		return ArrowUtils.target( this, source );
+	}
+
+	private Set intersectSources( boolean inverse )
 	{
 		Iterator<Arrow> arrowIt = arrows.iterator();
 		Set intersectSources = new HashSet<>();
 
 		Arrow firstArrow = arrowIt.next();
+		if( inverse )
+		{
+			firstArrow = firstArrow.inverse();
+		}
 		Set firstArrowSources = firstArrow.sources();
 
 
@@ -64,6 +101,10 @@ public class IntersectArrow implements Arrow
 					while( otherArrows.hasNext() )
 					{
 						Arrow arrow = otherArrows.next();
+						if( inverse )
+						{
+							arrow = arrow.inverse();
+						}
 						if( !arrow.targets( source ).contains( target ) )
 						{
 							relationExistsInAllArrows = false;
@@ -81,36 +122,39 @@ public class IntersectArrow implements Arrow
 		return intersectSources;
 	}
 
-	@Override
-	public Set targets()
+	private Set intersectTargets( boolean inverse )
 	{
 		Set intersectTargets = new HashSet<>();
 
 		Iterator<Arrow> arrowIt = arrows.iterator();
 		Arrow firstArrow = arrowIt.next();
+		if( inverse )
+		{
+			firstArrow = firstArrow.inverse();
+		}
 		Set firstArrowSources = firstArrow.sources();
 
+		Arrow arrow = this;
+		if( inverse )
+		{
+			arrow = inverseArrow;
+		}
 
 		for( Object source : firstArrowSources )
 		{
-			intersectTargets.addAll( targets( source ) );
+			intersectTargets.addAll( arrow.targets( source ) );
 		}
 		return intersectTargets;
 	}
 
-	@Override
-	public Arrow inverse()
-	{
-		// this one might be easy
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public Set targets( Object source )
+	private Set intersectTargets( Object source, boolean inverse )
 	{
 		Iterator<Arrow> arrowIt = arrows.iterator();
 		Arrow firstArrow = arrowIt.next();
-
+		if( inverse )
+		{
+			firstArrow = firstArrow.inverse();
+		}
 
 		Set intersectTargets = new HashSet<>();
 		intersectTargets.addAll( firstArrow.targets( source ) );
@@ -118,6 +162,10 @@ public class IntersectArrow implements Arrow
 		while( arrowIt.hasNext() )
 		{
 			Arrow arrow = arrowIt.next();
+			if( inverse )
+			{
+				arrow = arrow.inverse();
+			}
 			intersectTargets.retainAll( arrow.targets( source ) );
 		}
 
@@ -125,9 +173,75 @@ public class IntersectArrow implements Arrow
 	}
 
 	@Override
-	public Object target( Object source ) throws Exception
+	public String toString()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append( "IntersectArrow:" );
+		stringBuilder.append( arrows.toString() );
+		stringBuilder.append( " Relations:" );
+		stringBuilder.append( relations() );
+		return stringBuilder.toString();
+	}
+
+	private final class InverseIntersectArrow implements Arrow
+	{
+
+		@Override
+		public ArrowConfig config()
+		{
+			throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		}
+
+		@Override
+		public Set sources()
+		{
+			return intersectSources( true );
+		}
+
+		@Override
+		public Set targets()
+		{
+			return intersectTargets( true );
+		}
+
+		@Override
+		public Object target( Object source ) throws Exception
+		{
+			return ArrowUtils.target( this, source );
+		}
+
+		@Override
+		public Set targets( Object source )
+		{
+			return intersectTargets( source, true );
+		}
+
+		@Override
+		public Set relations()
+		{
+			return ArrowUtils.generateRelations( this );
+		}
+
+		@Override
+		public Arrow inverse()
+		{
+			return IntersectArrow.this;
+		}
+
+		@Override
+		public String toString()
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append( "InverseIntersectArrow:" );
+			for( Arrow arrow : arrows )
+			{
+				stringBuilder.append( arrow.inverse().toString() );
+			}
+			stringBuilder.append( " Relations:" );
+			stringBuilder.append( relations() );
+			return stringBuilder.toString();
+		}
+
 	}
 
 }

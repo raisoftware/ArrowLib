@@ -2,7 +2,6 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Arrows.Utils.ExceptionUtils;
 import java.util.*;
 
 public class JoinArrow implements Arrow
@@ -118,11 +117,7 @@ public class JoinArrow implements Arrow
 	@Override
 	public Object target( Object source ) throws Exception
 	{
-		Set targets = targets( source );
-		if( targets.size() != 1 )
-			throw ExceptionUtils.targetsNumberException( targets.size() );
-		return targets.iterator().next();
-
+		return ArrowUtils.target( this, source );
 	}
 
 	@Override
@@ -131,6 +126,8 @@ public class JoinArrow implements Arrow
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append( "JoinArrow:" );
 		stringBuilder.append( arrows.toString() );
+		stringBuilder.append( " Relations:" );
+		stringBuilder.append( relations() );
 		return stringBuilder.toString();
 	}
 
@@ -169,10 +166,7 @@ public class JoinArrow implements Arrow
 		@Override
 		public Object target( Object source ) throws Exception
 		{
-			Set targets = targets( source );
-			if( targets.size() != 1 )
-				throw ExceptionUtils.targetsNumberException( targets.size() );
-			return targets.iterator().next();
+			return ArrowUtils.target( this, source );
 		}
 
 		@Override
@@ -199,6 +193,8 @@ public class JoinArrow implements Arrow
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append( "JoinArrow:" );
 			stringBuilder.append( arrowsInverse.toString() );
+			stringBuilder.append( " Relations:" );
+			stringBuilder.append( relations() );
 			return stringBuilder.toString();
 		}
 	}

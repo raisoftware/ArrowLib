@@ -84,7 +84,7 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	public EditableArrow end()
 	{
 		assert ( name != null && inverseName != null && arrows != null );
-		EditableArrow arrow = new BasicArrow( this );
+		EditableArrow arrow = new GenericArrow( this );
 		if( listenable )
 		{
 			MethodSequence<EditableArrow, ArrowListener> rules = arrows.rules();

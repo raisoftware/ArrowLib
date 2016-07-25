@@ -19,4 +19,12 @@ public class ArrowUtils
 		}
 		return relations;
 	}
+
+	public static Object target( Arrow arrow, Object source ) throws Exception
+	{
+		Set targets = arrow.targets( source );
+		if( targets.size() != 1 )
+			throw ExceptionUtils.targetsNumberException( targets.size() );
+		return targets.iterator().next();
+	}
 }

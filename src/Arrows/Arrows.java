@@ -24,9 +24,6 @@ public interface Arrows extends Set2
 
 	Arrow arrow( Enum arrowName ) throws Exception;
 
-	EditableArrow editableArrow( Enum arrowName ) throws Exception;
-
-
 	ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
 
 	MethodSequence<EditableArrow, ArrowListener> rules();

@@ -104,4 +104,27 @@ public class IntersectArrowTest
 		}
 	}
 
+	@Test
+	public void testInverse() throws Exception
+	{
+		Set sources = intersectArrow.sources();
+		Set targets = intersectArrow.targets();
+		Set inverseSources = intersectArrow.inverse().sources();
+		Set inverseTargets = intersectArrow.inverse().targets();
+
+		assertEquals( sources.size(), inverseTargets.size() );
+		assertTrue( sources.containsAll( inverseTargets ) );
+		assertEquals( targets.size(), inverseSources.size() );
+		assertTrue( targets.containsAll( inverseSources ) );
+
+		for( int i = 0; i < mergedWord34.length(); ++i )
+		{
+			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
+			Set results = intersectArrow.inverse().targets( c );
+			assertEquals( results.size(), 1 );
+			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
+		}
+	}
+
+
 }

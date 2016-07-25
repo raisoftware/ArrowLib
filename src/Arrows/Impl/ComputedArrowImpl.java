@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Arrows.Utils.ExceptionUtils;
+import Arrows.Utils.ArrowUtils;
 import java.util.*;
 import java.util.function.Function;
 
@@ -18,7 +18,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 
 		EditableArrowConfig editableArrowConfig = new ArrowBuilderImpl();
-		precomputedArrow = new BasicArrow( editableArrowConfig );
+		precomputedArrow = new GenericArrow( editableArrowConfig );
 		this.arrowConfig = editableArrowConfig.readOnly( true );
 
 
@@ -67,10 +67,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public V target( K source ) throws Exception
 	{
-		Set<V> targets = targets( source );
-		if( targets.size() != 1 )
-			throw ExceptionUtils.targetsNumberException( targets.size() );
-		return targets.iterator().next();
+		return (V) ArrowUtils.target( this, source );
 	}
 
 	@Override
@@ -115,10 +112,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		@Override
 		public K target( V source ) throws Exception
 		{
-			Set<K> targets = targets( source );
-			if( targets.size() != 1 )
-				throw ExceptionUtils.targetsNumberException( targets.size() );
-			return targets.iterator().next();
+			return (K) ArrowUtils.target( this, source );
 		}
 
 		@Override

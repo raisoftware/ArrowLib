@@ -107,4 +107,26 @@ public class UnionArrowTest
 		}
 	}
 
+	@Test
+	public void testInverse() throws Exception
+	{
+		Set sources = unionArrow.sources();
+		Set targets = unionArrow.targets();
+		Set inverseSources = unionArrow.inverse().sources();
+		Set inverseTargets = unionArrow.inverse().targets();
+
+		assertEquals( sources.size(), inverseTargets.size() );
+		assertTrue( sources.containsAll( inverseTargets ) );
+		assertEquals( targets.size(), inverseSources.size() );
+		assertTrue( targets.containsAll( inverseSources ) );
+
+		for( int i = 0; i < unionString.length(); ++i )
+		{
+			char c = Character.toUpperCase( unionString.charAt( i ) );
+			Set results = unionArrow.inverse().targets( c );
+			assertEquals( results.size(), 1 );
+			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
+		}
+	}
+
 }

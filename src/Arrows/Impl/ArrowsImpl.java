@@ -15,7 +15,7 @@ public class ArrowsImpl implements Arrows
 		EditableArrowConfig editableArrowConfig = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
 
 		ArrowConfig arrowConfig = editableArrowConfig.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
-		name2arrow = new BasicArrow( arrowConfig );
+		name2arrow = new GenericArrow( arrowConfig );
 		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
 	}
 
@@ -36,17 +36,6 @@ public class ArrowsImpl implements Arrows
 	public Arrow arrow( Enum arrowName ) throws Exception
 	{
 		return name2arrow.target( arrowName );
-	}
-
-	@Override
-	public EditableArrow editableArrow( Enum arrowName ) throws Exception
-	{
-		Arrow arrow = name2arrow.target( arrowName );
-		if( arrow.config().readOnly() )
-		{
-			throw new Exception( "Arrow is read-only." );
-		}
-		return (EditableArrow) arrow;
 	}
 
 	@Override

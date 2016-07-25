@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class BasicArrowTest
 {
-	BasicArrow<String, Character> arrow;
+	GenericArrow<String, Character> arrow;
 
 	private final String word1 = "Something";
 	private final String word2 = "altceva";
@@ -34,7 +34,7 @@ public class BasicArrowTest
 	{
 		Diagram diagram = Diagram.create();
 
-		arrow = new BasicArrow();
+		arrow = new GenericArrow();
 
 		List<Character> chars = new ArrayList();
 		chars.add( 'S' );

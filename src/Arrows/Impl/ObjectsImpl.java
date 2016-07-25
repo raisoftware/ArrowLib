@@ -21,11 +21,11 @@ public class ObjectsImpl implements Objects
 	{
 		try
 		{
-			this.name2Object = arrows.editableArrow( Name2Object );
-			this.object2Config = arrows.editableArrow( Object2Config );
-			this.class2Object = arrows.editableArrow( Class2Object );
-			this.inboundArrow2object = arrows.editableArrow( InboundArrow2Object );
-			this.outboundArrow2object = arrows.editableArrow( OutboundArrow2Object );
+			this.name2Object = (EditableArrow) arrows.arrow( Name2Object );
+			this.object2Config = (EditableArrow) arrows.arrow( Object2Config );
+			this.class2Object = (EditableArrow) arrows.arrow( Class2Object );
+			this.inboundArrow2object = (EditableArrow) arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = (EditableArrow) arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
@@ -108,18 +108,20 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public void remove( Object obj, boolean cascade ) throws Exception// remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
+	public void remove( Object obj, boolean cascade )// remove object and all the standard relations involving it. if arrows are tracked, also delete the relations it is involved
 	{
-		//TOFIX finish this
-		ObjectConfig objConfig = object2Config.target( obj );
+		if( object2Config.targets( obj ).isEmpty() )
+			return;
 
-		if( objConfig.tracksOutboundArrows() )
+		ObjectConfig objConfig;
+
+		try
 		{
-			Set<EditableArrow> arrows = outboundArrow2object.inverse().targets( obj );
-			for( EditableArrow arrow : arrows )
-			{
-				arrow.remove( obj, null );
-			}
+			objConfig = object2Config.target( obj );
+		}
+		catch( Exception ex )
+		{
+			throw new RuntimeException( ex.getMessage() );
 		}
 
 		if( objConfig.tracksInboundArrows() )
@@ -130,12 +132,32 @@ public class ObjectsImpl implements Objects
 				arrow.inverse().remove( obj, null );
 			}
 		}
+
+
+		if( objConfig.tracksOutboundArrows() )
+		{
+			Set<EditableArrow> arrows = outboundArrow2object.inverse().targets( obj );
+			for( EditableArrow arrow : arrows )
+			{
+				Set targets = null;
+				if( cascade )
+				{
+					targets = arrow.targets( obj );
+				}
+				arrow.remove( obj, null );
+				if( cascade )
+				{
+					for( Object target : targets )
+						remove( target, cascade );
+				}
+			}
+		}
 	}
 
 	@Override
 	public void remove( Object target )
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		remove( target, false );
 	}
 
 	@Override

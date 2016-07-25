@@ -1,12 +1,13 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class BasicArrow<K, V> implements EditableArrow<K, V>
+public class GenericArrow<K, V> implements EditableArrow<K, V>
 {
 	private final static ArrowConfig defaultArrowConfig = new ArrowBuilderImpl();
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
@@ -16,12 +17,12 @@ public class BasicArrow<K, V> implements EditableArrow<K, V>
 
 	private final ArrowConfig config;
 
-	public BasicArrow()
+	public GenericArrow()
 	{
 		this.config = defaultArrowConfig;
 	}
 
-	public BasicArrow( ArrowConfig config )
+	public GenericArrow( ArrowConfig config )
 	{
 		this.config = config;
 	}
@@ -131,10 +132,7 @@ public class BasicArrow<K, V> implements EditableArrow<K, V>
 	@Override
 	public V target( K source ) throws Exception
 	{
-		Set<V> targets = keysToValues.get( source );
-		if( targets.size() != 1 )
-			throw ExceptionUtils.targetsNumberException( targets.size() );
-		return targets.iterator().next();
+		return (V) ArrowUtils.target( this, source );
 	}
 
 	@Override
@@ -197,7 +195,7 @@ public class BasicArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public EditableArrow<K, V> inverse()
 		{
-			return BasicArrow.this;
+			return GenericArrow.this;
 		}
 
 		@Override
@@ -229,7 +227,7 @@ public class BasicArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( V source, K target )
 		{
-			BasicArrow.this.connect( target, source );
+			GenericArrow.this.connect( target, source );
 		}
 
 		@Override
@@ -241,16 +239,13 @@ public class BasicArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void remove( V source, K target )
 		{
-			BasicArrow.this.remove( target, source );
+			GenericArrow.this.remove( target, source );
 		}
 
 		@Override
 		public K target( V source ) throws Exception
 		{
-			Set<K> targets = valuesToKeys.get( source );
-			if( targets.size() != 1 )
-				throw ExceptionUtils.targetsNumberException( targets.size() );
-			return targets.iterator().next();
+			return (K) ArrowUtils.target( this, source );
 		}
 
 		@Override

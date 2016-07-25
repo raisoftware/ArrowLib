@@ -32,9 +32,9 @@ public class MainTest
 		arrow.connect( "ra", 'r' );
 		arrow.connect( "ra", 'a' );
 
-		squareArrow.connect( 9, 81 );
-		squareArrow.connect( 2, 4 );
-		squareArrow.connect( 7, 49 );
+		squareArrow.connect( 9.f, 81.f );
+		squareArrow.connect( 2.f, 4.f );
+		squareArrow.connect( 7.f, 49.f );
 
 		System.out.println( "Direct:" + squareArrow.inverse().inverse().inverse().inverse().relations() );
 		System.out.println( "reverse:" + squareArrow.inverse().relations() );
