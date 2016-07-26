@@ -42,14 +42,16 @@ public class UnionArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
+		toUpperCaseArrow1 = diagram.arrows().createGeneric().end();
+		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
-		toUpperCaseArrow2 = diagram.arrows().create( ToUpperCase2, ToLowerCase2 ).end();
+		toUpperCaseArrow2 = diagram.arrows().createGeneric().end();
+		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
 

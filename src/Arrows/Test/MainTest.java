@@ -15,11 +15,11 @@ public class MainTest
 		Diagram diagram = Diagram.create();
 
 		//create custom arrows
-		ArrowBuilder containsArrowBuilder = diagram.arrows().create( Contains, IsContainedBy );
-		Arrow arrow = containsArrowBuilder.domain( String.class ).codomain( Character.class ).end();
+		Arrow arrow = diagram.arrows().createGeneric().domain( String.class ).codomain( Character.class ).end();
+		diagram.arrows().name( arrow, Contains, IsContainedBy );
 
-		ArrowBuilder squareArrowBuilder = diagram.arrows().create( Square, SquareRoot );
-		Arrow squareArrow = squareArrowBuilder.domain( Float.class ).codomain( Float.class ).end();
+		Arrow squareArrow = diagram.arrows().createGeneric().domain( Float.class ).codomain( Float.class ).end();
+		diagram.arrows().name( squareArrow, Square, SquareRoot );
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );
@@ -42,7 +42,7 @@ public class MainTest
 		//----------------------------------------------------
 
 		//Test class2ObjectRule
-		Arrow class2Object = diagram.arrows().arrow( Class2Object );
+		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class2Object );
 		System.out.println( "class2Object.relations()" + class2Object.relations() );
 		System.out.println( "class2Object.inverse()" + class2Object.inverse().relations() );
 		//----------
@@ -50,13 +50,13 @@ public class MainTest
 		//Test ObjectRegistrarRule
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl( RootObject ).end();
 		diagram.objects().config( 's', rootObjConfig );
-		Arrow name2Object = diagram.arrows().arrow( Name2Object );
-		Arrow object2Config = diagram.arrows().arrow( Object2Config );
+		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name2Object );
+		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object2Config );
 		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );
 		System.out.println( "object2Config.relations()" + object2Config.relations() );
 		//----------
 
-		Arrow<String, Character> containsArrow = diagram.arrows().arrow( Contains );
+		Arrow<String, Character> containsArrow = (Arrow) diagram.arrows().arrow( Contains );
 
 		System.out.println( "" + containsArrow.relations() );
 

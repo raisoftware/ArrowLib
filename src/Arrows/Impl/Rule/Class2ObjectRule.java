@@ -13,7 +13,7 @@ public class Class2ObjectRule implements Arrow.Editor
 	{
 		try
 		{
-			this.class2Object = arrows.arrow( Class2Object );
+			this.class2Object = (Arrow) arrows.arrow( Class2Object );
 		}
 		catch( Exception ex )
 		{

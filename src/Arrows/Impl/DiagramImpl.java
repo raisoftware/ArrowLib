@@ -1,8 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-
-import static Arrows.Arrows.StandardArrowName.*;
+import Shared.Set0;
 
 public class DiagramImpl implements Diagram
 {
@@ -11,32 +10,10 @@ public class DiagramImpl implements Diagram
 
 	public DiagramImpl()
 	{
-		arrows = new ArrowsImpl();
+		arrows = new ArrowsImpl( this );
 
 
-		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
-		class2objectBuilder.domain( Class.class ).codomain( Object.class ).listenable( false ).end();
-
-		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
-		name2objectBuilder.domain( Object.class ).codomain( Object.class ).listenable( false ).end();
-
-		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
-		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).listenable( false ).end();
-
-		ArrowBuilder inboundArrowsBuilder = arrows.create( InboundArrow2Object, Object2InboundArrow );
-		inboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
-
-		ArrowBuilder outboundArrowsBuilder = arrows.create( OutboundArrow2Object, Object2OutboundArrow );
-		outboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
-
-		//TOFIX fix this ugly stuff
 		objects = new ObjectsImpl( arrows );
-		arrows.objects( objects );
-
-
-//		addClass2ObjectRule();
-//		addObjectRegistrarRule();
-//		addArrow2ObjectRule();
 	}
 
 	@Override

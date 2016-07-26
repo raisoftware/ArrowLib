@@ -38,7 +38,8 @@ public class FilterArrowTest
 	{
 		diagram = Diagram.create();
 
-		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
+		containsArrow = diagram.arrows().createGeneric().domain( String.class ).codomain( Character.class ).end();
+		diagram.arrows().name( containsArrow, Contains, IsContainedBy );
 		connectWordToLetters( containsArrow.editor(), word1 );
 		connectWordToLetters( containsArrow.editor(), word2 );
 		connectWordToLetters( containsArrow.editor(), word3 );

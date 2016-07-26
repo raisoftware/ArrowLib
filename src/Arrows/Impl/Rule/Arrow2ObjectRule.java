@@ -19,8 +19,8 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{

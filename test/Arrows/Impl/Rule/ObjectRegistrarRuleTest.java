@@ -46,7 +46,8 @@ public class ObjectRegistrarRuleTest
 		diagram.objects().add( "unu" );
 		diagram.objects().config( "unu", coolestObjConfig );// id was 1 and was overwritten
 
-		Arrow<String, String> arrow = diagram.arrows().create( English2Rom, Rom2English ).end();
+		Arrow<String, String> arrow = diagram.arrows().createGeneric().end();
+		diagram.arrows().name( arrow, English2Rom, Rom2English );
 		arrow.editor().connect( "one", "unu" );// ids are 2 and CoolestObject
 		arrow.editor().connect( "two", "doi" );// ids are RootObject and 3
 		arrow.editor().connect( "three", "trei" );// ids are 4 and 5
@@ -66,8 +67,8 @@ public class ObjectRegistrarRuleTest
 	{
 		Arrows arrows = diagram.arrows();
 
-		Arrow<Object, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
-		Arrow<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
+		ArrowView<Object, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
+		ArrowView<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
 
 		assertEquals( name2Object.target( RootObject ), "two" );
 		assertEquals( name2Object.target( CoolestObject ), "unu" );
@@ -85,7 +86,7 @@ public class ObjectRegistrarRuleTest
 		assertEquals( name2Object.target( 6 ), "four" );
 		assertEquals( name2Object.target( 7 ), "patru" );
 
-		Arrow<Object, Enum> object2Name = arrows.arrow( StandardArrowName.Object2Name );
+		ArrowView<Object, Enum> object2Name = arrows.arrow( StandardArrowName.Object2Name );
 
 		assertEquals( object2Name.target( "two" ), RootObject );
 		assertEquals( object2Name.target( "unu" ), CoolestObject );

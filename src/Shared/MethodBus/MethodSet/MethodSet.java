@@ -1,6 +1,6 @@
 package Shared.MethodBus.MethodSet;
 
-import Arrows.Set0;
+import Shared.Set0;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.util.*;

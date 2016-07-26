@@ -45,20 +45,21 @@ public class Arrow2ObjectRuleTest
 		{
 			diagram = Diagram.create();
 
-			Arrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
+			Arrow<Integer, String> arrow = diagram.arrows().createGeneric().end();
+			diagram.arrows().name( arrow, Stringify, Destringify );
 			arrow.editor().connect( 1, "one" );
 			arrow.editor().connect( 2, "two" );
 			arrow.editor().connect( 3, "three" );
 			arrow.editor().connect( 4, "four" );
 
 			arrows = diagram.arrows();
-			object2outboundArrow = arrows.arrow( StandardArrowName.Object2OutboundArrow );
+			object2outboundArrow = (Arrow) arrows.arrow( StandardArrowName.Object2OutboundArrow );
 			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = arrows.arrow( StandardArrowName.Object2InboundArrow );
+			object2inboundArrow = (Arrow) arrows.arrow( StandardArrowName.Object2InboundArrow );
 			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
+			name2Arrow = (Arrow) arrows.arrow( StandardArrowName.Name2Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = arrows.arrow( Stringify );
+			editableStringifyArrow = (Arrow) arrows.arrow( Stringify );
 		}
 		catch( Exception ex )
 		{

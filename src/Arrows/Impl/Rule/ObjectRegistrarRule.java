@@ -9,7 +9,7 @@ public class ObjectRegistrarRule implements Editor
 
 	Objects objects;
 
-	public ObjectRegistrarRule( Arrows arrows, Objects objects )
+	public ObjectRegistrarRule( Objects objects )
 	{
 		this.objects = objects;
 	}

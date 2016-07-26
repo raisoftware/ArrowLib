@@ -1,7 +1,7 @@
 package Arrows.Impl.Rule;
 
-import Arrows.Arrows.StandardArrowName;
 import Arrows.*;
+import Arrows.Arrows.StandardArrowName;
 import java.util.*;
 import org.junit.*;
 
@@ -34,7 +34,8 @@ public class Class2ObjectRuleTest
 		diagram.objects().add( 2 );
 		diagram.objects().add( "unu" );
 
-		Arrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
+		Arrow<Integer, String> arrow = diagram.arrows().createGeneric().end();
+		diagram.arrows().name( arrow, Stringify, Destringify );
 		arrow.editor().connect( 1, "unu" );
 		arrow.editor().connect( 2, "doi" );
 		arrow.editor().connect( 3, "trei" );
@@ -50,7 +51,7 @@ public class Class2ObjectRuleTest
 	public void testClass2ObjectRule() throws Exception
 	{
 		Arrows arrows = diagram.arrows();
-		Arrow<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
+		ArrowView<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
 
 		//Test name2Arrow
 		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
@@ -58,7 +59,7 @@ public class Class2ObjectRuleTest
 		assertEquals( name2Arrow.target( Destringify ).target( "doi" ), 2 );
 
 		//Test class2Object
-		Arrow class2Object = arrows.arrow( StandardArrowName.Class2Object );
+		ArrowView class2Object = arrows.arrow( StandardArrowName.Class2Object );
 		Set<String> strings = class2Object.targets( String.class );
 
 		for( String target : stringifyArrow.targets() )

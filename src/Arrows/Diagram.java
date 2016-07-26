@@ -1,5 +1,6 @@
 package Arrows;
 
+import Shared.Set0;
 import Arrows.Impl.DiagramImpl;
 
 public interface Diagram
