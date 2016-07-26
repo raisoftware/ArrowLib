@@ -3,7 +3,7 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Impl.Rule.*;
 
-public class ArrowBuilderImpl implements ArrowBuilder
+public class GenericArrowBuilder implements ArrowBuilder
 {
 	private Enum name = null;
 	private Enum inverseName = null;
@@ -18,20 +18,12 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	private Arrows arrows = null;
 	private Objects objects = null;
 
-	InverseArrowConfig inverseConfig = new InverseArrowConfig();
-
-	@Override
-	public ArrowConfig arrowConfig()
-	{
-		return this;
-	}
-
-	public ArrowBuilderImpl()
+	public GenericArrowBuilder()
 	{
 		this.listenable = false;
 	}
 
-	public ArrowBuilderImpl( Arrows arrows, Objects objects, Enum name, Enum inverseName )
+	public GenericArrowBuilder( Arrows arrows, Objects objects, Enum name, Enum inverseName )
 	{
 		this.arrows = arrows;
 		this.objects = objects;
@@ -86,7 +78,7 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	public Arrow end()
 	{
 		assert ( name != null && inverseName != null && arrows != null );
-		Arrow arrow = new GenericArrow( this, listenable );
+		Arrow arrow = new GenericArrow( domain, codomain, allowsMultipleSources, allowsMultipleTargets, listenable );
 
 		if( listenable )
 		{
@@ -103,59 +95,6 @@ public class ArrowBuilderImpl implements ArrowBuilder
 		return arrow;
 	}
 
-	@Override
-	public boolean allowsMultipleSources()
-	{
-		return allowsMultipleSources;
-	}
-
-	@Override
-	public boolean allowsMultipleTargets()
-	{
-		return allowsMultipleTargets;
-	}
-
-	@Override
-	public Arrows arrows()
-	{
-		return arrows;
-	}
-
-	@Override
-	public Class codomain()
-	{
-		return codomain;
-	}
-
-	@Override
-	public Class domain()
-	{
-		return domain;
-	}
-
-	@Override
-	public boolean enabled()
-	{
-		return enabled;
-	}
-
-	@Override
-	public boolean invertible()
-	{
-		return invertible;
-	}
-
-	@Override
-	public ArrowConfig inverse()
-	{
-		return inverseConfig;
-	}
-
-	@Override
-	public boolean listenable()
-	{
-		return listenable;
-	}
 
 	@Override
 	public ArrowBuilder listenable( boolean enabled )
@@ -165,78 +104,9 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	}
 
 	@Override
-	public boolean readOnly()
-	{
-		return readOnly;
-	}
-
-	@Override
 	public ArrowBuilder readOnly( boolean enabled )
 	{
 		this.readOnly = enabled;
 		return this;
-	}
-
-	private final class InverseArrowConfig implements ArrowConfig
-	{
-		@Override
-		public boolean allowsMultipleSources()
-		{
-			return allowsMultipleTargets;
-		}
-
-		@Override
-		public boolean allowsMultipleTargets()
-		{
-			return allowsMultipleSources;
-		}
-
-		@Override
-		public Arrows arrows()
-		{
-			return arrows;
-		}
-
-		@Override
-		public Class codomain()
-		{
-			return domain;
-		}
-
-		@Override
-		public Class domain()
-		{
-			return codomain;
-		}
-
-		@Override
-		public boolean enabled()
-		{
-			return enabled;
-		}
-
-		@Override
-		public boolean invertible()
-		{
-			return invertible;
-		}
-
-		@Override
-		public ArrowConfig inverse()
-		{
-			return ArrowBuilderImpl.this;
-		}
-
-		@Override
-		public boolean listenable()
-		{
-			return listenable;
-		}
-
-		@Override
-		public boolean readOnly()
-		{
-			return readOnly;
-		}
 	}
 }

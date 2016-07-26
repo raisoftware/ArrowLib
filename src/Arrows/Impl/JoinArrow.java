@@ -10,7 +10,6 @@ public class JoinArrow implements ArrowView
 	List<Arrow> arrowsInverse = new LinkedList<>();
 
 	ArrowView inverseArrow = new InverseJoinArrow();
-	EditableArrowConfig arrowConfig = new ArrowBuilderImpl().readOnly( true );
 
 	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -31,27 +30,12 @@ public class JoinArrow implements ArrowView
 		if( !arrows.isEmpty() )
 		{
 			Arrow last = arrows.get( arrows.size() - 1 );
-			if( !last.config().codomain().equals( arrow.config().domain() ) )
+			if( !last.codomain().equals( arrow.domain() ) )
 				throw new IllegalArgumentException( "Domain type of the arrow does not match codomain type of the last arrow" );
 		}
 
 		arrows.add( arrow );
-
-		if( arrow.config().invertible() )
-		{
-			arrowsInverse.add( 0, arrow.inverse() );
-		}
-		else
-		{
-			arrowConfig.invertible( false );
-		}
-
-	}
-
-	@Override
-	public ArrowConfig config()
-	{
-		return config( arrows );
+		arrowsInverse.add( 0, arrow.inverse() );
 	}
 
 	@Override
@@ -75,7 +59,6 @@ public class JoinArrow implements ArrowView
 	@Override
 	public ArrowView inverse()
 	{
-		assert ( arrowConfig.invertible() );
 		return inverseArrow;
 	}
 
@@ -131,26 +114,20 @@ public class JoinArrow implements ArrowView
 		return stringBuilder.toString();
 	}
 
-	private ArrowConfig config( List<Arrow> arrows )
+	@Override
+	public Class codomain()
 	{
-		Arrow firstArrow = arrows.get( 0 );
-		Arrow lastArrow = arrows.get( arrows.size() - 1 );
-		Class domain = firstArrow.config().domain();
-		Class codomain = lastArrow.config().codomain();
-		return arrowConfig.domain( domain ).codomain( codomain ).
-			allowsMultipleSources( firstArrow.config().allowsMultipleSources() ).
-			allowsMultipleTargets( lastArrow.config().allowsMultipleTargets() ).arrowConfig();
+		return arrows.get( arrowsInverse.size() - 1 ).codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrows.get( 0 ).domain();
 	}
 
 	private final class InverseJoinArrow implements ArrowView
 	{
-
-		@Override
-		public ArrowConfig config()
-		{
-			return JoinArrow.this.config( arrowsInverse );
-		}
-
 		@Override
 		public Set sources()
 		{
@@ -196,6 +173,18 @@ public class JoinArrow implements ArrowView
 			stringBuilder.append( " Relations:" );
 			stringBuilder.append( relations() );
 			return stringBuilder.toString();
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return JoinArrow.this.domain();
+		}
+
+		@Override
+		public Class domain()
+		{
+			return JoinArrow.this.codomain();
 		}
 	}
 

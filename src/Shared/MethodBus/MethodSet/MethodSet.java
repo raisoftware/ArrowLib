@@ -1,4 +1,4 @@
-package Shared.MethodBus.Sequence;
+package Shared.MethodBus.MethodSet;
 
 import Arrows.Set0;
 import java.lang.reflect.InvocationTargetException;

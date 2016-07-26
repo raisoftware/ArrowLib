@@ -14,18 +14,10 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	private final Arrow<K, V> arrow;
 	private final BiPredicate<K, V> filter;
 
-
-
 	public FilterArrow( Arrow<K, V> arrow, BiPredicate<K, V> filter )
 	{
 		this.arrow = arrow;
 		this.filter = filter;
-	}
-
-	@Override
-	public ArrowConfig config()
-	{
-		return arrow.config();
 	}
 
 	@Override
@@ -89,5 +81,17 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	public Arrow<V, K> inverse()
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public Class codomain()
+	{
+		return arrow.codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrow.domain();
 	}
 }

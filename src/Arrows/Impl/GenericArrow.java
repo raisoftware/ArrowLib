@@ -3,33 +3,41 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
-import Shared.MethodBus.Sequence.MethodSet;
+import Shared.MethodBus.MethodSet.MethodSet;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
 public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 {
-	private final static ArrowConfig defaultArrowConfig = new ArrowBuilderImpl();
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
 	MethodSet<Arrow.Editor> methodSet;
 	Arrow<V, K> inverseArrow = new InverseGenericArrow();
-	private final ArrowConfig config;
+	private final Class domain;
+	private final Class codomain;
+	private boolean allowsMultipleSources;
+	private boolean allowsMultipleTargets;
 	private boolean listenable;
 
 	public GenericArrow()
 	{
+		this.allowsMultipleSources = true;
+		this.allowsMultipleTargets = true;
+		this.domain = Object.class;
+		this.codomain = Object.class;
 		methodSet = new MethodSet( this, Arrow.Editor.class );
-		this.config = defaultArrowConfig;
 	}
 
-	public GenericArrow( ArrowConfig config, boolean listenable )
+	public GenericArrow( Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
 		methodSet = new MethodSet( this, Arrow.Editor.class );
-		this.config = config;
+		this.domain = domain;
+		this.codomain = codomain;
 		this.listenable = listenable;
+		this.allowsMultipleSources = allowsMultipleSources;
+		this.allowsMultipleTargets = allowsMultipleTargets;
 	}
 
 	private boolean put( K key, V value )
@@ -64,12 +72,6 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	}
 
 	@Override
-	public ArrowConfig config()
-	{
-		return config;
-	}
-
-	@Override
 	public void connect( Collection<? extends K> sources, V target )
 	{
 		inverse().editor().connect( target, sources() );
@@ -78,13 +80,13 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	@Override
 	public void connect( K source, Collection<? extends V> targets )
 	{
-		assert ( config().domain().isInstance( source ) ) : source + " not of type " + config().domain();
+		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
 		for( V target : targets )
 		{
-			assert ( config().codomain().isInstance( target ) ) : target + " not of type " + config().codomain();
+			assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
 		}
 
-		checkforMultipleSourcesTargets( this, source, targets );
+		ArrowUtils.checkForMultipleSourcesTargets( this, allowsMultipleSources, allowsMultipleTargets, source, targets );
 
 		boolean mapChanged = keysToValues.putAll( source, targets );
 
@@ -98,11 +100,11 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	@Override
 	public void connect( K source, V target )
 	{
-		assert ( config().domain().isInstance( source ) ) : source + " not of type " + config().domain();
-		assert ( config().codomain().isInstance( target ) ) : target + " not of type " + config().codomain();
+		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
+		assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
 
-		if( ( !config.allowsMultipleTargets() && sources().contains( source ) )
-			|| ( !config.allowsMultipleSources() && sources().contains( source ) ) )
+		if( ( !allowsMultipleTargets && sources().contains( source ) )
+			|| ( !allowsMultipleSources && sources().contains( source ) ) )
 		{
 			throw ExceptionUtils.multipleSourcesTargetsException( source, target );
 		}
@@ -143,33 +145,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	@Override
 	public String toString()
 	{
-		return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
-	}
-
-
-
-	public static ArrowConfig defaultArrowConfig()
-	{
-		return defaultArrowConfig;
-	}
-
-	private static void checkforMultipleSourcesTargets( Arrow arrow, Object source, Collection<? extends Object> targets )
-	{
-		ArrowConfig arrowConfig = arrow.config();
-		if( !arrowConfig.allowsMultipleTargets() && arrow.sources().contains( source ) )
-		{
-			throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
-		}
-		if( !arrowConfig.allowsMultipleTargets() )
-		{
-			for( Object target : targets )
-			{
-				if( arrow.targets().contains( target ) )
-				{
-					throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
-				}
-			}
-		}
+		return "Arrow<" + domain() + "," + codomain() + ">  Relations:" + relations();
 	}
 
 	@Override
@@ -188,6 +164,18 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	public Arrow<V, K> inverse()
 	{
 		return inverseArrow;
+	}
+
+	@Override
+	public Class codomain()
+	{
+		return codomain;
+	}
+
+	@Override
+	public Class domain()
+	{
+		return domain;
 	}
 
 	private final class InverseGenericArrow implements Arrow<V, K>, Arrow.Editor<V, K>
@@ -217,21 +205,15 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		}
 
 		@Override
-		public ArrowConfig config()
-		{
-			return config.inverse();
-		}
-
-		@Override
 		public void connect( V source, Collection<? extends K> targets )
 		{
-			assert ( config().domain().isInstance( source ) );
+			assert ( domain().isInstance( source ) );
 			for( K target : targets )
 			{
-				assert ( config().codomain().isInstance( target ) );
+				assert ( codomain().isInstance( target ) );
 			}
 
-			checkforMultipleSourcesTargets( this, source, targets );
+			ArrowUtils.checkForMultipleSourcesTargets( this, allowsMultipleTargets, allowsMultipleSources, source, targets );
 
 			boolean mapChanged = valuesToKeys.putAll( source, targets );
 
@@ -269,7 +251,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		@Override
 		public String toString()
 		{
-			return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
+			return "Arrow<" + domain() + "," + codomain() + ">  Relations:" + relations();
 		}
 
 		@Override
@@ -288,6 +270,18 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		public Editor<V, K> editor()
 		{
 			return listenable ? methodSet.publisher() : this;
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return domain;
+		}
+
+		@Override
+		public Class domain()
+		{
+			return codomain;
 		}
 	}
 }

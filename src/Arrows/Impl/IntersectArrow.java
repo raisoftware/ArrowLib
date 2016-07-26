@@ -31,13 +31,6 @@ public class IntersectArrow implements ArrowView
 	}
 
 	@Override
-	public ArrowConfig config()
-	{
-		//might need to get one as parameter on creation
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
 	public Set relations()
 	{
 		return ArrowUtils.generateRelations( this );
@@ -184,13 +177,6 @@ public class IntersectArrow implements ArrowView
 
 	private final class InverseIntersectArrow implements ArrowView
 	{
-
-		@Override
-		public ArrowConfig config()
-		{
-			throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-		}
-
 		@Override
 		public Set sources()
 		{

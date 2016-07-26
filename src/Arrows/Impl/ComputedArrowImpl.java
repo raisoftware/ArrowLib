@@ -10,17 +10,16 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
 	Arrow<K, V> precomputedArrow;
 	Function<K, Set<V>> function;
-	ArrowConfig arrowConfig;
+	Class domain;
+	Class codomain;
 
 	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
 
-	public ComputedArrowImpl( Function<K, Set<V>> function )
+	public ComputedArrowImpl( Function<K, Set<V>> function, Class domain, Class codomain )
 	{
-
-		EditableArrowConfig editableArrowConfig = new ArrowBuilderImpl();
+		this.domain = domain;
+		this.codomain = codomain;
 		precomputedArrow = new GenericArrow();
-		this.arrowConfig = editableArrowConfig.readOnly( true );
-
 
 		this.function = function;
 	}
@@ -59,12 +58,6 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	}
 
 	@Override
-	public ArrowConfig config()
-	{
-		return arrowConfig;
-	}
-
-	@Override
 	public V target( K source ) throws Exception
 	{
 		return (V) ArrowUtils.target( this, source );
@@ -88,14 +81,20 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		return inverseArrow;
 	}
 
+	@Override
+	public Class codomain()
+	{
+		return codomain;
+	}
+
+	@Override
+	public Class domain()
+	{
+		return domain;
+	}
+
 	private final class InverseComputedArrow implements ArrowView<V, K>
 	{
-
-		@Override
-		public ArrowConfig config()
-		{
-			return arrowConfig;
-		}
 
 		@Override
 		public Set<V> sources()
@@ -131,6 +130,18 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		public ArrowView<K, V> inverse()
 		{
 			return ComputedArrowImpl.this;
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return domain;
+		}
+
+		@Override
+		public Class domain()
+		{
+			return codomain;
 		}
 	}
 }

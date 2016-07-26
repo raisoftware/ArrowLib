@@ -18,17 +18,14 @@ public class ArrowsImpl implements Arrows
 	public ArrowsImpl()
 	{
 		this.objects = null;
-		EditableArrowConfig editableArrowConfig = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
-
-		ArrowConfig arrowConfig = editableArrowConfig.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
-		name2arrow = new GenericArrow( arrowConfig, false );
+		name2arrow = new GenericArrow( Enum.class, Arrow.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
 	}
 
 	@Override
 	public final ArrowBuilder create( Enum arrowName, Enum inverseArrowName )
 	{
-		return new ArrowBuilderImpl( this, objects, arrowName, inverseArrowName );
+		return new GenericArrowBuilder( this, objects, arrowName, inverseArrowName );
 	}
 
 	@Override

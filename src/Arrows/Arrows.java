@@ -45,8 +45,8 @@ public interface Arrows extends Set0
 		return new IntersectArrow( arrows );
 	}
 
-	static <K, V> ComputedArrow<K, V> computedArrow( Function<K, Set<V>> function )
+	static <K, V> ComputedArrow<K, V> computedArrow( Function<K, Set<V>> function, Class domain, Class codomain )
 	{
-		return new ComputedArrowImpl<>( function );
+		return new ComputedArrowImpl<>( function, domain, codomain );
 	}
 }

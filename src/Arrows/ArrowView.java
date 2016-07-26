@@ -5,7 +5,15 @@ import java.util.Set;
 
 public interface ArrowView<K, V>
 {
-	ArrowConfig config();
+	default Class codomain()
+	{
+		return Object.class;
+	}
+
+	default Class domain()
+	{
+		return Object.class;
+	}
 
 	Set<K> sources();
 

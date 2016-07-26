@@ -27,4 +27,23 @@ public class ArrowUtils
 			throw ExceptionUtils.targetsNumberException( targets.size() );
 		return targets.iterator().next();
 	}
+
+	public static void checkForMultipleSourcesTargets( ArrowView arrow, boolean allowsMultipleTargets, boolean allowsMultipleSources, Object source, Collection<? extends Object> targets )
+	{
+		if( !allowsMultipleTargets && arrow.sources().contains( source ) )
+		{
+			throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
+		}
+		if( !allowsMultipleSources )
+		{
+			for( Object target : targets )
+			{
+				if( arrow.targets().contains( target ) )
+				{
+					throw ExceptionUtils.multipleSourcesTargetsException( source, targets );
+				}
+			}
+		}
+	}
+
 }
