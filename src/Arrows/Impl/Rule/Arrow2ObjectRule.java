@@ -2,26 +2,25 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import java.util.Collection;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
-public class Arrow2ObjectRule implements ArrowListener
+public class Arrow2ObjectRule implements Arrow.Editor
 {
-	EditableArrow listenedArrow = null;
+	Arrow listenedArrow = null;
 
-	EditableArrow<EditableArrow, Object> inboundArrow2object;
-	EditableArrow<EditableArrow, Object> outboundArrow2object;
+	Arrow<Arrow, Object> inboundArrow2object;
+	Arrow<Arrow, Object> outboundArrow2object;
 
-	public Arrow2ObjectRule( Arrows arrows )
+	public Arrow2ObjectRule( Arrow listenedArrow, Arrows arrows )
 	{
-
+		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = (EditableArrow) arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = (EditableArrow) arrows.arrow( OutboundArrow2Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
@@ -29,11 +28,6 @@ public class Arrow2ObjectRule implements ArrowListener
 		}
 	}
 
-	@Override
-	public ArrowConfig config()
-	{
-		return null;
-	}
 
 	@Override
 	public void connect( Object source, Collection targets )
@@ -41,8 +35,8 @@ public class Arrow2ObjectRule implements ArrowListener
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		outboundArrow2object.connect( listenedArrow, source );
-		inboundArrow2object.connect( listenedArrow, targets );
+		outboundArrow2object.editor().connect( listenedArrow, source );
+		inboundArrow2object.editor().connect( listenedArrow, targets );
 	}
 
 	@Override
@@ -51,8 +45,8 @@ public class Arrow2ObjectRule implements ArrowListener
 		if( source == null || target == null )
 			return;
 
-		outboundArrow2object.connect( listenedArrow, source );
-		inboundArrow2object.connect( listenedArrow, target );
+		outboundArrow2object.editor().connect( listenedArrow, source );
+		inboundArrow2object.editor().connect( listenedArrow, target );
 	}
 
 	@Override
@@ -61,14 +55,8 @@ public class Arrow2ObjectRule implements ArrowListener
 		if( target == null || sources == null || sources.isEmpty() )
 			return;
 
-		outboundArrow2object.connect( listenedArrow, sources );
-		inboundArrow2object.connect( listenedArrow, target );
-	}
-
-	@Override
-	public Set relations()
-	{
-		return null;
+		outboundArrow2object.editor().connect( listenedArrow, sources );
+		inboundArrow2object.editor().connect( listenedArrow, target );
 	}
 
 	@Override
@@ -78,45 +66,9 @@ public class Arrow2ObjectRule implements ArrowListener
 			return;
 
 		if( listenedArrow.inverse().targets( target ).isEmpty() )
-			inboundArrow2object.remove( listenedArrow, target );
+			inboundArrow2object.editor().remove( listenedArrow, target );
 
 		if( listenedArrow.targets( source ).isEmpty() )
-			outboundArrow2object.remove( listenedArrow, source );
-	}
-
-	@Override
-	public Set sources()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets()
-	{
-		return null;
-	}
-
-	@Override
-	public EditableArrow inverse()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets( Object source )
-	{
-		return null;
-	}
-
-	@Override
-	public Object target( Object source ) throws Exception
-	{
-		return null;
-	}
-
-	@Override
-	public void setTargetObject( EditableArrow target )
-	{
-		this.listenedArrow = target;
+			outboundArrow2object.editor().remove( listenedArrow, source );
 	}
 }

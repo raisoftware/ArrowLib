@@ -1,22 +1,18 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Arrows.Impl.Rule.*;
-import Shared.MethodBus.Sequence.MethodSequence;
-import Shared.MethodBus.Sequence.MethodSequence.ExecutionTime;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
 public class DiagramImpl implements Diagram
 {
-	Arrows arrows;
+	ArrowsImpl arrows;
 	Objects objects;
-	MethodSequence<EditableArrow, ArrowListener> sequence;
 
 	public DiagramImpl()
 	{
-		sequence = new MethodSequence();
-		arrows = new ArrowsImpl( sequence );
+		arrows = new ArrowsImpl();
+
 
 		ArrowBuilder class2objectBuilder = arrows.create( Class2Object, Object2Class );
 		class2objectBuilder.domain( Class.class ).codomain( Object.class ).listenable( false ).end();
@@ -33,11 +29,14 @@ public class DiagramImpl implements Diagram
 		ArrowBuilder outboundArrowsBuilder = arrows.create( OutboundArrow2Object, Object2OutboundArrow );
 		outboundArrowsBuilder.domain( Arrow.class ).codomain( Object.class ).listenable( false ).end();
 
+		//TOFIX fix this ugly stuff
 		objects = new ObjectsImpl( arrows );
+		arrows.objects( objects );
 
-		addClass2ObjectRule();
-		addObjectRegistrarRule();
-		addArrow2ObjectRule();
+
+//		addClass2ObjectRule();
+//		addObjectRegistrarRule();
+//		addArrow2ObjectRule();
 	}
 
 	@Override
@@ -55,26 +54,27 @@ public class DiagramImpl implements Diagram
 //	reference( nick : Enum, domain : Arrow ) : Reference
 
 	@Override
-	public <K, V> Set2<K, V> set2( K source, EditableArrow<K, V> arrow )
+	public <K, V> Set0<V> set0( K source, Arrow<K, V> arrow )
 	{
-		return new Set2Impl( source, arrow );
+		return new Set0Impl( source, arrow );
 	}
 
-	private void addClass2ObjectRule()
-	{
-		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
-		sequence.subscribe( class2ObjectRule, ExecutionTime.ExecuteBefore );
-	}
+//	private void addClass2ObjectRule()
+//	{
+//		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
+//		arrows.subscribe( class2ObjectRule );
+//	}
+//
+//	private void addObjectRegistrarRule()
+//	{
+//		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
+//		arrows.subscribe( objectRegistrarRule );
+//	}
+//
+//	private void addArrow2ObjectRule()
+//	{
+//		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows );
+//		arrows.subscribe( arrow2ObjectRule );
+//	}
 
-	private void addObjectRegistrarRule()
-	{
-		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
-		sequence.subscribe( objectRegistrarRule, ExecutionTime.ExecuteBefore );
-	}
-
-	private void addArrow2ObjectRule()
-	{
-		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows );
-		sequence.subscribe( arrow2ObjectRule, ExecutionTime.ExecuteAfter );
-	}
 }

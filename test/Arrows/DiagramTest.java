@@ -43,11 +43,11 @@ public class DiagramTest
 		diagram.objects().add( 2, rootObjConfig );
 		diagram.objects().add( "unu", coolestObjConfig );
 
-		EditableArrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
-		arrow.connect( 1, "unu" );
-		arrow.connect( 2, "doi" );
-		arrow.connect( 3, "trei" );
-		arrow.connect( 4, "patru" );
+		Arrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
+		arrow.editor().connect( 1, "unu" );
+		arrow.editor().connect( 2, "doi" );
+		arrow.editor().connect( 3, "trei" );
+		arrow.editor().connect( 4, "patru" );
 
 		diagram.objects().add( 3, bestObjConfig );
 

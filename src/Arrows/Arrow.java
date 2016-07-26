@@ -2,21 +2,24 @@ package Arrows;
 
 import java.util.*;
 
-public interface Arrow<K, V>
+
+public interface Arrow<K, V> extends ArrowView<K, V>
 {
+	Set0<Editor> listeners();
 
-	ArrowConfig config();
+	Editor<K, V> editor();
 
-	Set<K> sources();
-
-	Set<V> targets();
-
-	V target( K source ) throws Exception;
-
-	Set<V> targets( K source );
-
-	Set<Map.Entry<K, V>> relations();
-
+	@Override
 	Arrow<V, K> inverse();
 
+	public interface Editor<K, V>
+	{
+		void connect( K source, V target );
+
+		void connect( K source, Collection<? extends V> targets );
+
+		void connect( Collection<? extends K> sources, V target );
+
+		void remove( K source, V target );
+	}
 }

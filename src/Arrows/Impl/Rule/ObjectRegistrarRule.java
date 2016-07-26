@@ -1,10 +1,10 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
+import Arrows.Arrow.Editor;
 import java.util.Collection;
-import java.util.Set;
 
-public class ObjectRegistrarRule implements ArrowListener
+public class ObjectRegistrarRule implements Editor
 {
 
 	Objects objects;
@@ -12,12 +12,6 @@ public class ObjectRegistrarRule implements ArrowListener
 	public ObjectRegistrarRule( Arrows arrows, Objects objects )
 	{
 		this.objects = objects;
-	}
-
-	@Override
-	public ArrowConfig config()
-	{
-		return null;
 	}
 
 	@Override
@@ -58,49 +52,10 @@ public class ObjectRegistrarRule implements ArrowListener
 		objects.add( target );
 	}
 
-	@Override
-	public Set relations()
-	{
-		return null;
-	}
 
 	@Override
 	public void remove( Object source, Object target )
 	{
-	}
-
-	@Override
-	public Set sources()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets()
-	{
-		return null;
-	}
-
-	@Override
-	public EditableArrow inverse()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets( Object source )
-	{
-		return null;
-	}
-
-	@Override
-	public Object target( Object source ) throws Exception
-	{
-		return null;
-	}
-
-	@Override
-	public void setTargetObject( EditableArrow target )
-	{
+		//TOFIX implement
 	}
 }

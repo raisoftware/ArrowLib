@@ -2,7 +2,7 @@ package Arrows;
 
 import java.util.Iterator;
 
-public interface Objects extends Set2
+public interface Objects extends Set0
 {
 	public static enum StandardObjectName
 	{

@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 public class UnionArrowTest
 {
 	private Diagram diagram;
-	private EditableArrow<Character, Character> toUpperCaseArrow1;
-	private EditableArrow<Character, Character> toUpperCaseArrow2;
+	private Arrow<Character, Character> toUpperCaseArrow1;
+	private Arrow<Character, Character> toUpperCaseArrow2;
 	private final String word1 = "abcd";
 	private final String word2 = "efgh";
 	private final String word3 = "ijkl";
@@ -21,7 +21,7 @@ public class UnionArrowTest
 
 	private final String unionString = word1 + word2 + word3 + word4;
 
-	private Arrow unionArrow;
+	private ArrowView unionArrow;
 
 	public UnionArrowTest()
 	{
@@ -43,15 +43,15 @@ public class UnionArrowTest
 		diagram = Diagram.create();
 
 		toUpperCaseArrow1 = diagram.arrows().create( ToUpperCase, ToLowerCase ).end();
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word4 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
 		toUpperCaseArrow2 = diagram.arrows().create( ToUpperCase2, ToLowerCase2 ).end();
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word4 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
 
 		unionArrow = Arrows.union( toUpperCaseArrow1, toUpperCaseArrow2 );
 

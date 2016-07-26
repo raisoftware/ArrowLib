@@ -6,7 +6,7 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class BasicArrowTest
+public class GenericArrowTest
 {
 	GenericArrow<String, Character> arrow;
 
@@ -15,7 +15,7 @@ public class BasicArrowTest
 	private final String word3 = "classes";
 	private final String word3Again = "classes";
 
-	public BasicArrowTest()
+	public GenericArrowTest()
 	{
 	}
 
@@ -154,7 +154,7 @@ public class BasicArrowTest
 	@Test
 	public void testRemoval()
 	{
-		arrow.inverse().remove( 's', null );
+		arrow.inverse().editor().remove( 's', null );
 
 		assertEquals( arrow.inverse().targets( 's' ).size(), 0 );
 

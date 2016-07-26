@@ -1,15 +1,14 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.ArrowConfig;
+import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import java.util.*;
 
-public class UnionArrow implements Arrow
+public class UnionArrow implements ArrowView
 {
 	List<Arrow> arrows = new ArrayList<>();
 
-	Arrow inverseArrow = new InverseUnionArrow();
+	ArrowView inverseArrow = new InverseUnionArrow();
 
 	public UnionArrow( Arrow... arrows ) throws IllegalArgumentException
 	{
@@ -102,7 +101,7 @@ public class UnionArrow implements Arrow
 	}
 
 	@Override
-	public Arrow inverse()
+	public ArrowView inverse()
 	{
 		return inverseArrow;
 	}
@@ -119,7 +118,7 @@ public class UnionArrow implements Arrow
 		return ArrowUtils.target( this, source );
 	}
 
-	private final class InverseUnionArrow implements Arrow
+	private final class InverseUnionArrow implements ArrowView
 	{
 
 		@Override
@@ -159,7 +158,7 @@ public class UnionArrow implements Arrow
 		}
 
 		@Override
-		public Arrow inverse()
+		public ArrowView inverse()
 		{
 			return UnionArrow.this;
 		}

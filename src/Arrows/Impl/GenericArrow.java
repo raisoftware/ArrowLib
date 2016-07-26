@@ -3,28 +3,33 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
+import Shared.MethodBus.Sequence.MethodSet;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class GenericArrow<K, V> implements EditableArrow<K, V>
+public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 {
 	private final static ArrowConfig defaultArrowConfig = new ArrowBuilderImpl();
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	EditableArrow<V, K> inverseArrow = new InverseManyToManyArrow();
-
+	MethodSet<Arrow.Editor> methodSet;
+	Arrow<V, K> inverseArrow = new InverseGenericArrow();
 	private final ArrowConfig config;
+	private boolean listenable;
 
 	public GenericArrow()
 	{
+		methodSet = new MethodSet( this, Arrow.Editor.class );
 		this.config = defaultArrowConfig;
 	}
 
-	public GenericArrow( ArrowConfig config )
+	public GenericArrow( ArrowConfig config, boolean listenable )
 	{
+		methodSet = new MethodSet( this, Arrow.Editor.class );
 		this.config = config;
+		this.listenable = listenable;
 	}
 
 	private boolean put( K key, V value )
@@ -67,7 +72,7 @@ public class GenericArrow<K, V> implements EditableArrow<K, V>
 	@Override
 	public void connect( Collection<? extends K> sources, V target )
 	{
-		inverse().connect( target, sources() );
+		inverse().editor().connect( target, sources() );
 	}
 
 	@Override
@@ -141,11 +146,7 @@ public class GenericArrow<K, V> implements EditableArrow<K, V>
 		return "Arrow<" + config().domain() + "," + config().codomain() + ">  Relations:" + relations();
 	}
 
-	@Override
-	public EditableArrow<V, K> inverse()
-	{
-		return inverseArrow;
-	}
+
 
 	public static ArrowConfig defaultArrowConfig()
 	{
@@ -171,8 +172,25 @@ public class GenericArrow<K, V> implements EditableArrow<K, V>
 		}
 	}
 
+	@Override
+	public Set0<Editor> listeners()
+	{
+		return methodSet;
+	}
 
-	private final class InverseManyToManyArrow implements EditableArrow<V, K>
+	@Override
+	public Editor<K, V> editor()
+	{
+		return listenable ? methodSet.publisher() : this;
+	}
+
+	@Override
+	public Arrow<V, K> inverse()
+	{
+		return inverseArrow;
+	}
+
+	private final class InverseGenericArrow implements Arrow<V, K>, Arrow.Editor<V, K>
 	{
 		@Override
 		public Set<V> sources()
@@ -193,7 +211,7 @@ public class GenericArrow<K, V> implements EditableArrow<K, V>
 		}
 
 		@Override
-		public EditableArrow<K, V> inverse()
+		public Arrow<K, V> inverse()
 		{
 			return GenericArrow.this;
 		}
@@ -257,7 +275,19 @@ public class GenericArrow<K, V> implements EditableArrow<K, V>
 		@Override
 		public void connect( Collection<? extends V> sources, K target )
 		{
-			inverse().connect( target, sources );
+			GenericArrow.this.connect( target, sources );
+		}
+
+		@Override
+		public Set0<Editor> listeners()
+		{
+			return methodSet;
+		}
+
+		@Override
+		public Editor<V, K> editor()
+		{
+			return listenable ? methodSet.publisher() : this;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.MethodBus.Sequence.MethodSequence;
+import Arrows.Impl.Rule.*;
 
 public class ArrowBuilderImpl implements ArrowBuilder
 {
@@ -16,6 +16,7 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	private boolean listenable = true;
 	private boolean readOnly = false;
 	private Arrows arrows = null;
+	private Objects objects = null;
 
 	InverseArrowConfig inverseConfig = new InverseArrowConfig();
 
@@ -30,9 +31,10 @@ public class ArrowBuilderImpl implements ArrowBuilder
 		this.listenable = false;
 	}
 
-	public ArrowBuilderImpl( Arrows arrows, Enum name, Enum inverseName )
+	public ArrowBuilderImpl( Arrows arrows, Objects objects, Enum name, Enum inverseName )
 	{
 		this.arrows = arrows;
+		this.objects = objects;
 		this.name = name;
 		this.inverseName = inverseName;
 	}
@@ -81,17 +83,22 @@ public class ArrowBuilderImpl implements ArrowBuilder
 	}
 
 	@Override
-	public EditableArrow end()
+	public Arrow end()
 	{
 		assert ( name != null && inverseName != null && arrows != null );
-		EditableArrow arrow = new GenericArrow( this );
+		Arrow arrow = new GenericArrow( this, listenable );
+
 		if( listenable )
 		{
-			MethodSequence<EditableArrow, ArrowListener> rules = arrows.rules();
-			EditableArrow arrowProxy = rules.createPublisher( arrow, ArrowListener.class );
-			arrow = arrowProxy;
+			Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
+			arrow.listeners().add( class2ObjectRule );
+			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
+			arrow.listeners().add( objectRegistrarRule );
+			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrow, arrows );
+			arrow.listeners().add( arrow2ObjectRule );
 		}
 		arrows.add( name, inverseName, arrow );
+
 
 		return arrow;
 	}

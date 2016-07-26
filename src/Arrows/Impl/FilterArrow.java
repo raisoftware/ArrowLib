@@ -3,12 +3,13 @@ package Arrows.Impl;
 
 
 import Arrows.*;
+import Arrows.Utils.ArrowUtils;
 import java.util.*;
 import java.util.function.BiPredicate;
 
 
 
-public class FilterArrow<K, V> implements Arrow<K, V>
+public class FilterArrow<K, V> implements ArrowView<K, V>
 {
 	private final Arrow<K, V> arrow;
 	private final BiPredicate<K, V> filter;
@@ -81,7 +82,7 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 	@Override
 	public V target( K source ) throws Exception
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return (V) ArrowUtils.target( this, source );
 	}
 
 	@Override
@@ -89,5 +90,4 @@ public class FilterArrow<K, V> implements Arrow<K, V>
 	{
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
-
 }

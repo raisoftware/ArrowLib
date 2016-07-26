@@ -1,12 +1,11 @@
 package Arrows;
 
 import Arrows.Impl.*;
-import Shared.MethodBus.Sequence.MethodSequence;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-public interface Arrows extends Set2
+public interface Arrows extends Set0
 {
 
 	public static enum StandardArrowName
@@ -26,24 +25,22 @@ public interface Arrows extends Set2
 
 	ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
 
-	MethodSequence<EditableArrow, ArrowListener> rules();
-
-	static Arrow filter( Arrow arrow, BiPredicate filter )
+	static ArrowView filter( Arrow arrow, BiPredicate filter )
 	{
 		return new FilterArrow( arrow, filter );
 	}
 
-	static Arrow join( Arrow... arrows )
+	static ArrowView join( Arrow... arrows )
 	{
 		return new JoinArrow( arrows );
 	}
 
-	static Arrow union( Arrow... arrows )
+	static ArrowView union( Arrow... arrows )
 	{
 		return new UnionArrow( arrows );
 	}
 
-	static Arrow intersect( Arrow... arrows )
+	static ArrowView intersect( Arrow... arrows )
 	{
 		return new IntersectArrow( arrows );
 	}

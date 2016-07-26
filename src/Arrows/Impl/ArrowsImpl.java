@@ -1,47 +1,47 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.MethodBus.Sequence.MethodSequence;
-import java.util.Iterator;
+import Arrows.Objects;
+import java.util.*;
 
 public class ArrowsImpl implements Arrows
 {
-	EditableArrow<Enum, Arrow> name2arrow;
-	final private MethodSequence methodSequence;
+	Arrow<Enum, Arrow> name2arrow;
 
-	public ArrowsImpl( MethodSequence<EditableArrow, ArrowListener> methodSequence )
+	Objects objects;
+
+	void objects( Objects objects )
 	{
-		this.methodSequence = methodSequence;
+		this.objects = objects;
+	}
+
+	public ArrowsImpl()
+	{
+		this.objects = null;
 		EditableArrowConfig editableArrowConfig = create( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name ).listenable( false );
 
 		ArrowConfig arrowConfig = editableArrowConfig.allowsMultipleTargets( false ).domain( Enum.class ).codomain( Arrow.class ).arrowConfig();
-		name2arrow = new GenericArrow( arrowConfig );
+		name2arrow = new GenericArrow( arrowConfig, false );
 		add( StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name, name2arrow );
 	}
 
 	@Override
 	public final ArrowBuilder create( Enum arrowName, Enum inverseArrowName )
 	{
-		return new ArrowBuilderImpl( this, arrowName, inverseArrowName );
+		return new ArrowBuilderImpl( this, objects, arrowName, inverseArrowName );
 	}
 
 	@Override
 	public final void add( Enum arrowName, Enum arrowInverseName, Arrow arrow )
 	{
-		name2arrow.connect( arrowName, arrow );
-		name2arrow.connect( arrowInverseName, arrow.inverse() );
+		name2arrow.editor().connect( arrowName, arrow );
+		name2arrow.editor().connect( arrowInverseName, arrow.inverse() );
 	}
 
 	@Override
 	public Arrow arrow( Enum arrowName ) throws Exception
 	{
 		return name2arrow.target( arrowName );
-	}
-
-	@Override
-	public MethodSequence<EditableArrow, ArrowListener> rules()
-	{
-		return methodSequence;
 	}
 
 	@Override

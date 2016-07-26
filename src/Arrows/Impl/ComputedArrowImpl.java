@@ -8,17 +8,17 @@ import java.util.function.Function;
 
 public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
-	EditableArrow<K, V> precomputedArrow;
+	Arrow<K, V> precomputedArrow;
 	Function<K, Set<V>> function;
 	ArrowConfig arrowConfig;
 
-	Arrow<V, K> inverseArrow = new InverseComputedArrow();
+	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
 
 	public ComputedArrowImpl( Function<K, Set<V>> function )
 	{
 
 		EditableArrowConfig editableArrowConfig = new ArrowBuilderImpl();
-		precomputedArrow = new GenericArrow( editableArrowConfig );
+		precomputedArrow = new GenericArrow();
 		this.arrowConfig = editableArrowConfig.readOnly( true );
 
 
@@ -28,7 +28,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public void addSource( K source )
 	{
-		precomputedArrow.connect( source, function.apply( source ) );
+		precomputedArrow.editor().connect( source, function.apply( source ) );
 	}
 
 	@Override
@@ -36,14 +36,14 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 		for( K source : sources )
 		{
-			precomputedArrow.connect( source, function.apply( source ) );
+			precomputedArrow.editor().connect( source, function.apply( source ) );
 		}
 	}
 
 	@Override
 	public void remove( K source )
 	{
-		precomputedArrow.remove( source, null );
+		precomputedArrow.editor().remove( source, null );
 	}
 
 	@Override
@@ -83,12 +83,12 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	}
 
 	@Override
-	public Arrow<V, K> inverse()
+	public ArrowView<V, K> inverse()
 	{
 		return inverseArrow;
 	}
 
-	private final class InverseComputedArrow implements Arrow<V, K>
+	private final class InverseComputedArrow implements ArrowView<V, K>
 	{
 
 		@Override
@@ -128,10 +128,9 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		}
 
 		@Override
-		public Arrow<K, V> inverse()
+		public ArrowView<K, V> inverse()
 		{
 			return ComputedArrowImpl.this;
 		}
-
 	}
 }

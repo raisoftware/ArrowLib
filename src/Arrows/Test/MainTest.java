@@ -15,10 +15,10 @@ public class MainTest
 
 		//create custom arrows
 		ArrowBuilder containsArrowBuilder = diagram.arrows().create( Contains, IsContainedBy );
-		EditableArrow arrow = containsArrowBuilder.domain( String.class ).codomain( Character.class ).end();
+		Arrow arrow = containsArrowBuilder.domain( String.class ).codomain( Character.class ).end();
 
 		ArrowBuilder squareArrowBuilder = diagram.arrows().create( Square, SquareRoot );
-		EditableArrow squareArrow = squareArrowBuilder.domain( Float.class ).codomain( Float.class ).end();
+		Arrow squareArrow = squareArrowBuilder.domain( Float.class ).codomain( Float.class ).end();
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );
@@ -27,14 +27,14 @@ public class MainTest
 		//----------------------------------------------------
 
 		//test arrows
-		arrow.connect( "sir", chars );
-		arrow.connect( "irs", chars );
-		arrow.connect( "ra", 'r' );
-		arrow.connect( "ra", 'a' );
+		arrow.editor().connect( "sir", chars );
+		arrow.editor().connect( "irs", chars );
+		arrow.editor().connect( "ra", 'r' );
+		arrow.editor().connect( "ra", 'a' );
 
-		squareArrow.connect( 9.f, 81.f );
-		squareArrow.connect( 2.f, 4.f );
-		squareArrow.connect( 7.f, 49.f );
+		squareArrow.editor().connect( 9.f, 81.f );
+		squareArrow.editor().connect( 2.f, 4.f );
+		squareArrow.editor().connect( 7.f, 49.f );
 
 		System.out.println( "Direct:" + squareArrow.inverse().inverse().inverse().inverse().relations() );
 		System.out.println( "reverse:" + squareArrow.inverse().relations() );
@@ -59,7 +59,7 @@ public class MainTest
 
 		System.out.println( "" + containsArrow.relations() );
 
-		Arrow joinArrow = Arrows.join( containsArrow.inverse() );
+		ArrowView joinArrow = Arrows.join( containsArrow.inverse() );
 		Set results = joinArrow.targets( 'r' );
 		System.out.println( "results:" + results );
 	}

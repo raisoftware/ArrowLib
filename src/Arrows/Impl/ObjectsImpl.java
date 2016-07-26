@@ -11,21 +11,21 @@ import static Arrows.Arrows.StandardArrowName.*;
 public class ObjectsImpl implements Objects
 {
 	final ObjectConfig defaultObjectConfig = new ObjectConfigBuilderImpl().end();
-	EditableArrow<Enum, Object> name2Object = null;
-	EditableArrow<Object, ObjectConfig> object2Config = null;
-	EditableArrow<Class, Object> class2Object = null;
-	EditableArrow<EditableArrow, Object> inboundArrow2object = null;
-	EditableArrow<EditableArrow, Object> outboundArrow2object = null;
+	Arrow<Enum, Object> name2Object = null;
+	Arrow<Object, ObjectConfig> object2Config = null;
+	Arrow<Class, Object> class2Object = null;
+	Arrow<Arrow, Object> inboundArrow2object = null;
+	Arrow<Arrow, Object> outboundArrow2object = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{
 		try
 		{
-			this.name2Object = (EditableArrow) arrows.arrow( Name2Object );
-			this.object2Config = (EditableArrow) arrows.arrow( Object2Config );
-			this.class2Object = (EditableArrow) arrows.arrow( Class2Object );
-			this.inboundArrow2object = (EditableArrow) arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = (EditableArrow) arrows.arrow( OutboundArrow2Object );
+			this.name2Object = (Arrow) arrows.arrow( Name2Object );
+			this.object2Config = (Arrow) arrows.arrow( Object2Config );
+			this.class2Object = (Arrow) arrows.arrow( Class2Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow2Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow2Object );
 		}
 		catch( Exception ex )
 		{
@@ -53,10 +53,10 @@ public class ObjectsImpl implements Objects
 				if( name2Object.inverse().target( object ) == StandardObjectName.Unnamed )
 				{
 					//replace
-					name2Object.inverse().remove( object, null );
-					object2Config.remove( object, null );
-					name2Object.connect( objectConfig.name(), object );
-					object2Config.connect( object, objectConfig );
+					name2Object.inverse().editor().remove( object, null );
+					object2Config.editor().remove( object, null );
+					name2Object.editor().connect( objectConfig.name(), object );
+					object2Config.editor().connect( object, objectConfig );
 				}
 				else if( objectConfig.name() != StandardObjectName.Unnamed )
 					throw new Exception( "Object registered twice, should remove first." );
@@ -103,8 +103,8 @@ public class ObjectsImpl implements Objects
 	{
 		if( contains( object ) )
 			throw new Exception( "Object already registered." );
-		name2Object.connect( objectConfig.name(), object );
-		object2Config.connect( object, objectConfig );
+		name2Object.editor().connect( objectConfig.name(), object );
+		object2Config.editor().connect( object, objectConfig );
 	}
 
 	@Override
@@ -126,25 +126,25 @@ public class ObjectsImpl implements Objects
 
 		if( objConfig.tracksInboundArrows() )
 		{
-			Set<EditableArrow> arrows = inboundArrow2object.inverse().targets( obj );
-			for( EditableArrow arrow : arrows )
+			Set<Arrow> arrows = inboundArrow2object.inverse().targets( obj );
+			for( Arrow arrow : arrows )
 			{
-				arrow.inverse().remove( obj, null );
+				arrow.inverse().editor().remove( obj, null );
 			}
 		}
 
 
 		if( objConfig.tracksOutboundArrows() )
 		{
-			Set<EditableArrow> arrows = outboundArrow2object.inverse().targets( obj );
-			for( EditableArrow arrow : arrows )
+			Set<Arrow> arrows = outboundArrow2object.inverse().targets( obj );
+			for( Arrow arrow : arrows )
 			{
 				Set targets = null;
 				if( cascade )
 				{
 					targets = arrow.targets( obj );
 				}
-				arrow.remove( obj, null );
+				arrow.editor().remove( obj, null );
 				if( cascade )
 				{
 					for( Object target : targets )

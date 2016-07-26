@@ -4,12 +4,12 @@ import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import java.util.*;
 
-public class JoinArrow implements Arrow
+public class JoinArrow implements ArrowView
 {
 	List<Arrow> arrows = new ArrayList<>();
 	List<Arrow> arrowsInverse = new LinkedList<>();
 
-	Arrow inverseArrow = new InverseJoinArrow();
+	ArrowView inverseArrow = new InverseJoinArrow();
 	EditableArrowConfig arrowConfig = new ArrowBuilderImpl().readOnly( true );
 
 	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
@@ -73,7 +73,7 @@ public class JoinArrow implements Arrow
 	}
 
 	@Override
-	public Arrow inverse()
+	public ArrowView inverse()
 	{
 		assert ( arrowConfig.invertible() );
 		return inverseArrow;
@@ -142,7 +142,7 @@ public class JoinArrow implements Arrow
 			allowsMultipleTargets( lastArrow.config().allowsMultipleTargets() ).arrowConfig();
 	}
 
-	private final class InverseJoinArrow implements Arrow
+	private final class InverseJoinArrow implements ArrowView
 	{
 
 		@Override
@@ -182,7 +182,7 @@ public class JoinArrow implements Arrow
 		}
 
 		@Override
-		public Arrow inverse()
+		public ArrowView inverse()
 		{
 			return JoinArrow.this;
 		}

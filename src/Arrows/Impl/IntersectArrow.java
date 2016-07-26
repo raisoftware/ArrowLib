@@ -1,12 +1,11 @@
 package Arrows.Impl;
 
-import Arrows.Arrow;
-import Arrows.ArrowConfig;
+import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import java.util.*;
 
 
-public class IntersectArrow implements Arrow
+public class IntersectArrow implements ArrowView
 {
 	List<Arrow> arrows = new ArrayList<>();
 
@@ -59,7 +58,7 @@ public class IntersectArrow implements Arrow
 	}
 
 	@Override
-	public Arrow inverse()
+	public ArrowView inverse()
 	{
 		return inverseArrow;
 	}
@@ -134,7 +133,7 @@ public class IntersectArrow implements Arrow
 		}
 		Set firstArrowSources = firstArrow.sources();
 
-		Arrow arrow = this;
+		ArrowView arrow = this;
 		if( inverse )
 		{
 			arrow = inverseArrow;
@@ -183,7 +182,7 @@ public class IntersectArrow implements Arrow
 		return stringBuilder.toString();
 	}
 
-	private final class InverseIntersectArrow implements Arrow
+	private final class InverseIntersectArrow implements ArrowView
 	{
 
 		@Override
@@ -223,7 +222,7 @@ public class IntersectArrow implements Arrow
 		}
 
 		@Override
-		public Arrow inverse()
+		public ArrowView inverse()
 		{
 			return IntersectArrow.this;
 		}

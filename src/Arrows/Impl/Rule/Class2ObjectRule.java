@@ -5,15 +5,15 @@ import java.util.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
-public class Class2ObjectRule implements ArrowListener
+public class Class2ObjectRule implements Arrow.Editor
 {
-	private EditableArrow<Class, Object> class2Object = null;
+	private Arrow<Class, Object> class2Object = null;
 
 	public Class2ObjectRule( Arrows arrows )
 	{
 		try
 		{
-			this.class2Object = (EditableArrow) arrows.arrow( Class2Object );
+			this.class2Object = arrows.arrow( Class2Object );
 		}
 		catch( Exception ex )
 		{
@@ -27,22 +27,16 @@ public class Class2ObjectRule implements ArrowListener
 	}
 
 	@Override
-	public ArrowConfig config()
-	{
-		return null;
-	}
-
-	@Override
 	public void connect( Object source, Collection targets )
 	{
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		class2Object.connect( source.getClass(), source );
+		class2Object.editor().connect( source.getClass(), source );
 
 		for( Object target : targets )
 		{
-			class2Object.connect( target.getClass(), target );
+			class2Object.editor().connect( target.getClass(), target );
 		}
 	}
 
@@ -52,11 +46,11 @@ public class Class2ObjectRule implements ArrowListener
 		if( target == null || sources == null || sources.isEmpty() )
 			return;
 
-		class2Object.connect( target.getClass(), target );
+		class2Object.editor().connect( target.getClass(), target );
 
 		for( Object source : sources )
 		{
-			class2Object.connect( source.getClass(), sources );
+			class2Object.editor().connect( source.getClass(), sources );
 		}
 	}
 
@@ -65,54 +59,13 @@ public class Class2ObjectRule implements ArrowListener
 	{
 		if( source == null || target == null )
 			return;
-		class2Object.connect( source.getClass(), source );
-		class2Object.connect( target.getClass(), target );
-	}
-
-	@Override
-	public Set relations()
-	{
-		return null;
+		class2Object.editor().connect( source.getClass(), source );
+		class2Object.editor().connect( target.getClass(), target );
 	}
 
 	@Override
 	public void remove( Object source, Object target )
 	{
+		//TOFIX implement this
 	}
-
-	@Override
-	public Set sources()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets()
-	{
-		return null;
-	}
-
-	@Override
-	public EditableArrow inverse()
-	{
-		return null;
-	}
-
-	@Override
-	public Set targets( Object source )
-	{
-		return null;
-	}
-
-	@Override
-	public Object target( Object source ) throws Exception
-	{
-		return null;
-	}
-
-	@Override
-	public void setTargetObject( EditableArrow target )
-	{
-	}
-
 }

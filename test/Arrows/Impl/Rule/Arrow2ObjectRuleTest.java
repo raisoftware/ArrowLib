@@ -22,7 +22,7 @@ public class Arrow2ObjectRuleTest
 	Arrow<Arrow, Object> outboundArrow2object;
 	Arrow<Object, Arrow> object2inboundArrow;
 	Arrow<Arrow, Object> inboundArrow2object;
-	EditableArrow<Integer, String> editableStringifyArrow;
+	Arrow<Integer, String> editableStringifyArrow;
 	Arrow<Integer, String> stringifyArrow;
 	Arrow<Enum, Arrow> name2Arrow;
 
@@ -45,11 +45,11 @@ public class Arrow2ObjectRuleTest
 		{
 			diagram = Diagram.create();
 
-			EditableArrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
-			arrow.connect( 1, "one" );
-			arrow.connect( 2, "two" );
-			arrow.connect( 3, "three" );
-			arrow.connect( 4, "four" );
+			Arrow<Integer, String> arrow = diagram.arrows().create( Stringify, Destringify ).end();
+			arrow.editor().connect( 1, "one" );
+			arrow.editor().connect( 2, "two" );
+			arrow.editor().connect( 3, "three" );
+			arrow.editor().connect( 4, "four" );
 
 			arrows = diagram.arrows();
 			object2outboundArrow = arrows.arrow( StandardArrowName.Object2OutboundArrow );
@@ -58,7 +58,7 @@ public class Arrow2ObjectRuleTest
 			inboundArrow2object = object2inboundArrow.inverse();
 			name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = (EditableArrow) arrows.arrow( Stringify );
+			editableStringifyArrow = arrows.arrow( Stringify );
 		}
 		catch( Exception ex )
 		{
@@ -99,7 +99,7 @@ public class Arrow2ObjectRuleTest
 		Set targets = inboundArrow2object.targets( stringifyArrow );
 		assertTrue( targets.contains( "two" ) );
 		assertFalse( targets.contains( 2 ) );
-		editableStringifyArrow.remove( 2, "two" );
+		editableStringifyArrow.editor().remove( 2, "two" );
 
 		Set targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
 
@@ -114,8 +114,8 @@ public class Arrow2ObjectRuleTest
 	public void test2Remove() throws Exception
 	{
 		String string_5or8 = "fiveOrEight";
-		editableStringifyArrow.connect( 5, string_5or8 );
-		editableStringifyArrow.connect( 8, string_5or8 );
+		editableStringifyArrow.editor().connect( 5, string_5or8 );
+		editableStringifyArrow.editor().connect( 8, string_5or8 );
 
 
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
@@ -124,14 +124,14 @@ public class Arrow2ObjectRuleTest
 
 
 
-		editableStringifyArrow.remove( 5, string_5or8 );
+		editableStringifyArrow.editor().remove( 5, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );
 		assertTrue( inboundArrow2object.targets( editableStringifyArrow ).contains( string_5or8 ) );
 
 
-		editableStringifyArrow.remove( 8, string_5or8 );
+		editableStringifyArrow.editor().remove( 8, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );

@@ -2,7 +2,7 @@ package Arrows;
 
 import java.util.Iterator;
 
-public interface Set2<K, V>
+public interface Set0<V>
 {
 	void add( V target );
 

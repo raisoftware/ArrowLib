@@ -1,15 +1,15 @@
 package Arrows.Impl;
 
-import Arrows.EditableArrow;
-import Arrows.Set2;
+import Arrows.Arrow;
+import Arrows.Set0;
 import java.util.Iterator;
 
-public class Set2Impl<K, V> implements Set2<K, V>
+public class Set0Impl<K, V> implements Set0<V>
 {
 	K source;
-	EditableArrow<K, V> arrow;
+	Arrow<K, V> arrow;
 
-	public Set2Impl( K source, EditableArrow<K, V> arrow )
+	public Set0Impl( K source, Arrow<K, V> arrow )
 	{
 		this.source = source;
 		this.arrow = arrow;
@@ -18,13 +18,13 @@ public class Set2Impl<K, V> implements Set2<K, V>
 	@Override
 	public void add( V target )
 	{
-		arrow.connect( source, target );
+		arrow.editor().connect( source, target );
 	}
 
 	@Override
 	public void remove( V target )
 	{
-		arrow.remove( source, target );
+		arrow.editor().remove( source, target );
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package Arrows;
 
 import java.util.Collection;
 
-public interface ComputedArrow<K, V> extends Arrow<K, V>
+public interface ComputedArrow<K, V> extends ArrowView<K, V>
 {
 	public void addSource( K source );
 

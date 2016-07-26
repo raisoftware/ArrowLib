@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 public class FilterArrowTest
 {
 	private Diagram diagram;
-	private EditableArrow<String, Character> containsArrow;
-	private Arrow<String, Character> filterArrow;
+	private Arrow<String, Character> containsArrow;
+	private ArrowView<String, Character> filterArrow;
 	private final String word1 = "something";
 	private final String word2 = "extra";
 	private final String word3 = "stuff";
@@ -39,10 +39,10 @@ public class FilterArrowTest
 		diagram = Diagram.create();
 
 		containsArrow = diagram.arrows().create( Contains, IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
-		connectWordToLetters( containsArrow, word1 );
-		connectWordToLetters( containsArrow, word2 );
-		connectWordToLetters( containsArrow, word3 );
-		connectWordToLetters( containsArrow, word4 );
+		connectWordToLetters( containsArrow.editor(), word1 );
+		connectWordToLetters( containsArrow.editor(), word2 );
+		connectWordToLetters( containsArrow.editor(), word3 );
+		connectWordToLetters( containsArrow.editor(), word4 );
 
 		BiPredicate<String, Character> filter = (String source, Character target) -> !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
 

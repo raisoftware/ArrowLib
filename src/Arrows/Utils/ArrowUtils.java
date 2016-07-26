@@ -1,12 +1,12 @@
 package Arrows.Utils;
 
-import Arrows.Arrow;
+import Arrows.ArrowView;
 import java.util.*;
 
 
 public class ArrowUtils
 {
-	public static Set generateRelations( Arrow arrow )
+	public static Set generateRelations( ArrowView arrow )
 	{
 		Set<Map.Entry> relations = new HashSet<>();
 		for( Object source : arrow.sources() )
@@ -20,7 +20,7 @@ public class ArrowUtils
 		return relations;
 	}
 
-	public static Object target( Arrow arrow, Object source ) throws Exception
+	public static Object target( ArrowView arrow, Object source ) throws Exception
 	{
 		Set targets = arrow.targets( source );
 		if( targets.size() != 1 )
