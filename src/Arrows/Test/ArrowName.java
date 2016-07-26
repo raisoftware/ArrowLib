@@ -12,4 +12,6 @@ public enum ArrowName
 	ToLowerCase,
 	ToUpperCase2,
 	ToLowerCase2,
+	English2Rom,
+	Rom2English,
 }

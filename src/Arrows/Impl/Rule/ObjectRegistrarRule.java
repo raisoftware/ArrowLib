@@ -20,11 +20,16 @@ public class ObjectRegistrarRule implements Editor
 		if( source == null || targets == null || targets.isEmpty() )
 			return;
 
-		objects.add( source );
-
+		if( !objects.contains( source ) )
+		{
+			objects.add( source );
+		}
 		for( Object target : targets )
 		{
-			objects.add( target );
+			if( !objects.contains( target ) )
+			{
+				objects.add( target );
+			}
 		}
 	}
 
@@ -33,12 +38,16 @@ public class ObjectRegistrarRule implements Editor
 	{
 		if( target == null || sources == null || sources.isEmpty() )
 			return;
-
-		objects.add( target );
-
+		if( !objects.contains( target ) )
+		{
+			objects.add( target );
+		}
 		for( Object source : sources )
 		{
-			objects.add( source );
+			if( !objects.contains( source ) )
+			{
+				objects.add( source );
+			}
 		}
 	}
 
@@ -48,8 +57,15 @@ public class ObjectRegistrarRule implements Editor
 		if( source == null || target == null )
 			return;
 
-		objects.add( source );
-		objects.add( target );
+		if( !objects.contains( source ) )
+		{
+			objects.add( source );
+		}
+
+		if( !objects.contains( target ) )
+		{
+			objects.add( target );
+		}
 	}
 
 

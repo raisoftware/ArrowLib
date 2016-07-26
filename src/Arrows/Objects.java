@@ -4,18 +4,11 @@ import java.util.Iterator;
 
 public interface Objects extends Set0
 {
-	public static enum StandardObjectName
-	{
-		Unnamed
-	};
-
-	ObjectConfigBuilder create();
-
-	void addNewObject( Object object, ObjectConfig objectConfig ) throws Exception;
-
-	void add( Object object, ObjectConfig config );
-
-	void remove( Object object, boolean cascade );
+	void remove( Object obj, boolean cascade );
 
 	Iterator iterator( Class clazz );
+
+	void config( Object object, ObjectConfig config );
+
+	ObjectConfig config( Object object );
 }

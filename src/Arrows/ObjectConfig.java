@@ -5,7 +5,7 @@ public interface ObjectConfig
 
 	boolean enabled();
 
-	Enum name();
+	Object name();
 
 	boolean tracksClass();
 

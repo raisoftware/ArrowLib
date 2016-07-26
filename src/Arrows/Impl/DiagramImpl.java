@@ -18,7 +18,7 @@ public class DiagramImpl implements Diagram
 		class2objectBuilder.domain( Class.class ).codomain( Object.class ).listenable( false ).end();
 
 		ArrowBuilder name2objectBuilder = arrows.create( Name2Object, Object2Name );
-		name2objectBuilder.domain( Enum.class ).codomain( Object.class ).listenable( false ).end();
+		name2objectBuilder.domain( Object.class ).codomain( Object.class ).listenable( false ).end();
 
 		ArrowBuilder object2configBuilder = arrows.create( Object2Config, Config2Object );
 		object2configBuilder.domain( Object.class ).codomain( ObjectConfig.class ).listenable( false ).end();

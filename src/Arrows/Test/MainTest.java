@@ -1,6 +1,7 @@
 package Arrows.Test;
 
 import Arrows.*;
+import Arrows.Impl.ObjectConfigBuilderImpl;
 import java.util.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
@@ -47,8 +48,8 @@ public class MainTest
 		//----------
 
 		//Test ObjectRegistrarRule
-		ObjectConfig rootObjConfig = diagram.objects().create().name( RootObject ).end();
-		diagram.objects().add( 's', rootObjConfig );
+		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl( RootObject ).end();
+		diagram.objects().config( 's', rootObjConfig );
 		Arrow name2Object = diagram.arrows().arrow( Name2Object );
 		Arrow object2Config = diagram.arrows().arrow( Object2Config );
 		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );

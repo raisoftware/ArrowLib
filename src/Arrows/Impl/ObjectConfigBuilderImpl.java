@@ -1,32 +1,24 @@
 package Arrows.Impl;
 
-import Arrows.ObjectConfig;
-import Arrows.ObjectConfigBuilder;
-import Arrows.Objects;
+import Arrows.*;
 
 public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilder
 {
 	private boolean enabled = true;
-	private Enum name = Objects.StandardObjectName.Unnamed;
+	private Object name = null;
 	private boolean tracksInboundArrows = true;
 	private boolean tracksOutboundArrows = true;
 	private boolean tracksClass = true;
 
-	public ObjectConfigBuilderImpl()
+	public ObjectConfigBuilderImpl( Object name )
 	{
+		this.name = name;
 	}
 
 	@Override
 	public ObjectConfigBuilder enabled( boolean enabled )
 	{
 		this.enabled = enabled;
-		return this;
-	}
-
-	@Override
-	public ObjectConfigBuilder name( Enum name )
-	{
-		this.name = name;
 		return this;
 	}
 
@@ -64,7 +56,7 @@ public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilde
 	}
 
 	@Override
-	public Enum name()
+	public Object name()
 	{
 		return name;
 	}
@@ -86,5 +78,4 @@ public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilde
 	{
 		return tracksOutboundArrows;
 	}
-
 }

@@ -5,8 +5,6 @@ public interface ObjectConfigBuilder
 
 	ObjectConfigBuilder enabled( boolean enabled );
 
-	ObjectConfigBuilder name( Enum name );
-
 	ObjectConfigBuilder tracksClass( boolean tracksClass );
 
 	ObjectConfigBuilder tracksInboundArrows( boolean tracksInboundArrows );
