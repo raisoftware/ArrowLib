@@ -1,10 +1,11 @@
 package Arrows.Impl;
 
-import Shared.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
+import Shared.BasicSet0;
 import Shared.MethodBus.MethodSet.MethodSet;
+import Shared.Set0;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -18,9 +19,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	Arrow<V, K> inverseArrow = new InverseGenericArrow();
 	private final Class domain;
 	private final Class codomain;
-	private boolean allowsMultipleSources;
-	private boolean allowsMultipleTargets;
-	private boolean listenable;
+	private final boolean allowsMultipleSources;
+	private final boolean allowsMultipleTargets;
+	private final boolean listenable;
 
 	public GenericArrow()
 	{
@@ -28,6 +29,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		this.allowsMultipleTargets = true;
 		this.domain = Object.class;
 		this.codomain = Object.class;
+		this.listenable = true;
 		methodSet = new MethodSet( this, Arrow.Editor.class );
 	}
 
@@ -73,13 +75,27 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	}
 
 	@Override
-	public void connect( Collection<? extends K> sources, V target )
+	public void connect( Iterable<? extends K> sources, V target )
 	{
-		inverse().editor().connect( target, sources() );
+		assert ( codomain().isInstance( target ) );
+		for( K source : sources )
+		{
+			assert ( domain().isInstance( source ) );
+		}
+
+		ArrowUtils.checkForMultipleSourcesTargets( inverse(), allowsMultipleTargets, allowsMultipleSources, target, sources );
+
+		boolean mapChanged = valuesToKeys.putAll( target, sources );
+
+		for( K source : sources )
+		{
+			boolean changed = keysToValues.put( source, target );
+			mapChanged |= changed;
+		}
 	}
 
 	@Override
-	public void connect( K source, Collection<? extends V> targets )
+	public void connect( K source, Iterable<? extends V> targets )
 	{
 		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
 		for( V target : targets )
@@ -114,27 +130,27 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	}
 
 	@Override
-	public Set<Entry<K, V>> relations()
+	public Set0<Entry<K, V>> relations()
 	{
-		return keysToValues.entries();
+		return new BasicSet0( keysToValues.entries() );
 	}
 
 	@Override
-	public Set<K> sources()
+	public Set0<K> sources()
 	{
-		return keysToValues.keySet();
+		return new BasicSet0( keysToValues.keySet() );
 	}
 
 	@Override
-	public Set<V> targets()
+	public Set0<V> targets()
 	{
-		return valuesToKeys.keySet();
+		return new BasicSet0( valuesToKeys.keySet() );
 	}
 
 	@Override
-	public Set<V> targets( K source )
+	public Set0<V> targets( K source )
 	{
-		return keysToValues.get( source );
+		return new BasicSet0( keysToValues.get( source ) );
 	}
 
 	@Override
@@ -182,21 +198,21 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	private final class InverseGenericArrow implements Arrow<V, K>, Arrow.Editor<V, K>
 	{
 		@Override
-		public Set<V> sources()
+		public Set0<V> sources()
 		{
-			return valuesToKeys.keySet();
+			return new BasicSet0( valuesToKeys.keySet() );
 		}
 
 		@Override
-		public Set<K> targets()
+		public Set0<K> targets()
 		{
-			return keysToValues.keySet();
+			return new BasicSet0( keysToValues.keySet() );
 		}
 
 		@Override
-		public Set<K> targets( V source )
+		public Set0<K> targets( V source )
 		{
-			return valuesToKeys.get( source );
+			return new BasicSet0( valuesToKeys.get( source ) );
 		}
 
 		@Override
@@ -206,41 +222,27 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		}
 
 		@Override
-		public void connect( V source, Collection<? extends K> targets )
+		public void connect( V source, Iterable<? extends K> targets )
 		{
-			assert ( domain().isInstance( source ) );
-			for( K target : targets )
-			{
-				assert ( codomain().isInstance( target ) );
-			}
-
-			ArrowUtils.checkForMultipleSourcesTargets( this, allowsMultipleTargets, allowsMultipleSources, source, targets );
-
-			boolean mapChanged = valuesToKeys.putAll( source, targets );
-
-			for( K target : targets )
-			{
-				boolean changed = keysToValues.put( target, source );
-				mapChanged |= changed;
-			}
+			GenericArrow.this.editor().connect( targets, source );
 		}
 
 		@Override
 		public void connect( V source, K target )
 		{
-			GenericArrow.this.connect( target, source );
+			GenericArrow.this.editor().connect( target, source );
 		}
 
 		@Override
-		public Set<Entry<V, K>> relations()
+		public Set0<Entry<V, K>> relations()
 		{
-			return valuesToKeys.entries();
+			return new BasicSet0( valuesToKeys.entries() );
 		}
 
 		@Override
 		public void remove( V source, K target )
 		{
-			GenericArrow.this.remove( target, source );
+			GenericArrow.this.editor().remove( target, source );
 		}
 
 		@Override
@@ -256,9 +258,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		}
 
 		@Override
-		public void connect( Collection<? extends V> sources, K target )
+		public void connect( Iterable<? extends V> sources, K target )
 		{
-			GenericArrow.this.connect( target, sources );
+			GenericArrow.this.editor().connect( target, sources );
 		}
 
 		@Override
@@ -270,7 +272,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		@Override
 		public Editor<V, K> editor()
 		{
-			return listenable ? methodSet.publisher() : this;
+			return this;//TOFIX listenable ? methodSet.publisher() : this;
 		}
 
 		@Override

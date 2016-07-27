@@ -1,7 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import java.util.Set;
+import Shared.Set0;
+import Shared.Set0Utils;
 import java.util.function.BiPredicate;
 import org.junit.*;
 
@@ -59,13 +60,13 @@ public class FilterArrowTest
 	public void testFilterArrow()
 	{
 
-		Set<String> sources = filterArrow.sources();
+		Set0<String> sources = filterArrow.sources();
 		assertEquals( sources.size(), 3 );
 		assertTrue( sources.contains( word1 ) );
 		assertTrue( sources.contains( word2 ) );
 		assertTrue( sources.contains( word3 ) );
 
-		Set<Character> targets = filterArrow.targets();
+		Set0<Character> targets = filterArrow.targets();
 		assertEquals( targets.size(), 11 );
 		assertFalse( targets.contains( 'o' ) );
 		assertFalse( targets.contains( 'v' ) );
@@ -75,7 +76,7 @@ public class FilterArrowTest
 		assertTrue( targets.contains( 'm' ) );
 		assertTrue( targets.contains( 'x' ) );
 
-		Set<Character> word1Results = filterArrow.targets( word1 );// "something"
+		Set0<Character> word1Results = filterArrow.targets( word1 );// "something"
 		assertEquals( word1Results.size(), 7 );
 		assertFalse( word1Results.contains( 'o' ) );
 		assertFalse( word1Results.contains( 'e' ) );
@@ -87,20 +88,20 @@ public class FilterArrowTest
 		assertTrue( word1Results.contains( 'n' ) );
 		assertTrue( word1Results.contains( 'g' ) );
 
-		Set<Character> word2Results = filterArrow.targets( word2 );// "extra"
+		Set0<Character> word2Results = filterArrow.targets( word2 );// "extra"
 		assertEquals( word2Results.size(), 3 );
 		assertTrue( word2Results.contains( 'x' ) );
 		assertTrue( word2Results.contains( 't' ) );
 		assertTrue( word2Results.contains( 'a' ) );
 
-		Set<Character> word3Results = filterArrow.targets( word3 );// "stuff"
+		Set0<Character> word3Results = filterArrow.targets( word3 );// "stuff"
 		assertEquals( word3Results.size(), 4 );
 		assertTrue( word3Results.contains( 's' ) );
 		assertTrue( word3Results.contains( 't' ) );
 		assertTrue( word3Results.contains( 'u' ) );
 		assertTrue( word3Results.contains( 'f' ) );
 
-		Set<Character> word4Results = filterArrow.targets( word4 );//"over"
-		assertTrue( word4Results.isEmpty() );
+		Set0<Character> word4Results = filterArrow.targets( word4 );//"over"
+		assertTrue( Set0Utils.isEmpty( word4Results ) );
 	}
 }

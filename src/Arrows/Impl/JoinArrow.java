@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
+import Shared.*;
 import java.util.*;
 
 public class JoinArrow implements ArrowView
@@ -39,19 +40,19 @@ public class JoinArrow implements ArrowView
 	}
 
 	@Override
-	public Set<Map.Entry> relations()
+	public Set0<Map.Entry> relations()
 	{
 		return ArrowUtils.generateRelations( this );
 	}
 
 	@Override
-	public Set sources()
+	public Set0 sources()
 	{
 		return arrows.get( 0 ).sources();
 	}
 
 	@Override
-	public Set targets()
+	public Set0 targets()
 	{
 		return arrows.get( arrows.size() - 1 ).targets();
 	}
@@ -63,13 +64,13 @@ public class JoinArrow implements ArrowView
 	}
 
 	@Override
-	public Set targets( Object source )
+	public Set0 targets( Object source )
 	{
 		return targets( arrows, source );
 	}
 
 
-	private static Set targets( List<Arrow> arrowsList, Object source )
+	private static Set0 targets( List<Arrow> arrowsList, Object source )
 	{
 		List<Object> oldResults = new ArrayList<>();
 
@@ -89,11 +90,14 @@ public class JoinArrow implements ArrowView
 
 			for( Object input : oldResults )
 			{
-				newResults.addAll( arrow.targets( input ) );
+				for( Object target : arrow.targets( input ) )
+				{
+					newResults.add( target );
+				}
 			}
 		}
 
-		Set results = new HashSet( newResults );
+		Set0 results = new BasicSet0( new HashSet( newResults ) );
 		return results;
 	}
 
@@ -129,13 +133,13 @@ public class JoinArrow implements ArrowView
 	private final class InverseJoinArrow implements ArrowView
 	{
 		@Override
-		public Set sources()
+		public Set0 sources()
 		{
 			return arrowsInverse.get( 0 ).sources();
 		}
 
 		@Override
-		public Set targets()
+		public Set0 targets()
 		{
 			return arrowsInverse.get( arrowsInverse.size() - 1 ).targets();
 		}
@@ -147,13 +151,13 @@ public class JoinArrow implements ArrowView
 		}
 
 		@Override
-		public Set targets( Object source )
+		public Set0 targets( Object source )
 		{
 			return JoinArrow.targets( arrowsInverse, source );
 		}
 
 		@Override
-		public Set relations()
+		public Set0 relations()
 		{
 			return ArrowUtils.generateRelations( this );
 		}

@@ -10,7 +10,5 @@ public interface ArrowBuilder
 
 	ArrowBuilder domain( Class allowedClasses );
 
-	ArrowBuilder listenable( boolean enabled );
-
 	Arrow end();
 }

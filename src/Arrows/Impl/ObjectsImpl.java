@@ -1,8 +1,9 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Shared.Set0;
+import Shared.Set0Utils;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public class ObjectsImpl implements Objects
 	@Override
 	public void remove( Object obj, boolean cascade )
 	{
-		if( object2Config.targets( obj ).isEmpty() )
+		if( Set0Utils.isEmpty( object2Config.targets( obj ) ) )
 			return;
 
 		ObjectConfig objConfig;
@@ -77,7 +78,7 @@ public class ObjectsImpl implements Objects
 
 		if( objConfig.tracksInboundArrows() )
 		{
-			Set<Arrow> arrows = inboundArrow2object.inverse().targets( obj );
+			Set0<Arrow> arrows = inboundArrow2object.inverse().targets( obj );
 			for( Arrow arrow : arrows )
 			{
 				arrow.inverse().editor().remove( obj, null );
@@ -87,10 +88,10 @@ public class ObjectsImpl implements Objects
 
 		if( objConfig.tracksOutboundArrows() )
 		{
-			Set<Arrow> arrows = outboundArrow2object.inverse().targets( obj );
+			Set0<Arrow> arrows = outboundArrow2object.inverse().targets( obj );
 			for( Arrow arrow : arrows )
 			{
-				Set targets = null;
+				Set0 targets = null;
 				if( cascade )
 				{
 					targets = arrow.targets( obj );

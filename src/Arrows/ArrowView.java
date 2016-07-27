@@ -1,7 +1,7 @@
 package Arrows;
 
+import Shared.Set0;
 import java.util.Map;
-import java.util.Set;
 
 public interface ArrowView<K, V>
 {
@@ -15,15 +15,15 @@ public interface ArrowView<K, V>
 		return Object.class;
 	}
 
-	Set<K> sources();
+	Set0<K> sources();
 
-	Set<V> targets();
+	Set0<V> targets();
 
 	V target( K source ) throws Exception;
 
-	Set<V> targets( K source );
+	Set0<V> targets( K source );
 
-	Set<Map.Entry<K, V>> relations();
+	Set0<Map.Entry<K, V>> relations();
 
 	ArrowView<V, K> inverse();
 }

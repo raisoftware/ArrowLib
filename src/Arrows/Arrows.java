@@ -25,11 +25,7 @@ public interface Arrows extends Set0<ArrowView>
 
 	ArrowView arrow( Object arrowName ) throws Exception;
 
-	//ArrowBuilder create( Enum arrowName, Enum inverseArrowName );
-
 	GenericArrowBuilder createGeneric();
-	//ComputedArrowBuilder createComputed( );
-
 
 	static ArrowView filter( Arrow arrow, BiPredicate filter )
 	{

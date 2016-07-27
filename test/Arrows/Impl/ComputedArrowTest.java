@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Shared.Set0;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -66,7 +67,7 @@ public class ComputedArrowTest
 	public void testSources() throws Exception
 	{
 
-		Set sources = computedArrow.sources();
+		Set0 sources = computedArrow.sources();
 		assertEquals( sources.size(), 4 );
 		assertTrue( sources.contains( word1 ) );
 		assertTrue( sources.contains( word2 ) );
@@ -83,7 +84,7 @@ public class ComputedArrowTest
 	@Test
 	public void testTargets() throws Exception
 	{
-		Set targets = computedArrow.targets();
+		Set0 targets = computedArrow.targets();
 		assertEquals( targets.size(), unionString.length() );
 
 		for( int i = 0; i < unionString.length(); ++i )
@@ -93,7 +94,7 @@ public class ComputedArrowTest
 		}
 	}
 
-	void checkContainsAllLetters( Set set, String word )
+	void checkContainsAllLetters( Set0 set, String word )
 	{
 		for( char c : word.toCharArray() )
 			assertTrue( set.contains( c ) );
@@ -102,10 +103,10 @@ public class ComputedArrowTest
 	@Test
 	public void testTargetsWithSource() throws Exception
 	{
-		Set targets1 = computedArrow.targets( word1 );
-		Set targets2 = computedArrow.targets( word2 );
-		Set targets3 = computedArrow.targets( word3 );
-		Set targets4 = computedArrow.targets( word4 );
+		Set0 targets1 = computedArrow.targets( word1 );
+		Set0 targets2 = computedArrow.targets( word2 );
+		Set0 targets3 = computedArrow.targets( word3 );
+		Set0 targets4 = computedArrow.targets( word4 );
 
 		assertEquals( targets1.size(), word1.length() );
 		checkContainsAllLetters( targets1, word1 );

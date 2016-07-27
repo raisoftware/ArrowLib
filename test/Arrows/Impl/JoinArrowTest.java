@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import java.util.Set;
+import Shared.Set0;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -70,7 +70,7 @@ public class JoinArrowTest
 	@Test
 	public void testSources() throws Exception
 	{
-		Set sources = joinIdentityArrow.sources();
+		Set0 sources = joinIdentityArrow.sources();
 		assertTrue( toUpperCaseArrow1.sources().equals( sources ) );
 	}
 
@@ -79,8 +79,8 @@ public class JoinArrowTest
 	{
 
 		{ // tests on joinIdentityArrow
-			Set sources = joinIdentityArrow.sources();
-			Set targets = joinIdentityArrow.targets();
+			Set0 sources = joinIdentityArrow.sources();
+			Set0 targets = joinIdentityArrow.targets();
 
 			assertTrue( sources.equals( targets ) );
 			assertTrue( toUpperCaseArrow1.inverse().targets().equals( targets ) );
@@ -88,7 +88,7 @@ public class JoinArrowTest
 		}
 
 		{ // tests on joinUpperCaseArrow
-			Set targets = joinUpperCaseArrow.targets();
+			Set0 targets = joinUpperCaseArrow.targets();
 
 			assertEquals( targets.size(), mergedWord34.length() );
 
@@ -107,7 +107,7 @@ public class JoinArrowTest
 			for( int i = 0; i < unionString.length(); ++i )
 			{
 				char c = unionString.charAt( i );
-				Set results = joinIdentityArrow.targets( c );
+				Set0 results = joinIdentityArrow.targets( c );
 
 				assertEquals( results.size(), 1 );
 				assertEquals( results.iterator().next(), c );
@@ -119,14 +119,14 @@ public class JoinArrowTest
 			for( int i = 0; i < mergedWord12.length(); ++i )
 			{
 				char c = mergedWord12.charAt( i );
-				Set results = joinUpperCaseArrow.targets( c );
-				assertTrue( results.isEmpty() );
+				Set0 results = joinUpperCaseArrow.targets( c );
+				assertTrue( results.size() == 0 );
 			}
 
 			for( int i = 0; i < mergedWord34.length(); ++i )
 			{
 				char c = mergedWord34.charAt( i );
-				Set results = joinUpperCaseArrow.targets( c );
+				Set0 results = joinUpperCaseArrow.targets( c );
 				assertEquals( results.size(), 1 );
 				assertEquals( results.iterator().next(), Character.toUpperCase( c ) );
 			}
@@ -139,7 +139,7 @@ public class JoinArrowTest
 		for( int i = 0; i < mergedWord34.length(); ++i )
 		{
 			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
-			Set results = joinUpperCaseArrow.inverse().targets( c );
+			Set0 results = joinUpperCaseArrow.inverse().targets( c );
 			assertEquals( results.size(), 1 );
 			assertTrue( results.contains( Character.toLowerCase( c ) ) );
 		}

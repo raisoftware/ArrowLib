@@ -7,7 +7,7 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import Arrows.Arrows.StandardArrowName;
-import java.util.*;
+import Shared.Set0;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.*;
@@ -77,8 +77,8 @@ public class Arrow2ObjectRuleTest
 	public void testTargets() throws Exception
 	{
 
-		Set sourceObjects = outboundArrow2object.targets( stringifyArrow );
-		Set targetObjects = inboundArrow2object.targets( stringifyArrow );
+		Set0 sourceObjects = outboundArrow2object.targets( stringifyArrow );
+		Set0 targetObjects = inboundArrow2object.targets( stringifyArrow );
 
 		assertEquals( sourceObjects.size(), 4 );
 		assertTrue( sourceObjects.contains( 1 ) );
@@ -97,18 +97,18 @@ public class Arrow2ObjectRuleTest
 	public void test1Remove() throws Exception
 	{
 
-		Set targets = inboundArrow2object.targets( stringifyArrow );
+		Set0 targets = inboundArrow2object.targets( stringifyArrow );
 		assertTrue( targets.contains( "two" ) );
 		assertFalse( targets.contains( 2 ) );
 		editableStringifyArrow.editor().remove( 2, "two" );
 
-		Set targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
+		Set0 targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
 
 		assertFalse( targetsAfterRemove.contains( 2 ) );
-		assertTrue( object2outboundArrow.targets( 2 ).isEmpty() );
-		assertFalse( object2outboundArrow.targets( 3 ).isEmpty() );
-		assertTrue( object2inboundArrow.targets( "two" ).isEmpty() );
-		assertFalse( object2inboundArrow.targets( "three" ).isEmpty() );
+		assertTrue( object2outboundArrow.targets( 2 ).size() == 0 );
+		assertFalse( object2outboundArrow.targets( 3 ).size() == 0 );
+		assertTrue( object2inboundArrow.targets( "two" ).size() == 0 );
+		assertFalse( object2inboundArrow.targets( "three" ).size() == 0 );
 	}
 
 	@Test

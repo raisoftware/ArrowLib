@@ -2,7 +2,7 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import Arrows.Arrows.StandardArrowName;
-import java.util.*;
+import Shared.Set0;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -60,14 +60,14 @@ public class Class2ObjectRuleTest
 
 		//Test class2Object
 		ArrowView class2Object = arrows.arrow( StandardArrowName.Class2Object );
-		Set<String> strings = class2Object.targets( String.class );
+		Set0<String> strings = class2Object.targets( String.class );
 
 		for( String target : stringifyArrow.targets() )
 		{
 			assertTrue( strings.contains( target ) );
 		}
 
-		Set<Integer> ints = class2Object.targets( Integer.class );
+		Set0<Integer> ints = class2Object.targets( Integer.class );
 		for( Integer source : stringifyArrow.sources() )
 		{
 			assertTrue( ints.contains( source ) );

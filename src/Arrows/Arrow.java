@@ -1,7 +1,6 @@
 package Arrows;
 
 import Shared.Set0;
-import java.util.*;
 
 
 public interface Arrow<K, V> extends ArrowView<K, V>
@@ -17,9 +16,9 @@ public interface Arrow<K, V> extends ArrowView<K, V>
 	{
 		void connect( K source, V target );
 
-		void connect( K source, Collection<? extends V> targets );
+		void connect( K source, Iterable<? extends V> targets );
 
-		void connect( Collection<? extends K> sources, V target );
+		void connect( Iterable<? extends K> sources, V target );
 
 		void remove( K source, V target );
 	}

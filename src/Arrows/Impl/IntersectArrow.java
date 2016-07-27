@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
+import Shared.*;
 import java.util.*;
 
 
@@ -31,7 +32,7 @@ public class IntersectArrow implements ArrowView
 	}
 
 	@Override
-	public Set relations()
+	public Set0 relations()
 	{
 		return ArrowUtils.generateRelations( this );
 	}
@@ -39,13 +40,13 @@ public class IntersectArrow implements ArrowView
 
 
 	@Override
-	public Set sources()
+	public Set0 sources()
 	{
 		return intersectSources( false );
 	}
 
 	@Override
-	public Set targets()
+	public Set0 targets()
 	{
 		return intersectTargets( false );
 	}
@@ -57,7 +58,7 @@ public class IntersectArrow implements ArrowView
 	}
 
 	@Override
-	public Set targets( Object source )
+	public Set0 targets( Object source )
 	{
 		return intersectTargets( source, false );
 	}
@@ -68,17 +69,17 @@ public class IntersectArrow implements ArrowView
 		return ArrowUtils.target( this, source );
 	}
 
-	private Set intersectSources( boolean inverse )
+	private Set0 intersectSources( boolean inverse )
 	{
 		Iterator<Arrow> arrowIt = arrows.iterator();
-		Set intersectSources = new HashSet<>();
+		Set0 intersectSources = new BasicSet0( new HashSet<>() );
 
 		Arrow firstArrow = arrowIt.next();
 		if( inverse )
 		{
 			firstArrow = firstArrow.inverse();
 		}
-		Set firstArrowSources = firstArrow.sources();
+		Set0 firstArrowSources = firstArrow.sources();
 
 
 		for( Object source : firstArrowSources )
@@ -114,9 +115,9 @@ public class IntersectArrow implements ArrowView
 		return intersectSources;
 	}
 
-	private Set intersectTargets( boolean inverse )
+	private Set0 intersectTargets( boolean inverse )
 	{
-		Set intersectTargets = new HashSet<>();
+		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
 
 		Iterator<Arrow> arrowIt = arrows.iterator();
 		Arrow firstArrow = arrowIt.next();
@@ -124,7 +125,7 @@ public class IntersectArrow implements ArrowView
 		{
 			firstArrow = firstArrow.inverse();
 		}
-		Set firstArrowSources = firstArrow.sources();
+		Set0 firstArrowSources = firstArrow.sources();
 
 		ArrowView arrow = this;
 		if( inverse )
@@ -134,12 +135,12 @@ public class IntersectArrow implements ArrowView
 
 		for( Object source : firstArrowSources )
 		{
-			intersectTargets.addAll( arrow.targets( source ) );
+			Set0Utils.addAll( intersectTargets, arrow.targets( source ) );
 		}
 		return intersectTargets;
 	}
 
-	private Set intersectTargets( Object source, boolean inverse )
+	private Set0 intersectTargets( Object source, boolean inverse )
 	{
 		Iterator<Arrow> arrowIt = arrows.iterator();
 		Arrow firstArrow = arrowIt.next();
@@ -148,8 +149,8 @@ public class IntersectArrow implements ArrowView
 			firstArrow = firstArrow.inverse();
 		}
 
-		Set intersectTargets = new HashSet<>();
-		intersectTargets.addAll( firstArrow.targets( source ) );
+		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
+		Set0Utils.addAll( intersectTargets, firstArrow.targets( source ) );
 
 		while( arrowIt.hasNext() )
 		{
@@ -158,7 +159,7 @@ public class IntersectArrow implements ArrowView
 			{
 				arrow = arrow.inverse();
 			}
-			intersectTargets.retainAll( arrow.targets( source ) );
+			Set0Utils.retainAll( intersectTargets, arrow.targets( source ) );
 		}
 
 		return intersectTargets;
@@ -178,13 +179,13 @@ public class IntersectArrow implements ArrowView
 	private final class InverseIntersectArrow implements ArrowView
 	{
 		@Override
-		public Set sources()
+		public Set0 sources()
 		{
 			return intersectSources( true );
 		}
 
 		@Override
-		public Set targets()
+		public Set0 targets()
 		{
 			return intersectTargets( true );
 		}
@@ -196,13 +197,13 @@ public class IntersectArrow implements ArrowView
 		}
 
 		@Override
-		public Set targets( Object source )
+		public Set0 targets( Object source )
 		{
 			return intersectTargets( source, true );
 		}
 
 		@Override
-		public Set relations()
+		public Set0 relations()
 		{
 			return ArrowUtils.generateRelations( this );
 		}

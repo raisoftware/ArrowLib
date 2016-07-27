@@ -1,7 +1,6 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import java.util.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
@@ -27,9 +26,9 @@ public class Class2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Object source, Collection targets )
+	public void connect( Object source, Iterable targets )
 	{
-		if( source == null || targets == null || targets.isEmpty() )
+		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
 		class2Object.editor().connect( source.getClass(), source );
@@ -41,9 +40,9 @@ public class Class2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Collection sources, Object target )
+	public void connect( Iterable sources, Object target )
 	{
-		if( target == null || sources == null || sources.isEmpty() )
+		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
 
 		class2Object.editor().connect( target.getClass(), target );

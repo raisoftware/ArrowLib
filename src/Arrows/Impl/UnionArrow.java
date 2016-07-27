@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
+import Shared.*;
 import java.util.*;
 
 public class UnionArrow implements ArrowView
@@ -30,14 +31,14 @@ public class UnionArrow implements ArrowView
 	}
 
 	@Override
-	public Set relations()
+	public Set0 relations()
 	{
 		return ArrowUtils.generateRelations( this );
 	}
 
-	private Set unionSources( boolean inverse )
+	private Set0 unionSources( boolean inverse )
 	{
-		Set unionSources = new HashSet<>();
+		Set0 unionSources = new BasicSet0( new HashSet<>() );
 		for( Arrow arrowInList : arrows )
 		{
 			Arrow arrow = arrowInList;
@@ -45,14 +46,14 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			unionSources.addAll( arrow.sources() );
+			Set0Utils.addAll( unionSources, arrow.sources() );
 		}
 		return unionSources;
 	}
 
-	private Set unionTargets( boolean inverse )
+	private Set0 unionTargets( boolean inverse )
 	{
-		Set unionTargets = new HashSet<>();
+		Set0 unionTargets = new BasicSet0( new HashSet<>() );
 		for( Arrow arrowInList : arrows )
 		{
 			Arrow arrow = arrowInList;
@@ -60,14 +61,14 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			unionTargets.addAll( arrow.targets() );
+			Set0Utils.addAll( unionTargets, arrow.targets() );
 		}
 		return unionTargets;
 	}
 
-	private Set unionTargets( Object source, boolean inverse )
+	private Set0 unionTargets( Object source, boolean inverse )
 	{
-		Set unionTargets = new HashSet<>();
+		Set0 unionTargets = new BasicSet0( new HashSet<>() );
 		for( Arrow arrowInList : arrows )
 		{
 			Arrow arrow = arrowInList;
@@ -75,20 +76,20 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			unionTargets.addAll( arrow.targets( source ) );
+			Set0Utils.addAll( unionTargets, arrow.targets( source ) );
 		}
 		return unionTargets;
 	}
 
 
 	@Override
-	public Set sources()
+	public Set0 sources()
 	{
 		return unionSources( false );
 	}
 
 	@Override
-	public Set targets()
+	public Set0 targets()
 	{
 		return unionTargets( false );
 	}
@@ -100,7 +101,7 @@ public class UnionArrow implements ArrowView
 	}
 
 	@Override
-	public Set targets( Object source )
+	public Set0 targets( Object source )
 	{
 		return unionTargets( source, false );
 	}
@@ -114,13 +115,13 @@ public class UnionArrow implements ArrowView
 	private final class InverseUnionArrow implements ArrowView
 	{
 		@Override
-		public Set sources()
+		public Set0 sources()
 		{
 			return unionSources( true );
 		}
 
 		@Override
-		public Set targets()
+		public Set0 targets()
 		{
 			return unionTargets( true );
 		}
@@ -132,13 +133,13 @@ public class UnionArrow implements ArrowView
 		}
 
 		@Override
-		public Set targets( Object source )
+		public Set0 targets( Object source )
 		{
 			return unionTargets( source, true );
 		}
 
 		@Override
-		public Set relations()
+		public Set0 relations()
 		{
 			return ArrowUtils.generateRelations( this );
 		}

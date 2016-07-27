@@ -1,7 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import java.util.Set;
+import Shared.Set0;
+import Shared.Set0Utils;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -67,7 +68,7 @@ public class UnionArrowTest
 	@Test
 	public void testSources() throws Exception
 	{
-		Set sources = unionArrow.sources();
+		Set0 sources = unionArrow.sources();
 		assertEquals( sources.size(), unionString.length() );
 
 		for( int i = 0; i < unionString.length(); ++i )
@@ -80,7 +81,7 @@ public class UnionArrowTest
 	@Test
 	public void testTargets() throws Exception
 	{
-		Set targets = unionArrow.targets();
+		Set0 targets = unionArrow.targets();
 		assertEquals( targets.size(), unionString.length() );
 
 		for( int i = 0; i < unionString.length(); ++i )
@@ -96,14 +97,14 @@ public class UnionArrowTest
 		for( int i = 0; i < otherLetters.length(); ++i )
 		{
 			char c = otherLetters.charAt( i );
-			Set results = unionArrow.targets( c );
-			assertTrue( results.isEmpty() );
+			Set0 results = unionArrow.targets( c );
+			assertTrue( results.size() == 0 );
 		}
 
 		for( int i = 0; i < unionString.length(); ++i )
 		{
 			char c = unionString.charAt( i );
-			Set results = unionArrow.targets( c );
+			Set0 results = unionArrow.targets( c );
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toUpperCase( c ) );
 		}
@@ -112,20 +113,20 @@ public class UnionArrowTest
 	@Test
 	public void testInverse() throws Exception
 	{
-		Set sources = unionArrow.sources();
-		Set targets = unionArrow.targets();
-		Set inverseSources = unionArrow.inverse().sources();
-		Set inverseTargets = unionArrow.inverse().targets();
+		Set0 sources = unionArrow.sources();
+		Set0 targets = unionArrow.targets();
+		Set0 inverseSources = unionArrow.inverse().sources();
+		Set0 inverseTargets = unionArrow.inverse().targets();
 
 		assertEquals( sources.size(), inverseTargets.size() );
-		assertTrue( sources.containsAll( inverseTargets ) );
+		assertTrue( Set0Utils.containsAll( sources, inverseTargets ) );
 		assertEquals( targets.size(), inverseSources.size() );
-		assertTrue( targets.containsAll( inverseSources ) );
+		assertTrue( Set0Utils.containsAll( targets, inverseSources ) );
 
 		for( int i = 0; i < unionString.length(); ++i )
 		{
 			char c = Character.toUpperCase( unionString.charAt( i ) );
-			Set results = unionArrow.inverse().targets( c );
+			Set0 results = unionArrow.inverse().targets( c );
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
 		}

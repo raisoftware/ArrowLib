@@ -1,7 +1,7 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import java.util.Collection;
+import Shared.Set0Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +30,9 @@ public class Arrow2ObjectRule implements Arrow.Editor
 
 
 	@Override
-	public void connect( Object source, Collection targets )
+	public void connect( Object source, Iterable targets )
 	{
-		if( source == null || targets == null || targets.isEmpty() )
+		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
 		outboundArrow2object.editor().connect( listenedArrow, source );
@@ -50,9 +50,9 @@ public class Arrow2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Collection sources, Object target )
+	public void connect( Iterable sources, Object target )
 	{
-		if( target == null || sources == null || sources.isEmpty() )
+		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
 
 		outboundArrow2object.editor().connect( listenedArrow, sources );
@@ -65,10 +65,10 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		if( target == null || source == null )
 			return;
 
-		if( listenedArrow.inverse().targets( target ).isEmpty() )
+		if( Set0Utils.isEmpty( listenedArrow.inverse().targets( target ) ) )
 			inboundArrow2object.editor().remove( listenedArrow, target );
 
-		if( listenedArrow.targets( source ).isEmpty() )
+		if( Set0Utils.isEmpty( listenedArrow.targets( source ) ) )
 			outboundArrow2object.editor().remove( listenedArrow, source );
 	}
 }

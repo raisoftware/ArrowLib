@@ -1,7 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import java.util.Set;
+import Shared.Set0;
+import Shared.Set0Utils;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -64,7 +65,7 @@ public class IntersectArrowTest
 	@Test
 	public void testSources() throws Exception
 	{
-		Set sources = intersectArrow.sources();
+		Set0 sources = intersectArrow.sources();
 		assertEquals( sources.size(), mergedWord34.length() );
 
 		for( int i = 0; i < mergedWord34.length(); ++i )
@@ -77,7 +78,7 @@ public class IntersectArrowTest
 	@Test
 	public void testTargets() throws Exception
 	{
-		Set targets = intersectArrow.targets();
+		Set0 targets = intersectArrow.targets();
 		assertEquals( targets.size(), mergedWord34.length() );
 
 		for( int i = 0; i < mergedWord34.length(); ++i )
@@ -93,14 +94,14 @@ public class IntersectArrowTest
 		for( int i = 0; i < mergedWord12.length(); ++i )
 		{
 			char c = mergedWord12.charAt( i );
-			Set results = intersectArrow.targets( c );
-			assertTrue( results.isEmpty() );
+			Set0 results = intersectArrow.targets( c );
+			assertTrue( results.size() == 0 );
 		}
 
 		for( int i = 0; i < mergedWord34.length(); ++i )
 		{
 			char c = mergedWord34.charAt( i );
-			Set results = intersectArrow.targets( c );
+			Set0 results = intersectArrow.targets( c );
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toUpperCase( c ) );
 		}
@@ -109,20 +110,20 @@ public class IntersectArrowTest
 	@Test
 	public void testInverse() throws Exception
 	{
-		Set sources = intersectArrow.sources();
-		Set targets = intersectArrow.targets();
-		Set inverseSources = intersectArrow.inverse().sources();
-		Set inverseTargets = intersectArrow.inverse().targets();
+		Set0 sources = intersectArrow.sources();
+		Set0 targets = intersectArrow.targets();
+		Set0 inverseSources = intersectArrow.inverse().sources();
+		Set0 inverseTargets = intersectArrow.inverse().targets();
 
 		assertEquals( sources.size(), inverseTargets.size() );
-		assertTrue( sources.containsAll( inverseTargets ) );
+		assertTrue( Set0Utils.containsAll( sources, inverseTargets ) );
 		assertEquals( targets.size(), inverseSources.size() );
-		assertTrue( targets.containsAll( inverseSources ) );
+		assertTrue( Set0Utils.containsAll( targets, inverseSources ) );
 
 		for( int i = 0; i < mergedWord34.length(); ++i )
 		{
 			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
-			Set results = intersectArrow.inverse().targets( c );
+			Set0 results = intersectArrow.inverse().targets( c );
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
 		}

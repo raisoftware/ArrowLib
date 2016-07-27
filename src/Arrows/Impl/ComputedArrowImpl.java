@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
+import Shared.Set0;
 import java.util.*;
 import java.util.function.Function;
 
@@ -46,13 +47,13 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	}
 
 	@Override
-	public Set<K> sources()
+	public Set0<K> sources()
 	{
 		return precomputedArrow.sources();
 	}
 
 	@Override
-	public Set<V> targets()
+	public Set0<V> targets()
 	{
 		return precomputedArrow.targets();
 	}
@@ -64,13 +65,13 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	}
 
 	@Override
-	public Set<V> targets( K source )
+	public Set0<V> targets( K source )
 	{
 		return precomputedArrow.targets( source );
 	}
 
 	@Override
-	public Set<Map.Entry<K, V>> relations()
+	public Set0<Map.Entry<K, V>> relations()
 	{
 		return precomputedArrow.relations();
 	}
@@ -97,13 +98,13 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 
 		@Override
-		public Set<V> sources()
+		public Set0<V> sources()
 		{
 			return precomputedArrow.targets();
 		}
 
 		@Override
-		public Set<K> targets()
+		public Set0<K> targets()
 		{
 			return precomputedArrow.sources();
 		}
@@ -115,13 +116,13 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		}
 
 		@Override
-		public Set<K> targets( V source )
+		public Set0<K> targets( V source )
 		{
 			return precomputedArrow.inverse().targets( source );
 		}
 
 		@Override
-		public Set<Map.Entry<V, K>> relations()
+		public Set0<Map.Entry<V, K>> relations()
 		{
 			return precomputedArrow.inverse().relations();
 		}

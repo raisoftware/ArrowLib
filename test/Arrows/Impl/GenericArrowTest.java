@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.Diagram;
+import Shared.Set0;
 import java.util.*;
 import org.junit.*;
 
@@ -73,11 +74,11 @@ public class GenericArrowTest
 	@Test
 	public void stressTest()
 	{
-		Set<Character> allTargets = arrow.targets();
+		Set0<Character> allTargets = arrow.targets();
 
 		for( String word : arrow.sources() )
 		{
-			Set<Character> image = arrow.targets( word );
+			Set0<Character> image = arrow.targets( word );
 			for( int i = 0; i < word.length(); ++i )
 			{
 				Character letter = word.charAt( i );
@@ -93,8 +94,8 @@ public class GenericArrowTest
 	public void testRelations()
 	{
 
-		Set<Map.Entry<String, Character>> entries = arrow.relations();
-		Set<Map.Entry<Character, String>> inverseEntries = arrow.inverse().relations();
+		Set0<Map.Entry<String, Character>> entries = arrow.relations();
+		Set0<Map.Entry<Character, String>> inverseEntries = arrow.inverse().relations();
 
 		assertEquals( entries.size(), inverseEntries.size() );
 
@@ -142,7 +143,7 @@ public class GenericArrowTest
 		assertEquals( arrow.inverse().targets( 's' ).size(), 1 );
 
 		//check that duplicate letters don't matter and that targets returns the right result
-		Set<Character> letters = arrow.targets( word3 );
+		Set0<Character> letters = arrow.targets( word3 );
 		assertEquals( letters.size(), 5 );
 		assertTrue( letters.contains( 'c' ) );
 		assertTrue( letters.contains( 'l' ) );
@@ -163,7 +164,7 @@ public class GenericArrowTest
 		assertEquals( arrow.inverse().targets( 'e' ).size(), 2 );
 
 		arrow.remove( word3, null );
-		assertTrue( arrow.targets( word3 ).isEmpty() );
+		assertTrue( arrow.targets( word3 ).size() == 0 );
 
 	}
 

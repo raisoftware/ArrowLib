@@ -4,6 +4,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
+import Shared.*;
 import java.util.*;
 import java.util.function.BiPredicate;
 
@@ -21,15 +22,15 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	}
 
 	@Override
-	public Set<Map.Entry<K, V>> relations()
+	public Set0<Map.Entry<K, V>> relations()
 	{
-		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+		return ArrowUtils.generateRelations( this );
 	}
 
 	@Override
-	public Set<K> sources()
+	public Set0<K> sources()
 	{
-		Set<K> filteredSources = new HashSet<>();
+		Set0<K> filteredSources = new BasicSet0( new HashSet<>() );
 		for( K source : arrow.sources() )
 		{
 			for( V target : arrow.targets( source ) )
@@ -45,20 +46,20 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	}
 
 	@Override
-	public Set<V> targets()
+	public Set0<V> targets()
 	{
-		Set<V> filteredTargets = new HashSet<>();
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
 		for( K source : arrow.sources() )
 		{
-			filteredTargets.addAll( targets( source ) );
+			Set0Utils.addAll( filteredTargets, targets( source ) );
 		}
 		return filteredTargets;
 	}
 
 	@Override
-	public Set<V> targets( K source )
+	public Set0<V> targets( K source )
 	{
-		Set<V> filteredTargets = new HashSet<>();
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
 
 		for( V target : arrow.targets( source ) )
 		{

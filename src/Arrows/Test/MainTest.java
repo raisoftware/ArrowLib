@@ -2,6 +2,7 @@ package Arrows.Test;
 
 import Arrows.*;
 import Arrows.Impl.ObjectConfigBuilderImpl;
+import Shared.Set0;
 import java.util.*;
 
 import static Arrows.Arrows.StandardArrowName.*;
@@ -61,7 +62,7 @@ public class MainTest
 		System.out.println( "" + containsArrow.relations() );
 
 		ArrowView joinArrow = Arrows.join( containsArrow.inverse() );
-		Set results = joinArrow.targets( 'r' );
+		Set0 results = joinArrow.targets( 'r' );
 		System.out.println( "results:" + results );
 	}
 

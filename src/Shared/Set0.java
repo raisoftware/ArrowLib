@@ -1,8 +1,6 @@
 package Shared;
 
-import java.util.Iterator;
-
-public interface Set0<V>
+public interface Set0<V> extends Iterable<V>
 {
 	void add( V target );
 
@@ -11,6 +9,4 @@ public interface Set0<V>
 	boolean contains( V target );
 
 	int size();
-
-	Iterator<V> iterator();
 }
