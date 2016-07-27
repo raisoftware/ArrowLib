@@ -1,9 +1,12 @@
 package Arrows.Utils;
 
 import Arrows.ArrowView;
+import Arrows.Diagram;
 import Shared.BasicSet0;
 import Shared.Set0;
 import java.util.*;
+
+import static Arrows.Arrows.StandardArrowName.*;
 
 
 public class ArrowUtils
@@ -47,5 +50,40 @@ public class ArrowUtils
 			}
 		}
 	}
+
+	public static String shortToString( Diagram diagram, ArrowView arrow, String arrowType )
+	{
+		String idName = "";
+		try
+		{
+			ArrowView arrow2id = diagram.arrows().arrow( Arrow2Id );
+			ArrowView arrow2name = diagram.arrows().arrow( Arrow2Name );
+
+			Object id = arrow2id.target( arrow );
+
+			Object name;
+			try
+			{
+				name = arrow2name.target( arrow );
+			}
+			catch( Exception ex )
+			{
+				name = "Unnamed";
+			}
+			idName += "(#" + id + "-" + name + ")";
+		}
+		catch( Exception ex )
+		{
+			idName = "Unknown id/name";
+		}
+
+		return idName + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";
+	}
+
+	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
+	{
+		return shortToString( diagram, arrow, arrowType ) + "  Relations:" + arrow.relations();
+	}
+
 
 }

@@ -5,14 +5,12 @@ import Arrows.*;
 public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilder
 {
 	private boolean enabled = true;
-	private Object name = null;
 	private boolean tracksInboundArrows = true;
 	private boolean tracksOutboundArrows = true;
 	private boolean tracksClass = true;
 
-	public ObjectConfigBuilderImpl( Object name )
+	public ObjectConfigBuilderImpl()
 	{
-		this.name = name;
 	}
 
 	@Override
@@ -53,12 +51,6 @@ public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilde
 	public boolean enabled()
 	{
 		return enabled;
-	}
-
-	@Override
-	public Object name()
-	{
-		return name;
 	}
 
 	@Override

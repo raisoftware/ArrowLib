@@ -22,8 +22,8 @@ public class ArrowsImpl implements Arrows
 	{
 		this.diagram = diagram;
 
-		name2arrow = new GenericArrow( Object.class, ArrowView.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
-		id2arrow = new GenericArrow( Integer.class, ArrowView.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		name2arrow = new GenericArrow( diagram, Object.class, ArrowView.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		id2arrow = new GenericArrow( diagram, Integer.class, ArrowView.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 
 		addInternal( name2arrow );
 		addInternal( id2arrow );
@@ -31,27 +31,31 @@ public class ArrowsImpl implements Arrows
 		name( id2arrow, StandardArrowName.Id2Arrow, StandardArrowName.Arrow2Id );
 
 
-		Arrow class2object = new GenericArrow( Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow class2object = new GenericArrow( diagram, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( class2object );
 		name( class2object, Class2Object, Object2Class );
 
 
-		Arrow name2object = new GenericArrow( Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow name2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( name2object );
 		name( name2object, Name2Object, Object2Name );
 
+		Arrow id2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		addInternal( id2object );
+		name( id2object, Id2Object, Object2Id );
 
-		Arrow object2config = new GenericArrow( Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+
+		Arrow object2config = new GenericArrow( diagram, Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( object2config );
 		name( object2config, Object2Config, Config2Object );
 
 
-		Arrow inboundArrow2object = new GenericArrow( Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow inboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( inboundArrow2object );
 		name( inboundArrow2object, InboundArrow2Object, Object2InboundArrow );
 
 
-		Arrow outboundArrow2object = new GenericArrow( Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow outboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( outboundArrow2object );
 		name( outboundArrow2object, OutboundArrow2Object, Object2OutboundArrow );
 
@@ -61,7 +65,7 @@ public class ArrowsImpl implements Arrows
 	@Override
 	public final GenericArrowBuilder createGeneric()
 	{
-		return new GenericArrowBuilder( this );
+		return new GenericArrowBuilder( diagram );
 	}
 
 	public final void addInternal( ArrowView arrow )
@@ -86,17 +90,17 @@ public class ArrowsImpl implements Arrows
 	@Override
 	public final void add( ArrowView arrow )
 	{
-		//TOFIX if( listenable )
-		{
-			Arrow listenedArrow = (Arrow) arrow;
 
-			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
-			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
+		Arrow listenedArrow = (Arrow) arrow;
 
-			listenedArrow.listeners().add( class2ObjectRule );
-			listenedArrow.listeners().add( objectRegistrarRule );
-			listenedArrow.listeners().add( arrow2ObjectRule );
-		}
+		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
+		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
+
+		listenedArrow.listeners().add( objectRegistrarRule );
+		listenedArrow.listeners().add( arrow2ObjectRule );
+		listenedArrow.listeners().add( class2ObjectRule );
+
+
 		addInternal( arrow );
 	}
 

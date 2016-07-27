@@ -44,13 +44,17 @@ public class MainTest
 
 		//Test class2ObjectRule
 		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class2Object );
+		System.out.println( class2Object );
+		System.out.println( class2Object.inverse() );
 		System.out.println( "class2Object.relations()" + class2Object.relations() );
 		System.out.println( "class2Object.inverse()" + class2Object.inverse().relations() );
 		//----------
 
 		//Test ObjectRegistrarRule
-		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl( RootObject ).end();
+		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
+		diagram.objects().add( 's' );
 		diagram.objects().config( 's', rootObjConfig );
+		diagram.objects().name( 's', RootObject );
 		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name2Object );
 		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object2Config );
 		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );

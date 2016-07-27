@@ -2,7 +2,6 @@ package Arrows;
 
 public interface ObjectConfigBuilder
 {
-
 	ObjectConfigBuilder enabled( boolean enabled );
 
 	ObjectConfigBuilder tracksClass( boolean tracksClass );

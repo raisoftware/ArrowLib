@@ -2,9 +2,7 @@ package Arrows;
 
 import Arrows.Impl.*;
 import Shared.Set0;
-import java.util.Set;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 
 public interface Arrows extends Set0<ArrowView>
 {
@@ -16,6 +14,7 @@ public interface Arrows extends Set0<ArrowView>
 		Id2Arrow, Arrow2Id,
 		Class2Object, Object2Class,
 		Name2Object, Object2Name,
+		Id2Object, Object2Id,
 		Object2Config, Config2Object,
 		InboundArrow2Object, Object2InboundArrow,
 		OutboundArrow2Object, Object2OutboundArrow
@@ -45,10 +44,5 @@ public interface Arrows extends Set0<ArrowView>
 	static ArrowView intersect( Arrow... arrows )
 	{
 		return new IntersectArrow( arrows );
-	}
-
-	static <K, V> ComputedArrow<K, V> computedArrow( Function<K, Set<V>> function, Class domain, Class codomain )
-	{
-		return new ComputedArrowImpl<>( function, domain, codomain );
 	}
 }

@@ -3,6 +3,7 @@ package Arrows.Impl.Rule;
 import Arrows.*;
 import Arrows.Arrows.StandardArrowName;
 import Arrows.Impl.ObjectConfigBuilderImpl;
+import Arrows.Objects;
 
 import static Arrows.Arrows.StandardArrowName.*;
 
@@ -37,23 +38,30 @@ public class ObjectRegistrarRuleTest
 	{
 		diagram = Diagram.create();
 
-		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl( RootObject ).end();
-		ObjectConfig coolestObjConfig = new ObjectConfigBuilderImpl( CoolestObject ).end();
-		ObjectConfig bestObjConfig = new ObjectConfigBuilderImpl( BestObject ).end();
+		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
+		ObjectConfig coolestObjConfig = new ObjectConfigBuilderImpl().end();
+		ObjectConfig bestObjConfig = new ObjectConfigBuilderImpl().end();
 
-		diagram.objects().add( "two" );
-		diagram.objects().config( "two", rootObjConfig );// id was 0 and was overwritten
-		diagram.objects().add( "unu" );
-		diagram.objects().config( "unu", coolestObjConfig );// id was 1 and was overwritten
+		Objects objects = diagram.objects();
+
+		objects.add( "two" );// id 0
+		objects.config( "two", rootObjConfig );
+		objects.name( "two", RootObject );
+
+		objects.add( "unu" ); // id 1
+		objects.config( "unu", coolestObjConfig );
+		objects.name( "unu", CoolestObject );
+
 
 		Arrow<String, String> arrow = diagram.arrows().createGeneric().end();
 		diagram.arrows().name( arrow, English2Rom, Rom2English );
-		arrow.editor().connect( "one", "unu" );// ids are 2 and CoolestObject
-		arrow.editor().connect( "two", "doi" );// ids are RootObject and 3
+		arrow.editor().connect( "one", "unu" );// id 2 and 1
+		arrow.editor().connect( "two", "doi" );// ids 0 and 3
 		arrow.editor().connect( "three", "trei" );// ids are 4 and 5
 		arrow.editor().connect( "four", "patru" );// ids are 6 and 7
 
-		diagram.objects().config( "three", bestObjConfig );// id was 6 and was overwritten
+		diagram.objects().config( "three", bestObjConfig );
+		objects.name( "three", BestObject );
 
 	}
 
@@ -68,6 +76,7 @@ public class ObjectRegistrarRuleTest
 		Arrows arrows = diagram.arrows();
 
 		ArrowView<Object, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
+		ArrowView<Object, Object> id2Object = arrows.arrow( StandardArrowName.Id2Object );
 		ArrowView<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
 
 		assertEquals( name2Object.target( RootObject ), "two" );
@@ -80,11 +89,11 @@ public class ObjectRegistrarRuleTest
 		unnamedObjects.add( "doi" );
 		unnamedObjects.add( "trei" );
 		unnamedObjects.add( "patru" );
-		assertEquals( name2Object.target( 2 ), "one" );
-		assertEquals( name2Object.target( 3 ), "doi" );
-		assertEquals( name2Object.target( 5 ), "trei" );
-		assertEquals( name2Object.target( 6 ), "four" );
-		assertEquals( name2Object.target( 7 ), "patru" );
+		assertEquals( id2Object.target( 2 ), "one" );
+		assertEquals( id2Object.target( 3 ), "doi" );
+		assertEquals( id2Object.target( 5 ), "trei" );
+		assertEquals( id2Object.target( 6 ), "four" );
+		assertEquals( id2Object.target( 7 ), "patru" );
 
 		ArrowView<Object, Enum> object2Name = arrows.arrow( StandardArrowName.Object2Name );
 

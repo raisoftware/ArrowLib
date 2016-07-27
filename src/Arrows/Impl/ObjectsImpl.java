@@ -13,9 +13,10 @@ import static Arrows.Arrows.StandardArrowName.*;
 public class ObjectsImpl implements Objects
 {
 	AtomicInteger sequence = new AtomicInteger();
-	Arrow<Object, Object> name2Object = null;
-	Arrow<Object, ObjectConfig> object2Config = null;
-	Arrow<Class, Object> class2Object = null;
+	Arrow<Object, Object> id2object = null;
+	Arrow<Object, Object> name2object = null;
+	Arrow<Object, ObjectConfig> object2config = null;
+	Arrow<Class, Object> class2object = null;
 	Arrow<Arrow, Object> inboundArrow2object = null;
 	Arrow<Arrow, Object> outboundArrow2object = null;
 
@@ -23,9 +24,10 @@ public class ObjectsImpl implements Objects
 	{
 		try
 		{
-			this.name2Object = (Arrow) arrows.arrow( Name2Object );
-			this.object2Config = (Arrow) arrows.arrow( Object2Config );
-			this.class2Object = (Arrow) arrows.arrow( Class2Object );
+			this.id2object = (Arrow) arrows.arrow( Id2Object );
+			this.name2object = (Arrow) arrows.arrow( Name2Object );
+			this.object2config = (Arrow) arrows.arrow( Object2Config );
+			this.class2object = (Arrow) arrows.arrow( Class2Object );
 			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow2Object );
 			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow2Object );
 		}
@@ -41,35 +43,46 @@ public class ObjectsImpl implements Objects
 		if( contains( object ) )
 			throw new RuntimeException( "Object already registered." );
 
-		ObjectConfig config = new ObjectConfigBuilderImpl( sequence.getAndIncrement() ).end();
-		name2Object.editor().connect( config.name(), object );
-		object2Config.editor().connect( object, config );
+		ObjectConfig config = new ObjectConfigBuilderImpl().end();
+		id2object.editor().connect( sequence.getAndIncrement(), object );
+		object2config.editor().connect( object, config );
+	}
+
+	public void name( Object object, Object name )
+	{
+		if( !contains( object ) )
+			throw new RuntimeException( "Object not registered." );
+
+		if( name2object.targets().contains( object ) )
+			throw new RuntimeException( "Object already has a name" );
+
+		name2object.inverse().editor().connect( object, name );
 	}
 
 	@Override
 	public boolean contains( Object object )
 	{
-		return name2Object.targets().contains( object );
+		return id2object.targets().contains( object );
 	}
 
 	@Override
 	public int size()
 	{
-		return name2Object.targets().size();
+		return id2object.targets().size();
 	}
 
 
 	@Override
 	public void remove( Object obj, boolean cascade )
 	{
-		if( Set0Utils.isEmpty( object2Config.targets( obj ) ) )
+		if( Set0Utils.isEmpty( object2config.targets( obj ) ) )
 			return;
 
 		ObjectConfig objConfig;
 
 		try
 		{
-			objConfig = object2Config.target( obj );
+			objConfig = object2config.target( obj );
 		}
 		catch( Exception ex )
 		{
@@ -115,13 +128,13 @@ public class ObjectsImpl implements Objects
 	@Override
 	public Iterator iterator( Class clazz )
 	{
-		return class2Object.targets( clazz ).iterator();
+		return class2object.targets( clazz ).iterator();
 	}
 
 	@Override
 	public Iterator iterator()
 	{
-		return name2Object.targets().iterator();
+		return id2object.targets().iterator();
 	}
 
 	@Override
@@ -129,10 +142,9 @@ public class ObjectsImpl implements Objects
 	{
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
-		name2Object.inverse().editor().remove( object, null );
-		object2Config.editor().remove( object, null );
-		name2Object.editor().connect( config.name(), object );
-		object2Config.editor().connect( object, config );
+
+		object2config.editor().remove( object, null );
+		object2config.editor().connect( object, config );
 	}
 
 	@Override
@@ -143,7 +155,7 @@ public class ObjectsImpl implements Objects
 
 		try
 		{
-			return object2Config.target( object );
+			return object2config.target( object );
 		}
 		catch( Exception ex )
 		{

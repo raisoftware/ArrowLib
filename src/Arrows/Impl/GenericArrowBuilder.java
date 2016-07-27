@@ -10,13 +10,11 @@ public class GenericArrowBuilder implements ArrowBuilder
 	private Class codomain = Object.class;
 	private boolean allowsMultipleSources = true;
 	private boolean allowsMultipleTargets = true;
-	private Arrows arrows = null;
-	private Objects objects = null;
+	private Diagram diagram = null;
 
-	public GenericArrowBuilder( Arrows arrows )
+	public GenericArrowBuilder( Diagram diagram )
 	{
-		this.arrows = arrows;
-		this.objects = objects;
+		this.diagram = diagram;
 		this.name = name;
 		this.inverseName = inverseName;
 	}
@@ -52,10 +50,10 @@ public class GenericArrowBuilder implements ArrowBuilder
 	@Override
 	public Arrow end()
 	{
-		assert ( arrows != null );
-		Arrow arrow = new GenericArrow( domain, codomain, allowsMultipleSources, allowsMultipleTargets, /*listenable=*/ true );
+		assert ( diagram.arrows() != null );
+		Arrow arrow = new GenericArrow( diagram, domain, codomain, allowsMultipleSources, allowsMultipleTargets, /*listenable=*/ true );
 
-		arrows.add( arrow );
+		diagram.arrows().add( arrow );
 
 		return arrow;
 	}

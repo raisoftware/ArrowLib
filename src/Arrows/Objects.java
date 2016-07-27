@@ -12,4 +12,6 @@ public interface Objects extends Set0
 	void config( Object object, ObjectConfig config );
 
 	ObjectConfig config( Object object );
+
+	void name( Object obj, Object name );
 }

@@ -58,4 +58,11 @@ public class BasicSet0<T> implements Set0<T>
 
 		return set.equals( ( (BasicSet0) obj ).set );
 	}
+
+	@Override
+	public String toString()
+	{
+		return set.toString();
+	}
+
 }

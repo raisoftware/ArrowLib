@@ -22,18 +22,10 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	private final boolean allowsMultipleSources;
 	private final boolean allowsMultipleTargets;
 	private final boolean listenable;
+	private final Diagram diagram;
 
-	public GenericArrow()
-	{
-		this.allowsMultipleSources = true;
-		this.allowsMultipleTargets = true;
-		this.domain = Object.class;
-		this.codomain = Object.class;
-		this.listenable = true;
-		methodSet = new MethodSet( this, Arrow.Editor.class );
-	}
 
-	public GenericArrow( Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
+	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
 		methodSet = new MethodSet( this, Arrow.Editor.class );
 		this.domain = domain;
@@ -41,6 +33,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		this.listenable = listenable;
 		this.allowsMultipleSources = allowsMultipleSources;
 		this.allowsMultipleTargets = allowsMultipleTargets;
+		this.diagram = diagram;
 	}
 
 	private boolean put( K key, V value )
@@ -162,7 +155,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 	@Override
 	public String toString()
 	{
-		return "Arrow<" + domain() + "," + codomain() + ">  Relations:" + relations();
+		return ArrowUtils.toString( diagram, this, "GenericArrow" );
 	}
 
 	@Override
@@ -254,7 +247,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		@Override
 		public String toString()
 		{
-			return "Arrow<" + domain() + "," + codomain() + ">  Relations:" + relations();
+			return ArrowUtils.toString( diagram, this, "InverseGenericArrow" );
 		}
 
 		@Override
@@ -272,7 +265,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 		@Override
 		public Editor<V, K> editor()
 		{
-			return this;//TOFIX listenable ? methodSet.publisher() : this;
+			return this;
 		}
 
 		@Override
@@ -287,4 +280,5 @@ public class GenericArrow<K, V> implements Arrow<K, V>, Arrow.Editor<K, V>
 			return codomain;
 		}
 	}
+
 }

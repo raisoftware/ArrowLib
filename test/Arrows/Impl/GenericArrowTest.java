@@ -5,6 +5,7 @@ import Shared.Set0;
 import java.util.*;
 import org.junit.*;
 
+import static Arrows.Test.ArrowName.*;
 import static org.junit.Assert.*;
 
 public class GenericArrowTest
@@ -35,8 +36,9 @@ public class GenericArrowTest
 	{
 		Diagram diagram = Diagram.create();
 
-		arrow = new GenericArrow();
-
+		arrow = new GenericArrow( diagram, String.class, Character.class, true, true, true );
+		diagram.arrows().add( arrow );
+		diagram.arrows().name( arrow, Contains, IsContainedBy );
 		List<Character> chars = new ArrayList();
 		chars.add( 'S' );
 		chars.add( 'o' );
@@ -63,6 +65,10 @@ public class GenericArrowTest
 		{
 			arrow.connect( word3Again, word3Again.charAt( i ) );
 		}
+
+		System.out.println( arrow );
+		System.out.println( arrow.inverse() );
+		System.out.println( "" );
 
 	}
 

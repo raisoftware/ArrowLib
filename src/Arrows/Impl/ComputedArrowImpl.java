@@ -11,17 +11,19 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
 	Arrow<K, V> precomputedArrow;
 	Function<K, Set<V>> function;
+	Diagram diagram;
 	Class domain;
 	Class codomain;
 
 	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
 
-	public ComputedArrowImpl( Function<K, Set<V>> function, Class domain, Class codomain )
+	public ComputedArrowImpl( Diagram diagram, Function<K, Set<V>> function, Class domain, Class codomain )
 	{
 		this.domain = domain;
 		this.codomain = codomain;
-		precomputedArrow = new GenericArrow();
+		precomputedArrow = new GenericArrow( diagram, domain, codomain, true, true, false );
 
+		this.diagram = diagram;
 		this.function = function;
 	}
 
@@ -94,6 +96,12 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		return domain;
 	}
 
+	@Override
+	public String toString()
+	{
+		return ArrowUtils.toString( diagram, this, "ComputedArrow" );
+	}
+
 	private final class InverseComputedArrow implements ArrowView<V, K>
 	{
 
@@ -143,6 +151,12 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		public Class domain()
 		{
 			return codomain;
+		}
+
+		@Override
+		public String toString()
+		{
+			return ArrowUtils.toString( diagram, this, "InverseComputedArrow" );
 		}
 	}
 }
