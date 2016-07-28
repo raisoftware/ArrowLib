@@ -1,11 +1,14 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Arrows.Arrow.Editor;
 import Arrows.Impl.Rule.*;
+import Shared.BasicSet0;
+import Shared.Set0;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 public class ArrowsImpl implements Arrows
 {
@@ -16,7 +19,7 @@ public class ArrowsImpl implements Arrows
 	AtomicInteger sequence = new AtomicInteger();
 
 	Class2ObjectRule class2ObjectRule;
-
+	Set0<Arrow.Editor> customRules;
 
 	public ArrowsImpl( Diagram diagram )
 	{
@@ -27,45 +30,58 @@ public class ArrowsImpl implements Arrows
 
 		addInternal( name2arrow );
 		addInternal( id2arrow );
-		name( name2arrow, StandardArrowName.Name2Arrow, StandardArrowName.Arrow2Name );
-		name( id2arrow, StandardArrowName.Id2Arrow, StandardArrowName.Arrow2Id );
+		name( name2arrow, Names.Name_Arrow, Names.Arrow_Name );
+		name( id2arrow, Names.Id_Arrow, Names.Arrow_Id );
 
 
 		Arrow class2object = new GenericArrow( diagram, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( class2object );
-		name( class2object, Class2Object, Object2Class );
+		name( class2object, Class_Object, Object_Class );
 
 
 		Arrow name2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( name2object );
-		name( name2object, Name2Object, Object2Name );
+		name( name2object, Name_Object, Object_Name );
 
 		Arrow id2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( id2object );
-		name( id2object, Id2Object, Object2Id );
+		name( id2object, Id_Object, Object_Id );
 
 
 		Arrow object2config = new GenericArrow( diagram, Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( object2config );
-		name( object2config, Object2Config, Config2Object );
+		name( object2config, Object_Config, Config_Object );
 
 
 		Arrow inboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( inboundArrow2object );
-		name( inboundArrow2object, InboundArrow2Object, Object2InboundArrow );
+		name( inboundArrow2object, InboundArrow_Object, Object_InboundArrow );
 
 
 		Arrow outboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( outboundArrow2object );
-		name( outboundArrow2object, OutboundArrow2Object, Object2OutboundArrow );
+		name( outboundArrow2object, OutboundArrow_Object, Object_OutboundArrow );
 
 		class2ObjectRule = new Class2ObjectRule( this );
+		customRules = new BasicSet0( new HashSet() );
+	}
+
+	@Override
+	public Set0<Editor> customRules()
+	{
+		return customRules;
 	}
 
 	@Override
 	public final GenericArrowBuilder createGeneric()
 	{
 		return new GenericArrowBuilder( diagram );
+	}
+
+	@Override
+	public final ComputedArrowBuilder createComputed()
+	{
+		return new ComputedArrowBuilder( diagram );
 	}
 
 	public final void addInternal( ArrowView arrow )
@@ -75,7 +91,7 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public void name( ArrowView arrow, Object arrowName, Object arrowInverseName )
+	public final void name( ArrowView arrow, Object arrowName, Object arrowInverseName )
 	{
 		if( !contains( arrow ) )
 			throw new RuntimeException( "Arrow not registered." );
@@ -91,15 +107,22 @@ public class ArrowsImpl implements Arrows
 	public final void add( ArrowView arrow )
 	{
 
-		Arrow listenedArrow = (Arrow) arrow;
+		if( arrow instanceof Arrow )
+		{
+			Arrow listenedArrow = (Arrow) arrow;
 
-		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
-		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
+			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
+			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
 
-		listenedArrow.listeners().add( objectRegistrarRule );
-		listenedArrow.listeners().add( arrow2ObjectRule );
-		listenedArrow.listeners().add( class2ObjectRule );
+			listenedArrow.listeners().add( objectRegistrarRule );
+			listenedArrow.listeners().add( arrow2ObjectRule );
+			listenedArrow.listeners().add( class2ObjectRule );
 
+			for( Editor rule : customRules )
+			{
+				listenedArrow.listeners().add( rule );
+			}
+		}
 
 		addInternal( arrow );
 	}

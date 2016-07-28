@@ -1,12 +1,12 @@
 package Arrows.Utils;
 
-import Arrows.ArrowView;
-import Arrows.Diagram;
+import Arrows.*;
 import Shared.BasicSet0;
 import Shared.Set0;
+import java.io.*;
 import java.util.*;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 
 public class ArrowUtils
@@ -51,15 +51,16 @@ public class ArrowUtils
 		}
 	}
 
-	public static String shortToString( Diagram diagram, ArrowView arrow, String arrowType )
+	public static String shortToString( Diagram diagram, ArrowView arrow )
 	{
 		String idName = "";
 		try
 		{
-			ArrowView arrow2id = diagram.arrows().arrow( Arrow2Id );
-			ArrowView arrow2name = diagram.arrows().arrow( Arrow2Name );
+			ArrowView<ArrowView, Integer> arrow2id = diagram.arrows().arrow( Arrow_Id );
+			ArrowView arrow2name = diagram.arrows().arrow( Arrow_Name );
 
-			Object id = arrow2id.target( arrow );
+			Integer id = arrow2id.target( arrow );
+			String formattedId = String.format( "%03d", id );
 
 			Object name;
 			try
@@ -70,20 +71,53 @@ public class ArrowUtils
 			{
 				name = "Unnamed";
 			}
-			idName += "(#" + id + "-" + name + ")";
+			idName += "(#" + formattedId + "-" + name + ")";
 		}
 		catch( Exception ex )
 		{
 			idName = "Unknown id/name";
 		}
 
-		return idName + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";
+		return idName;
 	}
 
 	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
 	{
-		return shortToString( diagram, arrow, arrowType ) + "  Relations:" + arrow.relations();
+		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";// + "  Relations:" + arrow.relations();
 	}
 
+	public static void generateGraph( Diagram diagram )
+	{
+		String path = "graph/";
+		new File( path ).mkdirs();
+		Arrows arrows = diagram.arrows();
+		try
+		{
+			Arrow class2Object = (Arrow) arrows.arrow( Class_Object );
+			Arrow inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
+			Arrow outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+			Arrow<Integer, ArrowView> id_arrow = (Arrow) arrows.arrow( Id_Arrow );
+
+
+			for( ArrowView arrow : id_arrow.targets() )
+			{
+				try( Writer writer = new BufferedWriter( new OutputStreamWriter(
+					new FileOutputStream( path + shortToString( diagram, arrow ) + ".dot" ), "utf-8" ) ) )
+				{
+					writer.write( "digraph Arrow{\n" );
+					for( Object source : arrow.sources() )
+						for( Object target : arrow.targets( source ) )
+						{
+							writer.write( "\"" + source + "\"->\"" + target + "\"\n" );
+						}
+					writer.write( "}" );
+				}
+			}
+		}
+		catch( Exception ex )
+		{
+			ex.printStackTrace();
+		}
+	}
 
 }

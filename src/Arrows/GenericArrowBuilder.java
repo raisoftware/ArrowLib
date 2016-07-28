@@ -1,11 +1,9 @@
-package Arrows.Impl;
+package Arrows;
 
-import Arrows.*;
+import Arrows.Impl.GenericArrow;
 
-public class GenericArrowBuilder implements ArrowBuilder
+public class GenericArrowBuilder
 {
-	private Enum name = null;
-	private Enum inverseName = null;
 	private Class domain = Object.class;
 	private Class codomain = Object.class;
 	private boolean allowsMultipleSources = true;
@@ -15,39 +13,32 @@ public class GenericArrowBuilder implements ArrowBuilder
 	public GenericArrowBuilder( Diagram diagram )
 	{
 		this.diagram = diagram;
-		this.name = name;
-		this.inverseName = inverseName;
 	}
 
-	@Override
 	public GenericArrowBuilder domain( Class allowedClasses )
 	{
 		this.domain = allowedClasses;
 		return this;
 	}
 
-	@Override
 	public GenericArrowBuilder codomain( Class allowedClasses )
 	{
 		this.codomain = allowedClasses;
 		return this;
 	}
 
-	@Override
 	public GenericArrowBuilder allowsMultipleSources( boolean allow )
 	{
 		this.allowsMultipleSources = allow;
 		return this;
 	}
 
-	@Override
 	public GenericArrowBuilder allowsMultipleTargets( boolean allow )
 	{
 		this.allowsMultipleTargets = allow;
 		return this;
 	}
 
-	@Override
 	public Arrow end()
 	{
 		assert ( diagram.arrows() != null );

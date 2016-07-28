@@ -51,7 +51,7 @@ public class ComputedArrowTest
 			return chars;
 		};
 
-		computedArrow = new ComputedArrowImpl( diagram, function, String.class, Character.class );
+		computedArrow = diagram.arrows().createComputed().function( function ).domain( String.class ).codomain( Character.class ).end();
 		computedArrow.addSource( word1 );
 		computedArrow.addSource( word2 );
 		computedArrow.addSource( word3 );

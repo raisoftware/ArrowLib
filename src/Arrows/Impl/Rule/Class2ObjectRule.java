@@ -2,17 +2,21 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 public class Class2ObjectRule implements Arrow.Editor
 {
 	private Arrow<Class, Object> class2Object = null;
+	private Arrow<Arrow, Object> inboundArrow2object;
+	private Arrow<Arrow, Object> outboundArrow2object;
 
 	public Class2ObjectRule( Arrows arrows )
 	{
 		try
 		{
-			this.class2Object = (Arrow) arrows.arrow( Class2Object );
+			this.class2Object = (Arrow) arrows.arrow( Class_Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
 		}
 		catch( Exception ex )
 		{

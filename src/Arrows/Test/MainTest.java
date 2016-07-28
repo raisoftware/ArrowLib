@@ -2,10 +2,11 @@ package Arrows.Test;
 
 import Arrows.*;
 import Arrows.Impl.ObjectConfigBuilderImpl;
+import Arrows.Utils.ArrowUtils;
 import Shared.Set0;
 import java.util.*;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 import static Arrows.Test.ArrowName.*;
 import static Arrows.Test.ObjectName.*;
 
@@ -43,7 +44,7 @@ public class MainTest
 		//----------------------------------------------------
 
 		//Test class2ObjectRule
-		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class2Object );
+		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class_Object );
 		System.out.println( class2Object );
 		System.out.println( class2Object.inverse() );
 		System.out.println( "class2Object.relations()" + class2Object.relations() );
@@ -52,11 +53,10 @@ public class MainTest
 
 		//Test ObjectRegistrarRule
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
-		diagram.objects().add( 's' );
 		diagram.objects().config( 's', rootObjConfig );
 		diagram.objects().name( 's', RootObject );
-		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name2Object );
-		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object2Config );
+		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name_Object );
+		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object_Config );
 		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );
 		System.out.println( "object2Config.relations()" + object2Config.relations() );
 		//----------
@@ -68,6 +68,8 @@ public class MainTest
 		ArrowView joinArrow = Arrows.join( containsArrow.inverse() );
 		Set0 results = joinArrow.targets( 'r' );
 		System.out.println( "results:" + results );
+
+		ArrowUtils.generateGraph( diagram );
 	}
 
 }

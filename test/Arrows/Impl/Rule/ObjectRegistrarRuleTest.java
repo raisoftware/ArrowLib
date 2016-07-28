@@ -1,11 +1,11 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Arrows.Arrows.StandardArrowName;
+import Arrows.Arrows.Names;
 import Arrows.Impl.ObjectConfigBuilderImpl;
 import Arrows.Objects;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 import java.util.*;
 import org.junit.*;
@@ -75,9 +75,9 @@ public class ObjectRegistrarRuleTest
 	{
 		Arrows arrows = diagram.arrows();
 
-		ArrowView<Object, Object> name2Object = arrows.arrow( StandardArrowName.Name2Object );
-		ArrowView<Object, Object> id2Object = arrows.arrow( StandardArrowName.Id2Object );
-		ArrowView<Object, ObjectConfig> object2Config = arrows.arrow( Object2Config );
+		ArrowView<Object, Object> name2Object = arrows.arrow(Names.Name_Object );
+		ArrowView<Object, Object> id2Object = arrows.arrow(Names.Id_Object );
+		ArrowView<Object, ObjectConfig> object2Config = arrows.arrow(Object_Config );
 
 		assertEquals( name2Object.target( RootObject ), "two" );
 		assertEquals( name2Object.target( CoolestObject ), "unu" );
@@ -95,7 +95,7 @@ public class ObjectRegistrarRuleTest
 		assertEquals( id2Object.target( 6 ), "four" );
 		assertEquals( id2Object.target( 7 ), "patru" );
 
-		ArrowView<Object, Enum> object2Name = arrows.arrow( StandardArrowName.Object2Name );
+		ArrowView<Object, Enum> object2Name = arrows.arrow(Names.Object_Name );
 
 		assertEquals( object2Name.target( "two" ), RootObject );
 		assertEquals( object2Name.target( "unu" ), CoolestObject );

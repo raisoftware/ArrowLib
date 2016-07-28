@@ -1,7 +1,7 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Arrows.Arrows.StandardArrowName;
+import Arrows.Arrows.Names;
 import Shared.Set0;
 import org.junit.*;
 
@@ -51,7 +51,7 @@ public class Class2ObjectRuleTest
 	public void testClass2ObjectRule() throws Exception
 	{
 		Arrows arrows = diagram.arrows();
-		ArrowView<Enum, Arrow> name2Arrow = arrows.arrow( StandardArrowName.Name2Arrow );
+		ArrowView<Enum, Arrow> name2Arrow = arrows.arrow(Names.Name_Arrow );
 
 		//Test name2Arrow
 		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
@@ -59,7 +59,7 @@ public class Class2ObjectRuleTest
 		assertEquals( name2Arrow.target( Destringify ).target( "doi" ), 2 );
 
 		//Test class2Object
-		ArrowView class2Object = arrows.arrow( StandardArrowName.Class2Object );
+		ArrowView class2Object = arrows.arrow(Names.Class_Object );
 		Set0<String> strings = class2Object.targets( String.class );
 
 		for( String target : stringifyArrow.targets() )

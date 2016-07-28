@@ -5,7 +5,7 @@ import Shared.Set0Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 public class Arrow2ObjectRule implements Arrow.Editor
 {
@@ -19,8 +19,8 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow2Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow(InboundArrow_Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow(OutboundArrow_Object );
 		}
 		catch( Exception ex )
 		{

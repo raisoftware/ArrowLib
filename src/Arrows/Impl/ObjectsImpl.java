@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static Arrows.Arrows.StandardArrowName.*;
+import static Arrows.Arrows.Names.*;
 
 public class ObjectsImpl implements Objects
 {
@@ -24,12 +24,12 @@ public class ObjectsImpl implements Objects
 	{
 		try
 		{
-			this.id2object = (Arrow) arrows.arrow( Id2Object );
-			this.name2object = (Arrow) arrows.arrow( Name2Object );
-			this.object2config = (Arrow) arrows.arrow( Object2Config );
-			this.class2object = (Arrow) arrows.arrow( Class2Object );
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow2Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow2Object );
+			this.id2object = (Arrow) arrows.arrow( Id_Object );
+			this.name2object = (Arrow) arrows.arrow( Name_Object );
+			this.object2config = (Arrow) arrows.arrow( Object_Config );
+			this.class2object = (Arrow) arrows.arrow( Class_Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
 		}
 		catch( Exception ex )
 		{
@@ -48,6 +48,7 @@ public class ObjectsImpl implements Objects
 		object2config.editor().connect( object, config );
 	}
 
+	@Override
 	public void name( Object object, Object name )
 	{
 		if( !contains( object ) )

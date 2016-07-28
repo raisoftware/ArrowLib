@@ -50,20 +50,20 @@ public class GenericArrowTest
 		chars.add( 'n' );
 		chars.add( 'g' );
 
-		arrow.connect( word1, chars );
+		arrow.editor().connect( word1, chars );
 		for( int i = 0; i < word2.length(); ++i )
 		{
-			arrow.connect( word2, word2.charAt( i ) );
+			arrow.editor().connect( word2, word2.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3.length(); ++i )
 		{
-			arrow.connect( word3, word3.charAt( i ) );
+			arrow.editor().connect( word3, word3.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3Again.length(); ++i )
 		{
-			arrow.connect( word3Again, word3Again.charAt( i ) );
+			arrow.editor().connect( word3Again, word3Again.charAt( i ) );
 		}
 
 		System.out.println( arrow );
@@ -165,11 +165,11 @@ public class GenericArrowTest
 
 		assertEquals( arrow.inverse().targets( 's' ).size(), 0 );
 
-		arrow.remove( word1, 'e' );
+		arrow.editor().remove( word1, 'e' );
 		assertFalse( arrow.targets( word1 ).contains( 'e' ) );
 		assertEquals( arrow.inverse().targets( 'e' ).size(), 2 );
 
-		arrow.remove( word3, null );
+		arrow.editor().remove( word3, null );
 		assertTrue( arrow.targets( word3 ).size() == 0 );
 
 	}

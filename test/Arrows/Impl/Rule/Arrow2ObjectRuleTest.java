@@ -6,7 +6,7 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Arrows.Arrows.StandardArrowName;
+import Arrows.Arrows.Names;
 import Shared.Set0;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,11 +53,11 @@ public class Arrow2ObjectRuleTest
 			arrow.editor().connect( 4, "four" );
 
 			arrows = diagram.arrows();
-			object2outboundArrow = (Arrow) arrows.arrow( StandardArrowName.Object2OutboundArrow );
+			object2outboundArrow = (Arrow) arrows.arrow(Names.Object_OutboundArrow );
 			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = (Arrow) arrows.arrow( StandardArrowName.Object2InboundArrow );
+			object2inboundArrow = (Arrow) arrows.arrow(Names.Object_InboundArrow );
 			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = (Arrow) arrows.arrow( StandardArrowName.Name2Arrow );
+			name2Arrow = (Arrow) arrows.arrow(Names.Name_Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
 			editableStringifyArrow = (Arrow) arrows.arrow( Stringify );
 		}
