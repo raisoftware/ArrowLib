@@ -86,16 +86,20 @@ public class ArrowUtils
 		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";// + "  Relations:" + arrow.relations();
 	}
 
-	public static void generateGraph( Diagram diagram )
+	public static void generateGraph( Diagram diagram, String path )
 	{
-		String path = "graph/";
-		new File( path ).mkdirs();
+		File dir = new File( path );
+
+		dir.mkdirs();
+
+		for( File file : dir.listFiles() )
+		{
+			file.delete();
+		}
+
 		Arrows arrows = diagram.arrows();
 		try
 		{
-			Arrow class2Object = (Arrow) arrows.arrow( Class_Object );
-			Arrow inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			Arrow outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
 			Arrow<Integer, ArrowView> id_arrow = (Arrow) arrows.arrow( Id_Arrow );
 
 

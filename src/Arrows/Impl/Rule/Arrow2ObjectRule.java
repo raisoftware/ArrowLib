@@ -9,18 +9,24 @@ import static Arrows.Arrows.Names.*;
 
 public class Arrow2ObjectRule implements Arrow.Editor
 {
-	Arrow listenedArrow = null;
+	private final Arrow listenedArrow;
 
-	Arrow<Arrow, Object> inboundArrow2object;
-	Arrow<Arrow, Object> outboundArrow2object;
+	private Arrow<Arrow, Object> inboundArrow2object;
+	private Arrow<Arrow, Object> outboundArrow2object;
+	private ArrowView<Object, ObjectConfig> object2config;
+
 
 	public Arrow2ObjectRule( Arrow listenedArrow, Arrows arrows )
 	{
 		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = (Arrow) arrows.arrow(InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow(OutboundArrow_Object );
+			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+
+			//This Rule should be executed after the ObjectRegistrarRule
+			this.object2config = arrows.arrow( Object_Config );
+
 		}
 		catch( Exception ex )
 		{
@@ -35,8 +41,12 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
-		outboundArrow2object.editor().connect( listenedArrow, source );
-		inboundArrow2object.editor().connect( listenedArrow, targets );
+		trackSource( source );
+
+		for( Object target : targets )
+		{
+			trackTarget( target );
+		}
 	}
 
 	@Override
@@ -45,8 +55,8 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		if( source == null || target == null )
 			return;
 
-		outboundArrow2object.editor().connect( listenedArrow, source );
-		inboundArrow2object.editor().connect( listenedArrow, target );
+		trackSource( source );
+		trackTarget( target );
 	}
 
 	@Override
@@ -55,8 +65,12 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
 
-		outboundArrow2object.editor().connect( listenedArrow, sources );
-		inboundArrow2object.editor().connect( listenedArrow, target );
+		for( Object source : sources )
+		{
+			trackSource( source );
+		}
+
+		trackTarget( target );
 	}
 
 	@Override
@@ -65,10 +79,66 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		if( target == null || source == null )
 			return;
 
+		// at this point its config is gone so we have to remove it regardless of the tracksInboundArrows/tracksOutboundArrows properties
+
 		if( Set0Utils.isEmpty( listenedArrow.inverse().targets( target ) ) )
+		{
 			inboundArrow2object.editor().remove( listenedArrow, target );
+			outboundArrow2object.editor().remove( listenedArrow.inverse(), target );
+		}
 
 		if( Set0Utils.isEmpty( listenedArrow.targets( source ) ) )
+		{
 			outboundArrow2object.editor().remove( listenedArrow, source );
+			inboundArrow2object.editor().remove( listenedArrow.inverse(), source );
+		}
 	}
+
+	private void trackSource( Object source )
+	{
+		track( source, true );
+	}
+
+	private void trackTarget( Object target )
+	{
+		track( target, false );
+	}
+
+	private void track( Object object, boolean source )
+	{
+		ObjectConfig config = config( object );
+		Arrow arrow;
+
+		if( source )
+		{
+			arrow = listenedArrow;
+		}
+		else
+		{
+			arrow = listenedArrow.inverse();
+		}
+
+		if( config.tracksOutboundArrows() )
+		{
+			outboundArrow2object.editor().connect( arrow, object );
+		}
+
+		if( config.tracksInboundArrows() )
+		{
+			inboundArrow2object.editor().connect( arrow.inverse(), object );
+		}
+	}
+
+	private ObjectConfig config( Object object )
+	{
+		try
+		{
+			return object2config.target( object );
+		}
+		catch( Exception ex )
+		{
+			throw new RuntimeException( ex.getMessage() );
+		}
+	}
+
 }

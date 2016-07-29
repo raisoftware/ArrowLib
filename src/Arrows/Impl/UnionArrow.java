@@ -7,11 +7,12 @@ import java.util.*;
 
 public class UnionArrow implements ArrowView
 {
-	List<Arrow> arrows = new ArrayList<>();
+	private Diagram diagram;
+	private List<Arrow> arrows = new ArrayList<>();
 
-	ArrowView inverseArrow = new InverseUnionArrow();
+	private ArrowView inverseArrow = new InverseUnionArrow();
 
-	public UnionArrow( Arrow... arrows ) throws IllegalArgumentException
+	public UnionArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
 	{
 		if( arrows == null || arrows.length == 0 )
 			throw new IllegalArgumentException( "Empty arrow list" );
@@ -20,6 +21,7 @@ public class UnionArrow implements ArrowView
 		{
 			addArrow( arrows[i] );
 		}
+		this.diagram = diagram;
 	}
 
 	public final void addArrow( Arrow arrow ) throws IllegalArgumentException

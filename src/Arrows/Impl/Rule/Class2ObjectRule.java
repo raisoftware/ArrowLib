@@ -7,16 +7,21 @@ import static Arrows.Arrows.Names.*;
 public class Class2ObjectRule implements Arrow.Editor
 {
 	private Arrow<Class, Object> class2Object = null;
-	private Arrow<Arrow, Object> inboundArrow2object;
-	private Arrow<Arrow, Object> outboundArrow2object;
+	private ArrowView<Arrow, Object> inboundArrow2object;
+	private ArrowView<Arrow, Object> outboundArrow2object;
+	private ArrowView<Object, ObjectConfig> object2config;
 
 	public Class2ObjectRule( Arrows arrows )
 	{
 		try
 		{
 			this.class2Object = (Arrow) arrows.arrow( Class_Object );
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+
+			//This Rule should be executed after the ObjectRegistrarRule and after the Arrow2ObjectRule
+
+			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
+			this.object2config = arrows.arrow( Object_Config );
 		}
 		catch( Exception ex )
 		{
@@ -35,11 +40,11 @@ public class Class2ObjectRule implements Arrow.Editor
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
-		class2Object.editor().connect( source.getClass(), source );
+		trackClass( source );
 
 		for( Object target : targets )
 		{
-			class2Object.editor().connect( target.getClass(), target );
+			trackClass( target );
 		}
 	}
 
@@ -49,11 +54,11 @@ public class Class2ObjectRule implements Arrow.Editor
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
 
-		class2Object.editor().connect( target.getClass(), target );
+		trackClass( target );
 
 		for( Object source : sources )
 		{
-			class2Object.editor().connect( source.getClass(), sources );
+			trackClass( source );
 		}
 	}
 
@@ -62,13 +67,43 @@ public class Class2ObjectRule implements Arrow.Editor
 	{
 		if( source == null || target == null )
 			return;
-		class2Object.editor().connect( source.getClass(), source );
-		class2Object.editor().connect( target.getClass(), target );
+		trackClass( source );
+		trackClass( target );
 	}
 
 	@Override
 	public void remove( Object source, Object target )
 	{
-		//TOFIX implement this
+		if( !inboundArrow2object.targets().contains( source ) && !outboundArrow2object.targets().contains( source ) )
+		{
+			class2Object.inverse().editor().remove( source, null );
+		}
+
+		if( !inboundArrow2object.targets().contains( target ) && !outboundArrow2object.targets().contains( target ) )
+		{
+			class2Object.inverse().editor().remove( target, null );
+		}
+	}
+
+
+	private void trackClass( Object object )
+	{
+
+		if( config( object ).tracksClass() )
+		{
+			class2Object.editor().connect( object.getClass(), object );
+		}
+	}
+
+	private ObjectConfig config( Object object )
+	{
+		try
+		{
+			return object2config.target( object );
+		}
+		catch( Exception ex )
+		{
+			throw new RuntimeException( ex.getMessage() );
+		}
 	}
 }

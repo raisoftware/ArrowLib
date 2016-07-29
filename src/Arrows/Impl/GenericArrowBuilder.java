@@ -1,6 +1,7 @@
-package Arrows;
+package Arrows.Impl;
 
-import Arrows.Impl.GenericArrow;
+import Arrows.Arrow;
+import Arrows.Diagram;
 
 public class GenericArrowBuilder
 {
@@ -41,7 +42,6 @@ public class GenericArrowBuilder
 
 	public Arrow end()
 	{
-		assert ( diagram.arrows() != null );
 		Arrow arrow = new GenericArrow( diagram, domain, codomain, allowsMultipleSources, allowsMultipleTargets, /*listenable=*/ true );
 
 		diagram.arrows().add( arrow );

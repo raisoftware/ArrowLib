@@ -72,18 +72,6 @@ public class ArrowsImpl implements Arrows
 		return customRules;
 	}
 
-	@Override
-	public final GenericArrowBuilder createGeneric()
-	{
-		return new GenericArrowBuilder( diagram );
-	}
-
-	@Override
-	public final ComputedArrowBuilder createComputed()
-	{
-		return new ComputedArrowBuilder( diagram );
-	}
-
 	public final void addInternal( ArrowView arrow )
 	{
 		id2arrow.editor().connect( sequence.incrementAndGet(), arrow );
@@ -117,6 +105,7 @@ public class ArrowsImpl implements Arrows
 			listenedArrow.listeners().add( objectRegistrarRule );
 			listenedArrow.listeners().add( arrow2ObjectRule );
 			listenedArrow.listeners().add( class2ObjectRule );
+			//use something that retains order
 
 			for( Editor rule : customRules )
 			{

@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 public class Set0Impl<K, V> implements Set0<V>
 {
-	K source;
-	Arrow<K, V> arrow;
+	private K source;
+	private Arrow<K, V> arrow;
 
 	public Set0Impl( K source, Arrow<K, V> arrow )
 	{

@@ -8,12 +8,16 @@ import java.util.*;
 
 public class IntersectArrow implements ArrowView
 {
-	List<Arrow> arrows = new ArrayList<>();
+	private final Diagram diagram;
 
-	InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
+	private List<Arrow> arrows = new ArrayList<>();
 
-	public IntersectArrow( Arrow... arrows ) throws IllegalArgumentException
+	private InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
+
+	public IntersectArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
 	{
+		this.diagram = diagram;
+
 		if( arrows == null || arrows.length == 0 )
 			throw new IllegalArgumentException( "Empty arrow list" );
 

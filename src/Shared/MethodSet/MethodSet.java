@@ -1,4 +1,4 @@
-package Shared.MethodBus.MethodSet;
+package Shared.MethodSet;
 
 import Shared.Set0;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +10,7 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 {
 	private final ListenerType listenedObject;
 	private final Class type;
-	private final Set<ListenerType> listeners = new HashSet<>();
+	private final ArrayList<ListenerType> listeners = new ArrayList<>();
 	private final ListenerType publisher;
 
 	public MethodSet( ListenerType listenedObject, Class type )
@@ -38,7 +38,10 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 	@Override
 	public void add( ListenerType target )
 	{
-		listeners.add( target );
+		if( !listeners.contains( target ) )
+		{
+			listeners.add( target );
+		}
 	}
 
 	@Override

@@ -2,11 +2,17 @@ package Arrows;
 
 public class Reference
 {
-	Enum name;
-	Enum domainName;
+	Object nick;
+	ArrowView arrow;
 
-	public Object value()
+	public Reference( Object nick, ArrowView domain )
 	{
-		return null;//arrow.eval( nick );
+		this.nick = nick;
+		this.arrow = arrow;
+	}
+
+	public Object value() throws Exception
+	{
+		return arrow.target( nick );
 	}
 }

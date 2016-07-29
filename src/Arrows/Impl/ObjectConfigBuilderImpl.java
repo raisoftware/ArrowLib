@@ -2,40 +2,36 @@ package Arrows.Impl;
 
 import Arrows.*;
 
-public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfigBuilder
+public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfig.Builder
 {
 	private boolean enabled = true;
 	private boolean tracksInboundArrows = true;
 	private boolean tracksOutboundArrows = true;
 	private boolean tracksClass = true;
 
-	public ObjectConfigBuilderImpl()
-	{
-	}
-
 	@Override
-	public ObjectConfigBuilder enabled( boolean enabled )
+	public Builder enabled( boolean enabled )
 	{
 		this.enabled = enabled;
 		return this;
 	}
 
 	@Override
-	public ObjectConfigBuilder tracksInboundArrows( boolean tracksInboundArrows )
+	public Builder tracksInboundArrows( boolean tracksInboundArrows )
 	{
 		this.tracksInboundArrows = tracksInboundArrows;
 		return this;
 	}
 
 	@Override
-	public ObjectConfigBuilder tracksOutboundArrows( boolean tracksOutboundArrows )
+	public Builder tracksOutboundArrows( boolean tracksOutboundArrows )
 	{
 		this.tracksOutboundArrows = tracksOutboundArrows;
 		return this;
 	}
 
 	@Override
-	public ObjectConfigBuilder tracksClass( boolean tracksClass )
+	public Builder tracksClass( boolean tracksClass )
 	{
 		this.tracksClass = tracksClass;
 		return this;

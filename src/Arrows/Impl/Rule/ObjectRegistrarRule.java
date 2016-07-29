@@ -6,7 +6,7 @@ import Arrows.Arrow.Editor;
 public class ObjectRegistrarRule implements Editor
 {
 
-	Objects objects;
+	private Objects objects;
 
 	public ObjectRegistrarRule( Objects objects )
 	{

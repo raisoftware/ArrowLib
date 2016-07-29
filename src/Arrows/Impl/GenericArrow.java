@@ -4,7 +4,7 @@ import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
 import Shared.BasicSet0;
-import Shared.MethodBus.MethodSet.MethodSet;
+import Shared.MethodSet.MethodSet;
 import Shared.Set0;
 import com.google.common.collect.*;
 import java.util.*;
@@ -15,9 +15,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	MethodSet<Arrow.Editor> methodSet;
-	Arrow<V, K> inverseArrow = new InverseGenericArrow();
-	Editor<K, V> arrowEditor = new GenericArrowEditor();
+	private final MethodSet<Arrow.Editor> methodSet;
+	private final Arrow<V, K> inverseArrow = new InverseGenericArrow();
+	private final Editor<K, V> arrowEditor = new GenericArrowEditor();
 	private final Class domain;
 	private final Class codomain;
 	private final boolean allowsMultipleSources;

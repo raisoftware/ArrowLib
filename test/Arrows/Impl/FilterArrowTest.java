@@ -39,7 +39,7 @@ public class FilterArrowTest
 	{
 		diagram = Diagram.create();
 
-		containsArrow = diagram.arrows().createGeneric().domain( String.class ).codomain( Character.class ).end();
+		containsArrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
 		diagram.arrows().name( containsArrow, Contains, IsContainedBy );
 		connectWordToLetters( containsArrow.editor(), word1 );
 		connectWordToLetters( containsArrow.editor(), word2 );
@@ -48,7 +48,7 @@ public class FilterArrowTest
 
 		BiPredicate<String, Character> filter = (String source, Character target) -> !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
 
-		filterArrow = Arrows.filter( containsArrow, filter );
+		filterArrow = diagram.filter( containsArrow, filter );
 	}
 
 	@After

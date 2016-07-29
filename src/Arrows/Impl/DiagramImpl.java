@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.Set0;
+import java.util.function.BiPredicate;
 
 public class DiagramImpl implements Diagram
 {
@@ -11,8 +12,6 @@ public class DiagramImpl implements Diagram
 	public DiagramImpl()
 	{
 		arrows = new ArrowsImpl( this );
-
-
 		objects = new ObjectsImpl( arrows );
 	}
 
@@ -28,7 +27,11 @@ public class DiagramImpl implements Diagram
 		return objects;
 	}
 
-//	reference( nick : Enum, domain : Arrow ) : Reference
+	@Override
+	public Reference reference( Object nick, Arrow arrow )
+	{
+		return new Reference( nick, arrow );
+	}
 
 	@Override
 	public <K, V> Set0<V> set0( K source, Arrow<K, V> arrow )
@@ -36,22 +39,40 @@ public class DiagramImpl implements Diagram
 		return new Set0Impl( source, arrow );
 	}
 
-//	private void addClass2ObjectRule()
-//	{
-//		Class2ObjectRule class2ObjectRule = new Class2ObjectRule( arrows );
-//		arrows.subscribe( class2ObjectRule );
-//	}
-//
-//	private void addObjectRegistrarRule()
-//	{
-//		ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( arrows, objects );
-//		arrows.subscribe( objectRegistrarRule );
-//	}
-//
-//	private void addArrow2ObjectRule()
-//	{
-//		Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( arrows );
-//		arrows.subscribe( arrow2ObjectRule );
-//	}
+	@Override
+	public ArrowView filter( Arrow arrow, BiPredicate filter )
+	{
+		return new FilterArrow( this, arrow, filter );
+	}
+
+	@Override
+	public ArrowView join( Arrow... arrows )
+	{
+		return new JoinArrow( this, arrows );
+	}
+
+	@Override
+	public ArrowView union( Arrow... arrows )
+	{
+		return new UnionArrow( this, arrows );
+	}
+
+	@Override
+	public ArrowView intersect( Arrow... arrows )
+	{
+		return new IntersectArrow( this, arrows );
+	}
+
+	@Override
+	public final GenericArrowBuilder createGeneric()
+	{
+		return new GenericArrowBuilder( this );
+	}
+
+	@Override
+	public final ComputedArrow.Builder createComputed()
+	{
+		return new ComputedArrowImpl.Builder( this );
+	}
 
 }

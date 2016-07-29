@@ -159,4 +159,49 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 			return ArrowUtils.toString( diagram, this, "InverseComputedArrow" );
 		}
 	}
+
+
+	public static class Builder<K, V> implements ComputedArrow.Builder<K, V>
+	{
+		private Class domain = Object.class;
+		private Class codomain = Object.class;
+		private Function<K, Set<V>> function;
+		private Diagram diagram = null;
+
+		public Builder( Diagram diagram )
+		{
+			super();
+			this.diagram = diagram;
+		}
+
+		@Override
+		public Builder domain( Class allowedClasses )
+		{
+			this.domain = allowedClasses;
+			return this;
+		}
+
+		@Override
+		public Builder codomain( Class allowedClasses )
+		{
+			this.codomain = allowedClasses;
+			return this;
+		}
+
+		@Override
+		public Builder function( Function<K, Set<V>> function )
+		{
+			this.function = function;
+			return this;
+		}
+
+		@Override
+		public ComputedArrow end()
+		{
+			assert ( diagram != null );
+			ComputedArrow arrow = new ComputedArrowImpl( diagram, function, domain, codomain );
+			diagram.arrows().add( arrow );
+			return arrow;
+		}
+	}
 }

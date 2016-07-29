@@ -12,13 +12,13 @@ import static Arrows.Arrows.Names.*;
 
 public class ObjectsImpl implements Objects
 {
-	AtomicInteger sequence = new AtomicInteger();
-	Arrow<Object, Object> id2object = null;
-	Arrow<Object, Object> name2object = null;
-	Arrow<Object, ObjectConfig> object2config = null;
-	Arrow<Class, Object> class2object = null;
-	Arrow<Arrow, Object> inboundArrow2object = null;
-	Arrow<Arrow, Object> outboundArrow2object = null;
+	private AtomicInteger sequence = new AtomicInteger();
+	private Arrow<Object, Object> id2object = null;
+	private Arrow<Object, Object> name2object = null;
+	private Arrow<Object, ObjectConfig> object2config = null;
+	private Arrow<Class, Object> class2object = null;
+	private Arrow<Arrow, Object> inboundArrow2object = null;
+	private Arrow<Arrow, Object> outboundArrow2object = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{

@@ -1,9 +1,7 @@
 package Arrows;
 
 import Arrows.Arrow.Editor;
-import Arrows.Impl.*;
 import Shared.Set0;
-import java.util.function.BiPredicate;
 
 public interface Arrows extends Set0<ArrowView>
 {
@@ -24,29 +22,5 @@ public interface Arrows extends Set0<ArrowView>
 
 	ArrowView arrow( Object arrowName ) throws Exception;
 
-	GenericArrowBuilder createGeneric();
-
-	ComputedArrowBuilder createComputed();
-
 	Set0<Editor> customRules();
-
-	static ArrowView filter( Arrow arrow, BiPredicate filter )
-	{
-		return new FilterArrow( arrow, filter );
-	}
-
-	static ArrowView join( Arrow... arrows )
-	{
-		return new JoinArrow( arrows );
-	}
-
-	static ArrowView union( Arrow... arrows )
-	{
-		return new UnionArrow( arrows );
-	}
-
-	static ArrowView intersect( Arrow... arrows )
-	{
-		return new IntersectArrow( arrows );
-	}
 }

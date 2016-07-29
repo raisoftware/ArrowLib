@@ -7,13 +7,18 @@ import java.util.*;
 
 public class JoinArrow implements ArrowView
 {
-	List<Arrow> arrows = new ArrayList<>();
-	List<Arrow> arrowsInverse = new LinkedList<>();
+	private final Diagram diagram;
 
-	ArrowView inverseArrow = new InverseJoinArrow();
+	private final List<Arrow> arrows = new ArrayList<>();
+	private final List<Arrow> arrowsInverse = new LinkedList<>();
 
-	public JoinArrow( Arrow... arrows ) throws IllegalArgumentException
+	private final ArrowView inverseArrow = new InverseJoinArrow();
+
+
+	public JoinArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
 	{
+		this.diagram = diagram;
+
 		if( arrows == null || arrows.length == 0 )
 			throw new IllegalArgumentException( "Empty arrow list" );
 

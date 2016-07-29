@@ -17,10 +17,10 @@ public class MainTest
 		Diagram diagram = Diagram.create();
 
 		//create custom arrows
-		Arrow arrow = diagram.arrows().createGeneric().domain( String.class ).codomain( Character.class ).end();
+		Arrow arrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
 		diagram.arrows().name( arrow, Contains, IsContainedBy );
 
-		Arrow squareArrow = diagram.arrows().createGeneric().domain( Float.class ).codomain( Float.class ).end();
+		Arrow squareArrow = diagram.createGeneric().domain( Float.class ).codomain( Float.class ).end();
 		diagram.arrows().name( squareArrow, Square, SquareRoot );
 
 		ArrayList<Character> chars = new ArrayList<>();
@@ -30,7 +30,9 @@ public class MainTest
 		//----------------------------------------------------
 
 		//test arrows
+
 		arrow.editor().connect( "sir", chars );
+
 		arrow.editor().connect( "irs", chars );
 		arrow.editor().connect( "ra", 'r' );
 		arrow.editor().connect( "ra", 'a' );
@@ -39,8 +41,6 @@ public class MainTest
 		squareArrow.editor().connect( 2.f, 4.f );
 		squareArrow.editor().connect( 7.f, 49.f );
 
-		System.out.println( "Direct:" + squareArrow.inverse().inverse().inverse().inverse().relations() );
-		System.out.println( "reverse:" + squareArrow.inverse().relations() );
 		//----------------------------------------------------
 
 		//Test class2ObjectRule
@@ -57,19 +57,14 @@ public class MainTest
 		diagram.objects().name( 's', RootObject );
 		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name_Object );
 		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object_Config );
-		System.out.println( "\n\n\nname2Object.inverse().relations()\n" + name2Object.inverse().relations() + "\n\n\n" );
-		System.out.println( "object2Config.relations()" + object2Config.relations() );
 		//----------
 
 		Arrow<String, Character> containsArrow = (Arrow) diagram.arrows().arrow( Contains );
 
-		System.out.println( "" + containsArrow.relations() );
-
-		ArrowView joinArrow = Arrows.join( containsArrow.inverse() );
+		ArrowView joinArrow = diagram.join( containsArrow.inverse() );
 		Set0 results = joinArrow.targets( 'r' );
-		System.out.println( "results:" + results );
 
-		ArrowUtils.generateGraph( diagram );
+		ArrowUtils.generateGraph( diagram, "graph/" );
 	}
 
 }

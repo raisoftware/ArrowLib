@@ -45,7 +45,7 @@ public class Arrow2ObjectRuleTest
 		{
 			diagram = Diagram.create();
 
-			Arrow<Integer, String> arrow = diagram.arrows().createGeneric().end();
+			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );
 			arrow.editor().connect( 1, "one" );
 			arrow.editor().connect( 2, "two" );
@@ -53,11 +53,11 @@ public class Arrow2ObjectRuleTest
 			arrow.editor().connect( 4, "four" );
 
 			arrows = diagram.arrows();
-			object2outboundArrow = (Arrow) arrows.arrow(Names.Object_OutboundArrow );
+			object2outboundArrow = (Arrow) arrows.arrow( Names.Object_OutboundArrow );
 			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = (Arrow) arrows.arrow(Names.Object_InboundArrow );
+			object2inboundArrow = (Arrow) arrows.arrow( Names.Object_InboundArrow );
 			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = (Arrow) arrows.arrow(Names.Name_Arrow );
+			name2Arrow = (Arrow) arrows.arrow( Names.Name_Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
 			editableStringifyArrow = (Arrow) arrows.arrow( Stringify );
 		}
@@ -100,8 +100,8 @@ public class Arrow2ObjectRuleTest
 		Set0 targets = inboundArrow2object.targets( stringifyArrow );
 		assertTrue( targets.contains( "two" ) );
 		assertFalse( targets.contains( 2 ) );
-		editableStringifyArrow.editor().remove( 2, "two" );
 
+		editableStringifyArrow.editor().remove( 2, "two" );
 		Set0 targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
 
 		assertFalse( targetsAfterRemove.contains( 2 ) );

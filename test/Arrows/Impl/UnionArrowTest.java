@@ -43,7 +43,7 @@ public class UnionArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.arrows().createGeneric().end();
+		toUpperCaseArrow1 = diagram.createGeneric().end();
 		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
@@ -51,12 +51,12 @@ public class UnionArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
-		toUpperCaseArrow2 = diagram.arrows().createGeneric().end();
+		toUpperCaseArrow2 = diagram.createGeneric().end();
 		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
 
-		unionArrow = Arrows.union( toUpperCaseArrow1, toUpperCaseArrow2 );
+		unionArrow = diagram.union( toUpperCaseArrow1, toUpperCaseArrow2 );
 
 	}
 
