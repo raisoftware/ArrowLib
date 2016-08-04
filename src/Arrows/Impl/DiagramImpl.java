@@ -40,25 +40,25 @@ public class DiagramImpl implements Diagram
 	}
 
 	@Override
-	public ArrowView filter( Arrow arrow, BiPredicate filter )
+	public ArrowView filter( ArrowView arrow, BiPredicate filter )
 	{
 		return new FilterArrow( this, arrow, filter );
 	}
 
 	@Override
-	public ArrowView join( Arrow... arrows )
+	public ArrowView join( ArrowView... arrows )
 	{
 		return new JoinArrow( this, arrows );
 	}
 
 	@Override
-	public ArrowView union( Arrow... arrows )
+	public ArrowView union( ArrowView... arrows )
 	{
 		return new UnionArrow( this, arrows );
 	}
 
 	@Override
-	public ArrowView intersect( Arrow... arrows )
+	public ArrowView intersect( ArrowView... arrows )
 	{
 		return new IntersectArrow( this, arrows );
 	}

@@ -9,13 +9,13 @@ public class JoinArrow implements ArrowView
 {
 	private final Diagram diagram;
 
-	private final List<Arrow> arrows = new ArrayList<>();
-	private final List<Arrow> arrowsInverse = new LinkedList<>();
+	private final List<ArrowView> arrows = new ArrayList<>();
+	private final List<ArrowView> arrowsInverse = new LinkedList<>();
 
 	private final ArrowView inverseArrow = new InverseJoinArrow();
 
 
-	public JoinArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
+	public JoinArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
 		this.diagram = diagram;
 
@@ -28,20 +28,25 @@ public class JoinArrow implements ArrowView
 		}
 	}
 
-	public final void addArrow( Arrow arrow ) throws IllegalArgumentException
+	public final void addArrow( ArrowView arrow ) throws IllegalArgumentException
 	{
 		if( arrow == null )
 			throw new IllegalArgumentException( "Arrow is null" );
 
 		if( !arrows.isEmpty() )
 		{
-			Arrow last = arrows.get( arrows.size() - 1 );
+			ArrowView last = arrows.get( arrows.size() - 1 );
 			if( !last.codomain().equals( arrow.domain() ) )
 				throw new IllegalArgumentException( "Domain type of the arrow does not match codomain type of the last arrow" );
 		}
 
 		arrows.add( arrow );
 		arrowsInverse.add( 0, arrow.inverse() );
+	}
+
+	public List<ArrowView> arrows()
+	{
+		return arrows;
 	}
 
 	@Override
@@ -74,54 +79,22 @@ public class JoinArrow implements ArrowView
 		return targets( arrows, source );
 	}
 
-
-	private static Set0 targets( List<Arrow> arrowsList, Object source )
-	{
-		List<Object> oldResults = new ArrayList<>();
-
-		List<Object> newResults = new ArrayList<>();
-		newResults.add( source );
-
-		Iterator<Arrow> arrowIt = arrowsList.iterator();
-
-		while( arrowIt.hasNext() )
-		{
-			List<Object> aux = oldResults;
-			oldResults = newResults;
-			newResults = aux;
-			newResults.clear();
-
-			Arrow arrow = arrowIt.next();
-
-			for( Object input : oldResults )
-			{
-				for( Object target : arrow.targets( input ) )
-				{
-					newResults.add( target );
-				}
-			}
-		}
-
-		Set0 results = new BasicSet0( new HashSet( newResults ) );
-		return results;
-	}
-
 	@Override
 	public Object target( Object source ) throws Exception
 	{
 		return ArrowUtils.target( this, source );
 	}
 
-	@Override
-	public String toString()
-	{
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append( "JoinArrow:" );
-		stringBuilder.append( arrows.toString() );
-		stringBuilder.append( " Relations:" );
-		stringBuilder.append( relations() );
-		return stringBuilder.toString();
-	}
+//	@Override
+//	public String toString()
+//	{
+//		StringBuilder stringBuilder = new StringBuilder();
+//		stringBuilder.append( "JoinArrow:" );
+//		stringBuilder.append( arrows.toString() );
+//		stringBuilder.append( " Relations:" );
+//		stringBuilder.append( relations() );
+//		return stringBuilder.toString();
+//	}
 
 	@Override
 	public Class codomain()
@@ -173,16 +146,16 @@ public class JoinArrow implements ArrowView
 			return JoinArrow.this;
 		}
 
-		@Override
-		public String toString()
-		{
-			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append( "JoinArrow:" );
-			stringBuilder.append( arrowsInverse.toString() );
-			stringBuilder.append( " Relations:" );
-			stringBuilder.append( relations() );
-			return stringBuilder.toString();
-		}
+//		@Override
+//		public String toString()
+//		{
+//			StringBuilder stringBuilder = new StringBuilder();
+//			stringBuilder.append( "JoinArrow:" );
+//			stringBuilder.append( arrowsInverse.toString() );
+//			stringBuilder.append( " Relations:" );
+//			stringBuilder.append( relations() );
+//			return stringBuilder.toString();
+//		}
 
 		@Override
 		public Class codomain()
@@ -197,4 +170,35 @@ public class JoinArrow implements ArrowView
 		}
 	}
 
+
+	private static Set0 targets( List<ArrowView> arrowsList, Object source )
+	{
+		List<Object> oldResults = new ArrayList<>();
+
+		List<Object> newResults = new ArrayList<>();
+		newResults.add( source );
+
+		Iterator<ArrowView> arrowIt = arrowsList.iterator();
+
+		while( arrowIt.hasNext() )
+		{
+			List<Object> aux = oldResults;
+			oldResults = newResults;
+			newResults = aux;
+			newResults.clear();
+
+			ArrowView arrow = arrowIt.next();
+
+			for( Object input : oldResults )
+			{
+				for( Object target : arrow.targets( input ) )
+				{
+					newResults.add( target );
+				}
+			}
+		}
+
+		Set0 results = new BasicSet0( new HashSet( newResults ) );
+		return results;
+	}
 }

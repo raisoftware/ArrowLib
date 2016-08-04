@@ -23,12 +23,12 @@ public interface Diagram
 
 	ComputedArrow.Builder createComputed();
 
-	ArrowView filter( Arrow arrow, BiPredicate filter );
+	ArrowView filter( ArrowView arrow, BiPredicate filter );
 
-	ArrowView union( Arrow... arrows );
+	ArrowView union( ArrowView... arrows );
 
-	ArrowView intersect( Arrow... arrows );
+	ArrowView intersect( ArrowView... arrows );
 
-	ArrowView join( Arrow... arrows );
+	ArrowView join( ArrowView... arrows );
 
 }

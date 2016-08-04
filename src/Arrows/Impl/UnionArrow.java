@@ -8,11 +8,11 @@ import java.util.*;
 public class UnionArrow implements ArrowView
 {
 	private Diagram diagram;
-	private List<Arrow> arrows = new ArrayList<>();
+	private List<ArrowView> arrows = new ArrayList<>();
 
 	private ArrowView inverseArrow = new InverseUnionArrow();
 
-	public UnionArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
+	public UnionArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
 		if( arrows == null || arrows.length == 0 )
 			throw new IllegalArgumentException( "Empty arrow list" );
@@ -24,7 +24,7 @@ public class UnionArrow implements ArrowView
 		this.diagram = diagram;
 	}
 
-	public final void addArrow( Arrow arrow ) throws IllegalArgumentException
+	public final void addArrow( ArrowView arrow ) throws IllegalArgumentException
 	{
 		if( arrow == null )
 			throw new IllegalArgumentException( "Arrow is null" );
@@ -41,9 +41,9 @@ public class UnionArrow implements ArrowView
 	private Set0 unionSources( boolean inverse )
 	{
 		Set0 unionSources = new BasicSet0( new HashSet<>() );
-		for( Arrow arrowInList : arrows )
+		for( ArrowView arrowInList : arrows )
 		{
-			Arrow arrow = arrowInList;
+			ArrowView arrow = arrowInList;
 			if( inverse )
 			{
 				arrow = arrowInList.inverse();
@@ -56,9 +56,9 @@ public class UnionArrow implements ArrowView
 	private Set0 unionTargets( boolean inverse )
 	{
 		Set0 unionTargets = new BasicSet0( new HashSet<>() );
-		for( Arrow arrowInList : arrows )
+		for( ArrowView arrowInList : arrows )
 		{
-			Arrow arrow = arrowInList;
+			ArrowView arrow = arrowInList;
 			if( inverse )
 			{
 				arrow = arrowInList.inverse();
@@ -71,9 +71,9 @@ public class UnionArrow implements ArrowView
 	private Set0 unionTargets( Object source, boolean inverse )
 	{
 		Set0 unionTargets = new BasicSet0( new HashSet<>() );
-		for( Arrow arrowInList : arrows )
+		for( ArrowView arrowInList : arrows )
 		{
-			Arrow arrow = arrowInList;
+			ArrowView arrow = arrowInList;
 			if( inverse )
 			{
 				arrow = arrowInList.inverse();

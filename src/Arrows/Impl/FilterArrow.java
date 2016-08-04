@@ -14,10 +14,10 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 {
 	private final Diagram diagram;
 
-	private final Arrow<K, V> arrow;
+	private final ArrowView<K, V> arrow;
 	private final BiPredicate<K, V> filter;
 
-	public FilterArrow( Diagram diagram, Arrow<K, V> arrow, BiPredicate<K, V> filter )
+	public FilterArrow( Diagram diagram, ArrowView<K, V> arrow, BiPredicate<K, V> filter )
 	{
 		this.diagram = diagram;
 		this.arrow = arrow;

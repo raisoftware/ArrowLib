@@ -1,6 +1,7 @@
 package Arrows.Utils;
 
 import Arrows.*;
+import Arrows.Impl.JoinArrow;
 import Shared.BasicSet0;
 import Shared.Set0;
 import java.io.*;
@@ -105,15 +106,22 @@ public class ArrowUtils
 
 			for( ArrowView arrow : id_arrow.targets() )
 			{
+				if( arrow instanceof JoinArrow )
+				{
+					generateGraphForJoinArrow( diagram, arrow, path );
+				}
+
 				try( Writer writer = new BufferedWriter( new OutputStreamWriter(
 					new FileOutputStream( path + shortToString( diagram, arrow ) + ".dot" ), "utf-8" ) ) )
 				{
 					writer.write( "digraph Arrow{\n" );
 					for( Object source : arrow.sources() )
+					{
 						for( Object target : arrow.targets( source ) )
 						{
 							writer.write( "\"" + source + "\"->\"" + target + "\"\n" );
 						}
+					}
 					writer.write( "}" );
 				}
 			}
@@ -124,4 +132,43 @@ public class ArrowUtils
 		}
 	}
 
+	private static void generateGraphForJoinArrow( Diagram diagram, ArrowView arrow, String path )
+	{
+		//Incomplete
+		final String colors[] = new String[]
+		{
+			"blue", "yellow", "green", "red", "orange", "lightgrey", "purple"
+		};
+
+		try( Writer writer = new BufferedWriter( new OutputStreamWriter(
+			new FileOutputStream( path + shortToString( diagram, arrow ) + "-JoinView.dot" ), "utf-8" ) ) )
+		{
+			writer.write( "digraph JoinArrow{\n" );
+			List<ArrowView> subarrows = ( (JoinArrow) arrow ).arrows();
+			int i = 0;
+			for( ArrowView subarrow : subarrows )
+			{
+				writer.write( "subgraph cluster_" + i + " {\n" );
+				writer.write( "label = \"" + subarrow + "\";\n" );
+				writer.write( "color=" + colors[i % colors.length] + ";\n" );
+				for( Object source : subarrow.sources() )
+				{
+					for( Object target : subarrow.targets( source ) )
+					{
+						writer.write( "\"" + source + "\"->\"" + target + "\";\n" );
+					}
+				}
+
+				writer.write( "}\n\n" );
+				++i;
+
+			}
+			writer.write( "}" );
+
+		}
+		catch( Exception ex )
+		{
+			ex.printStackTrace();
+		}
+	}
 }

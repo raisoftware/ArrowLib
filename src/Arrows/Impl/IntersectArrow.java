@@ -10,11 +10,11 @@ public class IntersectArrow implements ArrowView
 {
 	private final Diagram diagram;
 
-	private List<Arrow> arrows = new ArrayList<>();
+	private List<ArrowView> arrows = new ArrayList<>();
 
 	private InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
 
-	public IntersectArrow( Diagram diagram, Arrow... arrows ) throws IllegalArgumentException
+	public IntersectArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
 		this.diagram = diagram;
 
@@ -27,7 +27,7 @@ public class IntersectArrow implements ArrowView
 		}
 	}
 
-	public final void addArrow( Arrow arrow ) throws IllegalArgumentException
+	public final void addArrow( ArrowView arrow ) throws IllegalArgumentException
 	{
 		if( arrow == null )
 			throw new IllegalArgumentException( "Arrow is null" );
@@ -75,10 +75,10 @@ public class IntersectArrow implements ArrowView
 
 	private Set0 intersectSources( boolean inverse )
 	{
-		Iterator<Arrow> arrowIt = arrows.iterator();
+		Iterator<ArrowView> arrowIt = arrows.iterator();
 		Set0 intersectSources = new BasicSet0( new HashSet<>() );
 
-		Arrow firstArrow = arrowIt.next();
+		ArrowView firstArrow = arrowIt.next();
 		if( inverse )
 		{
 			firstArrow = firstArrow.inverse();
@@ -93,11 +93,11 @@ public class IntersectArrow implements ArrowView
 				boolean relationExistsInAllArrows = true;
 				if( arrows.iterator().hasNext() )
 				{
-					Iterator<Arrow> otherArrows = arrows.iterator();
+					Iterator<ArrowView> otherArrows = arrows.iterator();
 					otherArrows.next();
 					while( otherArrows.hasNext() )
 					{
-						Arrow arrow = otherArrows.next();
+						ArrowView arrow = otherArrows.next();
 						if( inverse )
 						{
 							arrow = arrow.inverse();
@@ -123,8 +123,8 @@ public class IntersectArrow implements ArrowView
 	{
 		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
 
-		Iterator<Arrow> arrowIt = arrows.iterator();
-		Arrow firstArrow = arrowIt.next();
+		Iterator<ArrowView> arrowIt = arrows.iterator();
+		ArrowView firstArrow = arrowIt.next();
 		if( inverse )
 		{
 			firstArrow = firstArrow.inverse();
@@ -146,8 +146,8 @@ public class IntersectArrow implements ArrowView
 
 	private Set0 intersectTargets( Object source, boolean inverse )
 	{
-		Iterator<Arrow> arrowIt = arrows.iterator();
-		Arrow firstArrow = arrowIt.next();
+		Iterator<ArrowView> arrowIt = arrows.iterator();
+		ArrowView firstArrow = arrowIt.next();
 		if( inverse )
 		{
 			firstArrow = firstArrow.inverse();
@@ -158,7 +158,7 @@ public class IntersectArrow implements ArrowView
 
 		while( arrowIt.hasNext() )
 		{
-			Arrow arrow = arrowIt.next();
+			ArrowView arrow = arrowIt.next();
 			if( inverse )
 			{
 				arrow = arrow.inverse();
@@ -223,7 +223,7 @@ public class IntersectArrow implements ArrowView
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.append( "InverseIntersectArrow:" );
-			for( Arrow arrow : arrows )
+			for( ArrowView arrow : arrows )
 			{
 				stringBuilder.append( arrow.inverse().toString() );
 			}

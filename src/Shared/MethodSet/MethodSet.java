@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.util.*;
 
-
 public class MethodSet<ListenerType> implements Set0<ListenerType>
 {
 	private final ListenerType listenedObject;
@@ -17,7 +16,6 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 	{
 		this.listenedObject = listenedObject;
 		this.type = type;
-
 
 		MethodProxy handler = new MethodProxy<ListenerType>( this );
 
@@ -68,7 +66,6 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 		return listeners.iterator();
 	}
 
-
 	public Object publishEvent( final MethodCall event )
 	{
 		try
@@ -94,7 +91,6 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 			else
 			{
 				throw new RuntimeException( e.getMessage(), e.getCause() );
-
 			}
 		}
 		catch( Throwable e )

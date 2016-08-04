@@ -1,6 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
+import Arrows.Utils.ArrowUtils;
 import Shared.Set0;
 import org.junit.*;
 
@@ -59,7 +60,13 @@ public class JoinArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
 
 		joinIdentityArrow = diagram.join( toUpperCaseArrow1, toUpperCaseArrow1.inverse() );
+		diagram.arrows().add( joinIdentityArrow );
+		diagram.arrows().name( joinIdentityArrow, "JoinIdentityArrow", "JoinIdentityArrowInverse" );
 		joinUpperCaseArrow = diagram.join( toUpperCaseArrow1, toUpperCaseArrow1.inverse(), toUpperCaseArrow2 );
+		diagram.arrows().add( joinUpperCaseArrow );
+		diagram.arrows().name( joinUpperCaseArrow, "joinUpperCaseArrow", "joinLowerCaseArrow" );
+
+		//ArrowUtils.generateGraph( diagram, "graph/" );
 	}
 
 	@After
