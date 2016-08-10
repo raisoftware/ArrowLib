@@ -28,7 +28,8 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
-		methodSet = new MethodSet( arrowEditor, Arrow.Editor.class );
+		methodSet = new MethodSet( Arrow.Editor.class );
+		methodSet.add( arrowEditor );
 		this.domain = domain;
 		this.codomain = codomain;
 		this.listenable = listenable;

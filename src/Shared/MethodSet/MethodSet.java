@@ -1,21 +1,25 @@
 package Shared.MethodSet;
 
 import Shared.Set0;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class MethodSet<ListenerType> implements Set0<ListenerType>
 {
-	private final ListenerType listenedObject;
 	private final Class type;
 	private final ArrayList<ListenerType> listeners = new ArrayList<>();
 	private final ListenerType publisher;
 
-	public MethodSet( ListenerType listenedObject, Class type )
+	public MethodSet( Class type )
 	{
-		this.listenedObject = listenedObject;
 		this.type = type;
+
+		Method[] methods = type.getDeclaredMethods();
+		for( int i = 0; i < methods.length; ++i )
+		{
+			assert ( methods[i].getReturnType().equals( Void.TYPE ) );
+		}
+
 
 		MethodProxy handler = new MethodProxy<ListenerType>( this );
 
@@ -70,13 +74,12 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 	{
 		try
 		{
-			Object returnedObject = event.method().invoke( listenedObject, event.parameters() );
-
 			for( ListenerType listener : listeners )
 			{
 				event.method().invoke( listener, event.parameters() );
 			}
-			return returnedObject;
+
+			return null;
 		}
 		catch( InvocationTargetException e )
 		{
