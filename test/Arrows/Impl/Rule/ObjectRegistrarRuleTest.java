@@ -31,12 +31,12 @@ public class ObjectRegistrarRuleTest
 	{
 	}
 
-	Diagram diagram;
+	ArrowDiagram diagram;
 
 	@Before
 	public void setUp()
 	{
-		diagram = Diagram.create();
+		diagram = ArrowDiagram.create();
 
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
 		ObjectConfig coolestObjConfig = new ObjectConfigBuilderImpl().end();

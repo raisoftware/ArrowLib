@@ -15,13 +15,13 @@ public class ArrowsImpl implements Arrows
 	Arrow<Object, ArrowView> name2arrow;
 	Arrow<Integer, ArrowView> id2arrow;
 
-	Diagram diagram;
+	ArrowDiagram diagram;
 	AtomicInteger sequence = new AtomicInteger();
 
 	Class2ObjectRule class2ObjectRule;
 	Set0<Arrow.Editor> customRules;
 
-	public ArrowsImpl( Diagram diagram )
+	public ArrowsImpl( ArrowDiagram diagram )
 	{
 		this.diagram = diagram;
 
@@ -61,6 +61,10 @@ public class ArrowsImpl implements Arrows
 		Arrow outboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( outboundArrow2object );
 		name( outboundArrow2object, OutboundArrow_Object, Object_OutboundArrow );
+
+		Arrow owner2property = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		addInternal( owner2property );
+		name( owner2property, Owner_Property, Property_Owner );
 
 		class2ObjectRule = new Class2ObjectRule( this );
 		customRules = new BasicSet0( new HashSet() );

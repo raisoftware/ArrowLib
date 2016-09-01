@@ -15,7 +15,8 @@ public interface Arrows extends Set0<ArrowView>
 		Id_Object, Object_Id,
 		Object_Config, Config_Object,
 		InboundArrow_Object, Object_InboundArrow,
-		OutboundArrow_Object, Object_OutboundArrow
+		OutboundArrow_Object, Object_OutboundArrow,
+		Owner_Property, Property_Owner
 	}
 
 	void name( ArrowView arrow, Object arrowName, Object arrowInverseName );

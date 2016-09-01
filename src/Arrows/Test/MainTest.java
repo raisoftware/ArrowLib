@@ -14,7 +14,7 @@ public class MainTest
 {
 	public static void main( String args[] ) throws Exception
 	{
-		Diagram diagram = Diagram.create();
+		ArrowDiagram diagram = ArrowDiagram.create();
 
 		//create custom arrows
 		Arrow arrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();

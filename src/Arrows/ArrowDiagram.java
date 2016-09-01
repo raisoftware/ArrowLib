@@ -4,9 +4,9 @@ import Arrows.Impl.*;
 import Shared.Set0;
 import java.util.function.BiPredicate;
 
-public interface Diagram
+public interface ArrowDiagram
 {
-	static Diagram create()
+	static ArrowDiagram create()
 	{
 		return new DiagramImpl();
 	}

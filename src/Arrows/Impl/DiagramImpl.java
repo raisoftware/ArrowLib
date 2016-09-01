@@ -4,7 +4,7 @@ import Arrows.*;
 import Shared.Set0;
 import java.util.function.BiPredicate;
 
-public class DiagramImpl implements Diagram
+public class DiagramImpl implements ArrowDiagram
 {
 	ArrowsImpl arrows;
 	Objects objects;
@@ -36,7 +36,7 @@ public class DiagramImpl implements Diagram
 	@Override
 	public <K, V> Set0<V> set0( K source, Arrow<K, V> arrow )
 	{
-		return new Set0Impl( source, arrow );
+		return new ArrowSet0( source, arrow );
 	}
 
 	@Override

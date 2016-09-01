@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.Arrow;
-import Arrows.Diagram;
+import Arrows.ArrowDiagram;
 
 public class GenericArrowBuilder
 {
@@ -9,9 +9,9 @@ public class GenericArrowBuilder
 	private Class codomain = Object.class;
 	private boolean allowsMultipleSources = true;
 	private boolean allowsMultipleTargets = true;
-	private Diagram diagram = null;
+	private ArrowDiagram diagram = null;
 
-	public GenericArrowBuilder( Diagram diagram )
+	public GenericArrowBuilder( ArrowDiagram diagram )
 	{
 		this.diagram = diagram;
 	}

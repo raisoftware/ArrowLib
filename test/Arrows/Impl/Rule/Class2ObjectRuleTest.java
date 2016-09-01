@@ -25,12 +25,12 @@ public class Class2ObjectRuleTest
 	{
 	}
 
-	Diagram diagram;
+	ArrowDiagram diagram;
 
 	@Before
 	public void setUp()
 	{
-		diagram = Diagram.create();
+		diagram = ArrowDiagram.create();
 		diagram.objects().add( 2 );
 		diagram.objects().add( "unu" );
 

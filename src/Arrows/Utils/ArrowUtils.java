@@ -52,7 +52,7 @@ public class ArrowUtils
 		}
 	}
 
-	public static String shortToString( Diagram diagram, ArrowView arrow )
+	public static String shortToString( ArrowDiagram diagram, ArrowView arrow )
 	{
 		String idName = "";
 		try
@@ -82,12 +82,12 @@ public class ArrowUtils
 		return idName;
 	}
 
-	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
+	public static String toString( ArrowDiagram diagram, ArrowView arrow, String arrowType )
 	{
 		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";// + "  Relations:" + arrow.relations();
 	}
 
-	public static void generateGraph( Diagram diagram, String path )
+	public static void generateGraph( ArrowDiagram diagram, String path )
 	{
 		File dir = new File( path );
 
@@ -132,7 +132,7 @@ public class ArrowUtils
 		}
 	}
 
-	private static void generateGraphForJoinArrow( Diagram diagram, ArrowView arrow, String path )
+	private static void generateGraphForJoinArrow( ArrowDiagram diagram, ArrowView arrow, String path )
 	{
 		//Incomplete
 		final String colors[] = new String[]

@@ -36,14 +36,14 @@ public class Arrow2ObjectRuleTest
 	{
 	}
 
-	Diagram diagram;
+	ArrowDiagram diagram;
 
 	@Before
 	public void setUp()
 	{
 		try
 		{
-			diagram = Diagram.create();
+			diagram = ArrowDiagram.create();
 
 			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );

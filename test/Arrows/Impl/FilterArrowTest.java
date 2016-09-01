@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class FilterArrowTest
 {
-	private Diagram diagram;
+	private ArrowDiagram diagram;
 	private Arrow<String, Character> containsArrow;
 	private ArrowView<String, Character> filterArrow;
 	private final String word1 = "something";
@@ -37,7 +37,7 @@ public class FilterArrowTest
 	@Before
 	public void setUp()
 	{
-		diagram = Diagram.create();
+		diagram = ArrowDiagram.create();
 
 		containsArrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
 		diagram.arrows().name( containsArrow, Contains, IsContainedBy );

@@ -1,12 +1,13 @@
 package Arrows.Impl;
 
-import Arrows.Diagram;
 import Shared.Set0;
 import java.util.*;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
 import static org.junit.Assert.*;
+
+import Arrows.ArrowDiagram;
 
 public class GenericArrowTest
 {
@@ -34,7 +35,7 @@ public class GenericArrowTest
 	@Before
 	public void setUp()
 	{
-		Diagram diagram = Diagram.create();
+		ArrowDiagram diagram = ArrowDiagram.create();
 
 		arrow = new GenericArrow( diagram, String.class, Character.class, true, true, true );
 		diagram.arrows().add( arrow );
