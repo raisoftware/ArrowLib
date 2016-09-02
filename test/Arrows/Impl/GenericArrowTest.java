@@ -7,7 +7,7 @@ import org.junit.*;
 import static Arrows.Test.ArrowName.*;
 import static org.junit.Assert.*;
 
-import Arrows.ArrowDiagram;
+import Arrows.Diagram;
 
 public class GenericArrowTest
 {
@@ -35,7 +35,7 @@ public class GenericArrowTest
 	@Before
 	public void setUp()
 	{
-		ArrowDiagram diagram = ArrowDiagram.create();
+		Diagram diagram = Diagram.create();
 
 		arrow = new GenericArrow( diagram, String.class, Character.class, true, true, true );
 		diagram.arrows().add( arrow );

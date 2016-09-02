@@ -4,9 +4,9 @@ import Arrows.Impl.*;
 import Shared.Set0;
 import java.util.function.BiPredicate;
 
-public interface ArrowDiagram
+public interface Diagram
 {
-	static ArrowDiagram create()
+	static Diagram create()
 	{
 		return new DiagramImpl();
 	}
@@ -15,7 +15,7 @@ public interface ArrowDiagram
 
 	Objects objects();
 
-	<K, V> Set0<V> set0( K source, Arrow<K, V> arrow );
+	<K, V> Set0<V> set0( Arrow<K, V> arrow, K source );
 
 	Reference reference( Object nick, Arrow domain );
 

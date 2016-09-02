@@ -23,10 +23,10 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final boolean allowsMultipleSources;
 	private final boolean allowsMultipleTargets;
 	private final boolean listenable;
-	private final ArrowDiagram diagram;
+	private final Diagram diagram;
 
 
-	public GenericArrow( ArrowDiagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
+	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
 		methodSet = new MethodSet( Arrow.Editor.class );
 		methodSet.add( arrowEditor );

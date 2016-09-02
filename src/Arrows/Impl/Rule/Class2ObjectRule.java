@@ -15,13 +15,13 @@ public class Class2ObjectRule implements Arrow.Editor
 	{
 		try
 		{
-			this.class2Object = (Arrow) arrows.arrow( Class_Object );
+			this.class2Object = arrows.arrow( Class_Object );
 
 			//This Rule should be executed after the ObjectRegistrarRule and after the Arrow2ObjectRule
 
-			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
-			this.object2config = arrows.arrow( Object_Config );
+			this.inboundArrow2object = arrows.arrowView( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrowView( OutboundArrow_Object );
+			this.object2config = arrows.arrowView( Object_Config );
 		}
 		catch( Exception ex )
 		{

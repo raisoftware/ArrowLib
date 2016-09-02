@@ -36,14 +36,14 @@ public class Arrow2ObjectRuleTest
 	{
 	}
 
-	ArrowDiagram diagram;
+	Diagram diagram;
 
 	@Before
 	public void setUp()
 	{
 		try
 		{
-			diagram = ArrowDiagram.create();
+			diagram = Diagram.create();
 
 			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );
@@ -53,13 +53,13 @@ public class Arrow2ObjectRuleTest
 			arrow.editor().connect( 4, "four" );
 
 			arrows = diagram.arrows();
-			object2outboundArrow = (Arrow) arrows.arrow( Names.Object_OutboundArrow );
+			object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
 			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = (Arrow) arrows.arrow( Names.Object_InboundArrow );
+			object2inboundArrow = arrows.arrow( Names.Object_InboundArrow );
 			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = (Arrow) arrows.arrow( Names.Name_Arrow );
+			name2Arrow = arrows.arrow( Names.Name_Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = (Arrow) arrows.arrow( Stringify );
+			editableStringifyArrow = arrows.arrow( Stringify );
 		}
 		catch( Exception ex )
 		{

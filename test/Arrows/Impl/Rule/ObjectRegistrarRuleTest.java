@@ -31,12 +31,12 @@ public class ObjectRegistrarRuleTest
 	{
 	}
 
-	ArrowDiagram diagram;
+	Diagram diagram;
 
 	@Before
 	public void setUp()
 	{
-		diagram = ArrowDiagram.create();
+		diagram = Diagram.create();
 
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
 		ObjectConfig coolestObjConfig = new ObjectConfigBuilderImpl().end();
@@ -75,9 +75,9 @@ public class ObjectRegistrarRuleTest
 	{
 		Arrows arrows = diagram.arrows();
 
-		ArrowView<Object, Object> name2Object = arrows.arrow( Names.Name_Object );
-		ArrowView<Object, Object> id2Object = arrows.arrow( Names.Id_Object );
-		ArrowView<Object, ObjectConfig> object2Config = arrows.arrow( Object_Config );
+		ArrowView<Object, Object> name2Object = arrows.arrowView( Names.Name_Object );
+		ArrowView<Object, Object> id2Object = arrows.arrowView( Names.Id_Object );
+		ArrowView<Object, ObjectConfig> object2Config = arrows.arrowView( Object_Config );
 
 		assertEquals( name2Object.target( RootObject ), "two" );
 		assertEquals( name2Object.target( CoolestObject ), "unu" );
@@ -95,7 +95,7 @@ public class ObjectRegistrarRuleTest
 		assertEquals( id2Object.target( 6 ), "four" );
 		assertEquals( id2Object.target( 7 ), "patru" );
 
-		ArrowView<Object, Enum> object2Name = arrows.arrow( Names.Object_Name );
+		ArrowView<Object, Enum> object2Name = arrows.arrowView( Names.Object_Name );
 
 		assertEquals( object2Name.target( "two" ), RootObject );
 		assertEquals( object2Name.target( "unu" ), CoolestObject );

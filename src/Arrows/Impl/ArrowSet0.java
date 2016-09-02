@@ -6,13 +6,13 @@ import java.util.Iterator;
 
 public class ArrowSet0<K, V> implements Set0<V>
 {
-	private K source;
-	private Arrow<K, V> arrow;
+	private final Arrow<K, V> arrow;
+	private final K source;
 
-	public ArrowSet0( K source, Arrow<K, V> arrow )
+	public ArrowSet0( Arrow<K, V> arrow, K source )
 	{
-		this.source = source;
 		this.arrow = arrow;
+		this.source = source;
 	}
 
 	@Override

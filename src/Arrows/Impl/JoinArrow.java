@@ -7,7 +7,7 @@ import java.util.*;
 
 public class JoinArrow implements ArrowView
 {
-	private final ArrowDiagram diagram;
+	private final Diagram diagram;
 
 	private final List<ArrowView> arrows = new ArrayList<>();
 	private final List<ArrowView> arrowsInverse = new LinkedList<>();
@@ -15,7 +15,7 @@ public class JoinArrow implements ArrowView
 	private final ArrowView inverseArrow = new InverseJoinArrow();
 
 
-	public JoinArrow( ArrowDiagram diagram, ArrowView... arrows ) throws IllegalArgumentException
+	public JoinArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
 		this.diagram = diagram;
 

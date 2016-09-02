@@ -8,13 +8,13 @@ import java.util.*;
 
 public class IntersectArrow implements ArrowView
 {
-	private final ArrowDiagram diagram;
+	private final Diagram diagram;
 
 	private List<ArrowView> arrows = new ArrayList<>();
 
 	private InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
 
-	public IntersectArrow( ArrowDiagram diagram, ArrowView... arrows ) throws IllegalArgumentException
+	public IntersectArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
 		this.diagram = diagram;
 

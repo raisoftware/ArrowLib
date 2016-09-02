@@ -11,13 +11,13 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
 	Arrow<K, V> precomputedArrow;
 	Function<K, Set<V>> function;
-	ArrowDiagram diagram;
+	Diagram diagram;
 	Class domain;
 	Class codomain;
 
 	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
 
-	public ComputedArrowImpl( ArrowDiagram diagram, Function<K, Set<V>> function, Class domain, Class codomain )
+	public ComputedArrowImpl( Diagram diagram, Function<K, Set<V>> function, Class domain, Class codomain )
 	{
 		this.domain = domain;
 		this.codomain = codomain;
@@ -166,9 +166,9 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		private Class domain = Object.class;
 		private Class codomain = Object.class;
 		private Function<K, Set<V>> function;
-		private ArrowDiagram diagram = null;
+		private Diagram diagram = null;
 
-		public Builder( ArrowDiagram diagram )
+		public Builder( Diagram diagram )
 		{
 			super();
 			this.diagram = diagram;

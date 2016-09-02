@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class ComputedArrowTest
 {
 
-	private ArrowDiagram diagram;
+	private Diagram diagram;
 	private final String word1 = "abcd";
 	private final String word2 = "efgh";
 	private final String word3 = "ijkl";
@@ -39,7 +39,7 @@ public class ComputedArrowTest
 	@Before
 	public void setUp()
 	{
-		diagram = ArrowDiagram.create();
+		diagram = Diagram.create();
 
 		Function<String, Set<Character>> function = (String word) ->
 		{

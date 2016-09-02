@@ -15,13 +15,13 @@ public class ArrowsImpl implements Arrows
 	Arrow<Object, ArrowView> name2arrow;
 	Arrow<Integer, ArrowView> id2arrow;
 
-	ArrowDiagram diagram;
+	Diagram diagram;
 	AtomicInteger sequence = new AtomicInteger();
 
 	Class2ObjectRule class2ObjectRule;
 	Set0<Arrow.Editor> customRules;
 
-	public ArrowsImpl( ArrowDiagram diagram )
+	public ArrowsImpl( Diagram diagram )
 	{
 		this.diagram = diagram;
 
@@ -121,9 +121,15 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public ArrowView arrow( Object arrowName ) throws Exception
+	public ArrowView arrowView( Object arrowName ) throws Exception
 	{
 		return name2arrow.target( arrowName );
+	}
+
+	@Override
+	public Arrow arrow( Object arrowName ) throws Exception
+	{
+		return (Arrow) name2arrow.target( arrowName );
 	}
 
 	@Override

@@ -24,12 +24,12 @@ public class ObjectsImpl implements Objects
 	{
 		try
 		{
-			this.id2object = (Arrow) arrows.arrow( Id_Object );
-			this.name2object = (Arrow) arrows.arrow( Name_Object );
-			this.object2config = (Arrow) arrows.arrow( Object_Config );
-			this.class2object = (Arrow) arrows.arrow( Class_Object );
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+			this.id2object = arrows.arrow( Id_Object );
+			this.name2object = arrows.arrow( Name_Object );
+			this.object2config = arrows.arrow( Object_Config );
+			this.class2object = arrows.arrow( Class_Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
 		}
 		catch( Exception ex )
 		{

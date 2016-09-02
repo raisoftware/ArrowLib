@@ -21,11 +21,11 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
 
 			//This Rule should be executed after the ObjectRegistrarRule
-			this.object2config = arrows.arrow( Object_Config );
+			this.object2config = arrows.arrowView( Object_Config );
 
 		}
 		catch( Exception ex )

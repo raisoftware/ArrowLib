@@ -14,7 +14,7 @@ public class MainTest
 {
 	public static void main( String args[] ) throws Exception
 	{
-		ArrowDiagram diagram = ArrowDiagram.create();
+		Diagram diagram = Diagram.create();
 
 		//create custom arrows
 		Arrow arrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
@@ -44,7 +44,7 @@ public class MainTest
 		//----------------------------------------------------
 
 		//Test class2ObjectRule
-		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class_Object );
+		Arrow class2Object = diagram.arrows().arrow( Class_Object );
 		System.out.println( class2Object );
 		System.out.println( class2Object.inverse() );
 		System.out.println( "class2Object.relations()" + class2Object.relations() );
@@ -55,11 +55,11 @@ public class MainTest
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
 		diagram.objects().config( 's', rootObjConfig );
 		diagram.objects().name( 's', RootObject );
-		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name_Object );
-		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object_Config );
+		Arrow name2Object = diagram.arrows().arrow( Name_Object );
+		Arrow object2Config = diagram.arrows().arrow( Object_Config );
 		//----------
 
-		Arrow<String, Character> containsArrow = (Arrow) diagram.arrows().arrow( Contains );
+		Arrow<String, Character> containsArrow = diagram.arrows().arrow( Contains );
 
 		ArrowView joinArrow = diagram.join( containsArrow.inverse() );
 		Set0 results = joinArrow.targets( 'r' );

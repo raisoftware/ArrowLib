@@ -8,13 +8,13 @@ import static org.junit.Assert.*;
 
 public class ArrowPropertyTest
 {
-	private ArrowDiagram diagram;
+	private Diagram diagram;
 	private Arrow<String, Integer> destringify;
 
 	@Before
 	public void setUp()
 	{
-		diagram = ArrowDiagram.create();
+		diagram = Diagram.create();
 
 		destringify = diagram.createGeneric().allowsMultipleSources( true ).allowsMultipleTargets( false ).end();
 		diagram.arrows().name( destringify, Destringify, Stringify );
