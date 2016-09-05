@@ -1,5 +1,6 @@
 package Shared.MethodSet;
 
+import Arrows.Property;
 import Shared.Set0;
 import java.lang.reflect.*;
 import java.util.*;
@@ -10,6 +11,14 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 	private final ArrayList<ListenerType> listeners = new ArrayList<>();
 	private final ListenerType publisher;
 
+    public static <ListenerType> ListenerType methodList( Class<ListenerType> type, ListenerType... listeners )
+    {
+        MethodSet<ListenerType> codeBlocks = new MethodSet<ListenerType>( type );
+        for( ListenerType listener : listeners )
+            codeBlocks.add( listener );
+        
+        return codeBlocks.publisher();
+    }
 	public MethodSet( Class type )
 	{
 		this.type = type;
@@ -101,4 +110,47 @@ public class MethodSet<ListenerType> implements Set0<ListenerType>
 			throw new RuntimeException( e.getMessage(), e );
 		}
 	}
+    
+    
+    public static void main( String[] args )
+    {
+        Property<String> targetProperty = new Property<String>()
+        {
+            String value = "targetProperty.initialValue";
+            @Override
+            public String get()
+            {
+                return value;
+            }
+
+            @Override
+            public void set(String newValue)
+            {
+                value = newValue;
+            }
+            
+        };
+        Property<String> ms = methodList( Property.class, targetProperty,
+            new Property<String>()
+            {
+                String value = "rule.initialValue";
+                @Override
+                public String get()
+                {
+                    return value;
+                }
+
+                @Override
+                public void set(String newValue)
+                {
+                    value = newValue;
+                }
+
+            }
+            );
+        System.out.println( ms.get() );
+        ms.set( "newVal");
+        System.out.println( ms.get() );
+        
+    }
 }
