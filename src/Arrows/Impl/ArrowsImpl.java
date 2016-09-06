@@ -4,6 +4,7 @@ import Arrows.*;
 import Arrows.Arrow.Editor;
 import Arrows.Impl.Rule.*;
 import Shared.BasicSet0;
+import Shared.MethodList.MethodList.Positioning;
 import Shared.Set0;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -106,14 +107,14 @@ public class ArrowsImpl implements Arrows
 			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
 			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
 
-			listenedArrow.listeners().add( objectRegistrarRule );
-			listenedArrow.listeners().add( arrow2ObjectRule );
-			listenedArrow.listeners().add( class2ObjectRule );
-			//use something that retains order
+			listenedArrow.listeners().insert( objectRegistrarRule, Positioning.After );
+			listenedArrow.listeners().insert( arrow2ObjectRule, Positioning.After );
+			listenedArrow.listeners().insert( class2ObjectRule, Positioning.After );
+
 
 			for( Editor rule : customRules )
 			{
-				listenedArrow.listeners().add( rule );
+				listenedArrow.listeners().insert( rule, Positioning.After );
 			}
 		}
 
