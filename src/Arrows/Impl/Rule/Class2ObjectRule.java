@@ -1,6 +1,9 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
+import com.google.common.reflect.TypeToken;
+import com.google.common.reflect.TypeToken.TypeSet;
+import java.util.Set;
 
 import static Arrows.Arrows.Names.*;
 
@@ -88,10 +91,26 @@ public class Class2ObjectRule implements Arrow.Editor
 
 	private void trackClass( Object object )
 	{
-
 		if( config( object ).tracksClass() )
 		{
-			class2Object.editor().connect( object.getClass(), object );
+			Class cls = object.getClass();
+
+			final TypeSet typeSet = TypeToken.of( cls ).getTypes();
+			Set<TypeToken> classes = typeSet.classes();
+			for( TypeToken type : classes )
+			{
+				Class clazz = type.getRawType();
+				if( !clazz.equals( Object.class ) )
+				{
+					class2Object.editor().connect( clazz, object );
+				}
+			}
+			Set<TypeToken> interfaces = typeSet.interfaces();
+			for( TypeToken type : interfaces )
+			{
+				Class clazz = type.getRawType();
+				class2Object.editor().connect( clazz, object );
+			}
 		}
 	}
 
