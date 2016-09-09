@@ -13,6 +13,7 @@ public interface Arrows extends Set0<ArrowView>
 		Class_Object, Object_Class,
 		Name_Object, Object_Name,
 		Id_Object, Object_Id,
+		Object_Object, Object_Object_Inverse,
 		Object_Config, Config_Object,
 		InboundArrow_Object, Object_InboundArrow,
 		OutboundArrow_Object, Object_OutboundArrow,

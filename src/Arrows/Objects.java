@@ -14,4 +14,6 @@ public interface Objects extends Set0
 	ObjectConfig config( Object object );
 
 	void name( Object obj, Object name );
+
+	ArrowView identity();
 }

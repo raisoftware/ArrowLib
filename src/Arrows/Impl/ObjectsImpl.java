@@ -5,8 +5,6 @@ import Shared.Set0;
 import Shared.Set0Utils;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static Arrows.Arrows.Names.*;
 
@@ -19,6 +17,7 @@ public class ObjectsImpl implements Objects
 	private Arrow<Class, Object> class2object = null;
 	private Arrow<Arrow, Object> inboundArrow2object = null;
 	private Arrow<Arrow, Object> outboundArrow2object = null;
+	private ArrowView<Object, Object> identity = null;
 
 	public ObjectsImpl( Arrows arrows )
 	{
@@ -30,10 +29,11 @@ public class ObjectsImpl implements Objects
 			this.class2object = arrows.arrow( Class_Object );
 			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
 			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
+			this.identity = arrows.arrowView( Object_Object );
 		}
 		catch( Exception ex )
 		{
-			Logger.getLogger( ObjectsImpl.class.getName() ).log( Level.SEVERE, null, ex );
+			throw new RuntimeException( "Default arrow not found.", ex );
 		}
 	}
 
@@ -41,7 +41,7 @@ public class ObjectsImpl implements Objects
 	public void add( Object object )
 	{
 		if( contains( object ) )
-			throw new RuntimeException( "Object already registered." );
+			throw new RuntimeException( "Object already registered. [object = " + object + "]" );
 
 		ObjectConfig config = new ObjectConfigBuilderImpl().end();
 		id2object.editor().connect( sequence.getAndIncrement(), object );
@@ -52,10 +52,10 @@ public class ObjectsImpl implements Objects
 	public void name( Object object, Object name )
 	{
 		if( !contains( object ) )
-			throw new RuntimeException( "Object not registered." );
+			throw new RuntimeException( "Object not registered.  [object = " + object + "  name = " + name + "]" );
 
 		if( name2object.targets().contains( object ) )
-			throw new RuntimeException( "Object already has a name" );
+			throw new RuntimeException( "Object already has a name  [object = " + object + "  new-name = " + name + "]" );
 
 		name2object.inverse().editor().connect( object, name );
 	}
@@ -162,5 +162,11 @@ public class ObjectsImpl implements Objects
 		{
 			throw new RuntimeException( ex.getMessage() );
 		}
+	}
+
+	@Override
+	public ArrowView identity()
+	{
+		return identity;
 	}
 }

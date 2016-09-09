@@ -22,7 +22,7 @@ public class ArrowProperty<K, V> implements Property<V>
 		return arrow;
 	}
 
-	K owner() // returns source
+	K owner()
 	{
 		return source;
 	}

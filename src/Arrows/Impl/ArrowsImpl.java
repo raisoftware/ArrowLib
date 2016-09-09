@@ -48,6 +48,9 @@ public class ArrowsImpl implements Arrows
 		addInternal( id2object );
 		name( id2object, Id_Object, Object_Id );
 
+		ArrowView object2object = diagram.join( id2object.inverse(), id2object );
+		addInternal( object2object );
+		name( object2object, Object_Object, Object_Object_Inverse );
 
 		Arrow object2config = new GenericArrow( diagram, Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( object2config );
