@@ -4,7 +4,7 @@ import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
 import Shared.Collection0.BasicSet0;
-import Shared.MethodList.MethodList;
+import Shared.MethodBus.MethodBus;
 import Shared.Collection0.Set0;
 import com.google.common.collect.*;
 import java.util.*;
@@ -15,7 +15,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	private final MethodList<Arrow.Editor> methodSet;
+	private final MethodBus<Arrow.Editor> methodBus;
 	private final Arrow<V, K> inverseArrow = new InverseGenericArrow();
 	private final Editor<K, V> arrowEditor = new GenericArrowEditor();
 	private final Class domain;
@@ -28,8 +28,8 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
-		methodSet = new MethodList( Arrow.Editor.class );
-		methodSet.add( arrowEditor );
+		methodBus = new MethodBus( Arrow.Editor.class );
+		methodBus.add( arrowEditor );
 		this.domain = domain;
 		this.codomain = codomain;
 		this.listenable = listenable;
@@ -80,15 +80,15 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public MethodList<Editor> listeners()
+	public MethodBus<Editor> listeners()
 	{
-		return methodSet;
+		return methodBus;
 	}
 
 	@Override
 	public Editor<K, V> editor()
 	{
-		return listenable ? methodSet.publisher() : arrowEditor;
+		return listenable ? methodBus.publisher() : arrowEditor;
 	}
 
 	@Override
@@ -241,9 +241,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 
 		@Override
-		public MethodList<Editor> listeners()
+		public MethodBus<Editor> listeners()
 		{
-			return methodSet;
+			return methodBus;
 		}
 
 		@Override

@@ -1,8 +1,8 @@
-package MethodList;
+package MethodBus;
 
 import Arrows.Property;
 import Shared.Collection0.OrderedSet0.Position;
-import Shared.MethodList.MethodList;
+import Shared.MethodBus.MethodBus;
 import java.util.*;
 import org.junit.*;
 
@@ -11,10 +11,10 @@ import static org.junit.Assert.*;
 
 
 
-public class MethodListTest
+public class MethodBusTest
 {
 	List<String> history = new ArrayList<String>();
-	MethodList<DummyEvent> methodList;
+	MethodBus<DummyEvent> methodBus;
 
 	DummyFlushLogger dummyFlushLogger;
 	DummyEndEventLogger dummyEndEventLogger;
@@ -80,15 +80,15 @@ public class MethodListTest
 	@Before
 	public void setUp()
 	{
-		methodList = new MethodList<>( DummyEvent.class );
+		methodBus = new MethodBus<>( DummyEvent.class );
 		dummyFlushLogger = new DummyFlushLogger();
 		dummyEndEventLogger = new DummyEndEventLogger();
 		dummyEventLogger = new DummyEventLogger();
 
-		methodList.insert( dummyFlushLogger, Position.End, null );
-		methodList.insert( dummyEndEventLogger, Position.Beginning, null );
-		methodList.insert( dummyEventLogger, Position.Beginning, null );
-		methodList.insert( dummyEventLogger, Position.End, null );
+		methodBus.insert( dummyFlushLogger, Position.End, null );
+		methodBus.insert( dummyEndEventLogger, Position.Beginning, null );
+		methodBus.insert( dummyEventLogger, Position.Beginning, null );
+		methodBus.insert( dummyEventLogger, Position.End, null );
 	}
 	@After
 	public void tearDown()
@@ -100,8 +100,8 @@ public class MethodListTest
 	@Test
 	public void testListenersInsertionOrder() throws Exception
 	{
-		assertEquals( methodList.size(), 3 );
-		Iterator<DummyEvent> it = methodList.iterator();
+		assertEquals(methodBus.size(), 3 );
+		Iterator<DummyEvent> it = methodBus.iterator();
 		assertEquals( it.next(), dummyEventLogger );
 		assertEquals( it.next(), dummyEndEventLogger );
 		assertEquals( it.next(), dummyFlushLogger );
@@ -110,7 +110,7 @@ public class MethodListTest
 	@Test
 	public void testMethodCalls() throws Exception
 	{
-		DummyEvent event = methodList.publisher();
+		DummyEvent event = methodBus.publisher();
 		event.start( "call1" );
 		event.start( "call2" );
 		event.stop( "call2" );
@@ -137,7 +137,7 @@ public class MethodListTest
 	@Test
 	public void testReturnValue() throws Exception
 	{
-		DummyEvent event = methodList.publisher();
+		DummyEvent event = methodBus.publisher();
 		assertEquals( event.getThisClass(), DummyFlushLogger.class );
 	}
 
@@ -161,7 +161,7 @@ public class MethodListTest
 
 		};
 
-		Property<String> ms = MethodList.methodList( Property.class, targetProperty,
+		Property<String> ms = MethodBus.methodList( Property.class, targetProperty,
 			new Property<String>()
 		{
 			String value = "rule.initialValue";

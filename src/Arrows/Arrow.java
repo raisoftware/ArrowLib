@@ -1,11 +1,11 @@
 package Arrows;
 
-import Shared.MethodList.MethodList;
+import Shared.MethodBus.MethodBus;
 
 
 public interface Arrow<K, V> extends ArrowView<K, V>
 {
-	MethodList<Editor> listeners();
+	MethodBus<Editor> listeners();
 
 	Editor<K, V> editor();
 

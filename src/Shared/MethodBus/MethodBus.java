@@ -1,4 +1,4 @@
-package Shared.MethodList;
+package Shared.MethodBus;
 
 import Shared.Collection0.OrderedSet0;
 import Shared.Collection0.OrderedSet0.Position;
@@ -8,7 +8,7 @@ import java.util.*;
 import static Arrows.Utils.ExceptionUtils.*;
 import static Shared.Collection0.OrderedSet0.Position.*;
 
-public class MethodList<ListenerType> implements OrderedSet0<ListenerType>
+public class MethodBus<ListenerType> implements OrderedSet0<ListenerType>
 {
 	private final Class type;
 	private final ArrayList<ListenerType> listeners = new ArrayList<>();
@@ -16,7 +16,7 @@ public class MethodList<ListenerType> implements OrderedSet0<ListenerType>
 
 	public static <ListenerType> ListenerType methodList( Class<ListenerType> type, ListenerType... listeners )
 	{
-		MethodList<ListenerType> codeBlocks = new MethodList<>( type );
+		MethodBus<ListenerType> codeBlocks = new MethodBus<>( type );
 		for( ListenerType listener : listeners )
 		{
 			codeBlocks.add( listener );
@@ -25,7 +25,7 @@ public class MethodList<ListenerType> implements OrderedSet0<ListenerType>
 		return codeBlocks.publisher();
 	}
 
-	public MethodList( Class type )
+	public MethodBus( Class type )
 	{
 		this.type = type;
 

@@ -1,13 +1,13 @@
-package Shared.MethodList;
+package Shared.MethodBus;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 public class MethodProxy<T> implements InvocationHandler
 {
-	private final MethodList<T> methodSet;
+	private final MethodBus<T> methodSet;
 
-	public MethodProxy( MethodList<T> methodSet )
+	public MethodProxy( MethodBus<T> methodSet )
 	{
 		this.methodSet = methodSet;
 	}
