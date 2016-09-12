@@ -1,6 +1,6 @@
 package Arrows.Impl;
 
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 import org.junit.*;
 

@@ -2,7 +2,7 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import Arrows.Arrows.Names;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;

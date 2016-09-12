@@ -1,6 +1,6 @@
 package Arrows;
 
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.Map;
 
 public interface ArrowView<K, V>

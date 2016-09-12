@@ -12,4 +12,10 @@ public class ExceptionUtils
 	{
 		return new RuntimeException( "Arrow does not allow multiple sources or does not allow multiple targets! source/sources:" + sources + "  target/targets: " + targets );
 	}
+
+	public static void checkInsertPoint( int index )
+	{
+		if( index < 0 )
+			throw new RuntimeException( "InsertPoint not found in list." );
+	}
 }

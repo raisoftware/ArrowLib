@@ -3,10 +3,9 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
-import Shared.BasicSet0;
+import Shared.Collection0.BasicSet0;
 import Shared.MethodList.MethodList;
-import Shared.MethodList.MethodList.Positioning;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -30,7 +29,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
 		methodSet = new MethodList( Arrow.Editor.class );
-		methodSet.insert( arrowEditor, Positioning.After );
+		methodSet.add( arrowEditor );
 		this.domain = domain;
 		this.codomain = codomain;
 		this.listenable = listenable;

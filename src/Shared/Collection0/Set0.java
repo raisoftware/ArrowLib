@@ -1,4 +1,4 @@
-package Shared;
+package Shared.Collection0;
 
 public interface Set0<V> extends Iterable<V>
 {

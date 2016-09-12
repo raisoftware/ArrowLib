@@ -1,8 +1,8 @@
 package MethodList;
 
 import Arrows.Property;
+import Shared.Collection0.OrderedSet0.Position;
 import Shared.MethodList.MethodList;
-import Shared.MethodList.MethodList.Positioning;
 import java.util.*;
 import org.junit.*;
 
@@ -85,10 +85,10 @@ public class MethodListTest
 		dummyEndEventLogger = new DummyEndEventLogger();
 		dummyEventLogger = new DummyEventLogger();
 
-		methodList.insert( dummyFlushLogger, Positioning.After );
-		methodList.insert( dummyEndEventLogger, Positioning.Before );
-		methodList.insert( dummyEventLogger, Positioning.Before );
-		methodList.insert( dummyEventLogger, Positioning.After );
+		methodList.insert( dummyFlushLogger, Position.End, null );
+		methodList.insert( dummyEndEventLogger, Position.Beginning, null );
+		methodList.insert( dummyEventLogger, Position.Beginning, null );
+		methodList.insert( dummyEventLogger, Position.End, null );
 	}
 	@After
 	public void tearDown()

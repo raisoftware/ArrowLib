@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;

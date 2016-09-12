@@ -1,7 +1,7 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Shared.Set0Utils;
+import Shared.Collection0.Set0Utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

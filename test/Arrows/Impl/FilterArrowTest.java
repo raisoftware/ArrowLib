@@ -1,8 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
-import Shared.Set0Utils;
+import Shared.Collection0.Set0;
+import Shared.Collection0.Set0Utils;
 import java.util.function.BiPredicate;
 import org.junit.*;
 

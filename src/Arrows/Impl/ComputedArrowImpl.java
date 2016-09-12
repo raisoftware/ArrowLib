@@ -2,7 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 import java.util.function.Function;
 

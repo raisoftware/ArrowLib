@@ -2,8 +2,8 @@ package Arrows.Utils;
 
 import Arrows.*;
 import Arrows.Impl.JoinArrow;
-import Shared.BasicSet0;
-import Shared.Set0;
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import java.io.*;
 import java.util.*;
 

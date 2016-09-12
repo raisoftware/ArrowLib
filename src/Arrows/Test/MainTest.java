@@ -3,7 +3,7 @@ package Arrows.Test;
 import Arrows.*;
 import Arrows.Impl.ObjectConfigBuilderImpl;
 import Arrows.Utils.ArrowUtils;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 
 import static Arrows.Arrows.Names.*;

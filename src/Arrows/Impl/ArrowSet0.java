@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.Arrow;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.Iterator;
 
 public class ArrowSet0<K, V> implements Set0<V>

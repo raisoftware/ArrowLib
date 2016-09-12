@@ -1,7 +1,7 @@
 package Arrows;
 
 import Arrows.Impl.*;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.function.BiPredicate;
 
 public interface Diagram

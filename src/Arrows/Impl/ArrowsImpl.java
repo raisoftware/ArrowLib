@@ -3,9 +3,8 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Arrow.Editor;
 import Arrows.Impl.Rule.*;
-import Shared.BasicSet0;
-import Shared.MethodList.MethodList.Positioning;
-import Shared.Set0;
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -110,14 +109,14 @@ public class ArrowsImpl implements Arrows
 			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
 			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
 
-			listenedArrow.listeners().insert( objectRegistrarRule, Positioning.After );
-			listenedArrow.listeners().insert( arrow2ObjectRule, Positioning.After );
-			listenedArrow.listeners().insert( class2ObjectRule, Positioning.After );
+			listenedArrow.listeners().add( objectRegistrarRule );
+			listenedArrow.listeners().add( arrow2ObjectRule );
+			listenedArrow.listeners().add( class2ObjectRule );
 
 
 			for( Editor rule : customRules )
 			{
-				listenedArrow.listeners().insert( rule, Positioning.After );
+				listenedArrow.listeners().add( rule );
 			}
 		}
 

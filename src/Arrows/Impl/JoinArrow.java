@@ -1,8 +1,9 @@
 package Arrows.Impl;
 
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.*;
 import java.util.*;
 
 public class JoinArrow implements ArrowView

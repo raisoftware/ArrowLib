@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
