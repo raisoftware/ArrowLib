@@ -169,4 +169,10 @@ public class ObjectsImpl implements Objects
 	{
 		return identity;
 	}
+
+	@Override
+	public Class domain()
+	{
+		return Object.class;
+	}
 }

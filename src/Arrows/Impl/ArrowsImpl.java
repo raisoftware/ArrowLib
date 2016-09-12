@@ -71,7 +71,7 @@ public class ArrowsImpl implements Arrows
 		name( owner2property, Owner_Property, Property_Owner );
 
 		class2ObjectRule = new Class2ObjectRule( this );
-		customRules = new BasicSet0( new HashSet() );
+		customRules = new BasicSet0( new HashSet(), Arrow.Editor.class );
 	}
 
 	@Override
@@ -158,6 +158,12 @@ public class ArrowsImpl implements Arrows
 	public Iterator<ArrowView> iterator()
 	{
 		return id2arrow.targets().iterator();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return ArrowView.class;
 	}
 
 

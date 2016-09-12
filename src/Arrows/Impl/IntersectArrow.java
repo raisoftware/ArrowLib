@@ -76,7 +76,7 @@ public class IntersectArrow implements ArrowView
 	private Set0 intersectSources( boolean inverse )
 	{
 		Iterator<ArrowView> arrowIt = arrows.iterator();
-		Set0 intersectSources = new BasicSet0( new HashSet<>() );
+		Set0 intersectSources = new BasicSet0( new HashSet<>(), domain() );
 
 		ArrowView firstArrow = arrowIt.next();
 		if( inverse )
@@ -121,7 +121,7 @@ public class IntersectArrow implements ArrowView
 
 	private Set0 intersectTargets( boolean inverse )
 	{
-		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
+		Set0 intersectTargets = new BasicSet0( new HashSet<>(), codomain() );
 
 		Iterator<ArrowView> arrowIt = arrows.iterator();
 		ArrowView firstArrow = arrowIt.next();
@@ -153,7 +153,7 @@ public class IntersectArrow implements ArrowView
 			firstArrow = firstArrow.inverse();
 		}
 
-		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
+		Set0 intersectTargets = new BasicSet0( new HashSet<>(), codomain() );
 		Set0Utils.addAll( intersectTargets, firstArrow.targets( source ) );
 
 		while( arrowIt.hasNext() )
@@ -178,6 +178,18 @@ public class IntersectArrow implements ArrowView
 		stringBuilder.append( " Relations:" );
 		stringBuilder.append( relations() );
 		return stringBuilder.toString();
+	}
+
+	@Override
+	public Class codomain()
+	{
+		return arrows.get( 0 ).codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrows.get( 0 ).domain();
 	}
 
 	private final class InverseIntersectArrow implements ArrowView
@@ -230,6 +242,18 @@ public class IntersectArrow implements ArrowView
 			stringBuilder.append( " Relations:" );
 			stringBuilder.append( relations() );
 			return stringBuilder.toString();
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return IntersectArrow.this.domain();
+		}
+
+		@Override
+		public Class domain()
+		{
+			return IntersectArrow.this.codomain();
 		}
 
 	}

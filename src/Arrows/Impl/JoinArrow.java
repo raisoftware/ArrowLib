@@ -198,7 +198,8 @@ public class JoinArrow implements ArrowView
 			}
 		}
 
-		Set0 results = new BasicSet0( new HashSet( newResults ) );
+		Class domain = arrowsList.get( arrowsList.size() - 1 ).codomain();
+		Set0 results = new BasicSet0( new HashSet( newResults ), domain );
 		return results;
 	}
 }

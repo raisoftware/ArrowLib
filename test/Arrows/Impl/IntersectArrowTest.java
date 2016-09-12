@@ -41,7 +41,7 @@ public class IntersectArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.createGeneric().end();
+		toUpperCaseArrow1 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
@@ -49,7 +49,7 @@ public class IntersectArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
-		toUpperCaseArrow2 = diagram.createGeneric().end();
+		toUpperCaseArrow2 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
@@ -73,6 +73,8 @@ public class IntersectArrowTest
 			char c = mergedWord34.charAt( i );
 			assertTrue( sources.contains( c ) );
 		}
+		assertEquals( Character.class, sources.domain() );
+
 	}
 
 	@Test
@@ -86,6 +88,7 @@ public class IntersectArrowTest
 			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
 			assertTrue( targets.contains( c ) );
 		}
+		assertEquals( Character.class, targets.domain() );
 	}
 
 	@Test

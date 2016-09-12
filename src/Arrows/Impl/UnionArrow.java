@@ -40,7 +40,9 @@ public class UnionArrow implements ArrowView
 
 	private Set0 unionSources( boolean inverse )
 	{
-		Set0 unionSources = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? codomain() : domain();
+
+		Set0 unionSources = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -55,7 +57,9 @@ public class UnionArrow implements ArrowView
 
 	private Set0 unionTargets( boolean inverse )
 	{
-		Set0 unionTargets = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? domain() : codomain();
+
+		Set0 unionTargets = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -70,7 +74,9 @@ public class UnionArrow implements ArrowView
 
 	private Set0 unionTargets( Object source, boolean inverse )
 	{
-		Set0 unionTargets = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? domain() : codomain();
+
+		Set0 unionTargets = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -114,6 +120,18 @@ public class UnionArrow implements ArrowView
 		return ArrowUtils.target( this, source );
 	}
 
+	@Override
+	public Class codomain()
+	{
+		return arrows.get( 0 ).codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrows.get( 0 ).domain();
+	}
+
 	private final class InverseUnionArrow implements ArrowView
 	{
 		@Override
@@ -150,6 +168,18 @@ public class UnionArrow implements ArrowView
 		public ArrowView inverse()
 		{
 			return UnionArrow.this;
+		}
+
+		@Override
+		public Class codomain()
+		{
+			return UnionArrow.this.domain();
+		}
+
+		@Override
+		public Class domain()
+		{
+			return UnionArrow.this.codomain();
 		}
 
 	}

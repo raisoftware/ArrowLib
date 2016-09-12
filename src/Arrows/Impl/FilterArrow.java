@@ -33,7 +33,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<K> sources()
 	{
-		Set0<K> filteredSources = new BasicSet0( new HashSet<>() );
+		Set0<K> filteredSources = new BasicSet0( new HashSet<>(), domain() );
 		for( K source : arrow.sources() )
 		{
 			for( V target : arrow.targets( source ) )
@@ -51,7 +51,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<V> targets()
 	{
-		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>(), codomain() );
 		for( K source : arrow.sources() )
 		{
 			Set0Utils.addAll( filteredTargets, targets( source ) );
@@ -62,7 +62,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<V> targets( K source )
 	{
-		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>(), codomain() );
 
 		for( V target : arrow.targets( source ) )
 		{

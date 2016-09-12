@@ -47,25 +47,25 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	@Override
 	public Set0<Entry<K, V>> relations()
 	{
-		return new BasicSet0( keysToValues.entries() );
+		return new BasicSet0( keysToValues.entries(), Map.Entry.class );
 	}
 
 	@Override
 	public Set0<K> sources()
 	{
-		return new BasicSet0( keysToValues.keySet() );
+		return new BasicSet0( keysToValues.keySet(), domain() );
 	}
 
 	@Override
 	public Set0<V> targets()
 	{
-		return new BasicSet0( valuesToKeys.keySet() );
+		return new BasicSet0( valuesToKeys.keySet(), codomain() );
 	}
 
 	@Override
 	public Set0<V> targets( K source )
 	{
-		return new BasicSet0( keysToValues.get( source ) );
+		return new BasicSet0( keysToValues.get( source ), codomain() );
 	}
 
 	@Override
@@ -201,19 +201,19 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		@Override
 		public Set0<V> sources()
 		{
-			return new BasicSet0( valuesToKeys.keySet() );
+			return new BasicSet0( valuesToKeys.keySet(), domain() );
 		}
 
 		@Override
 		public Set0<K> targets()
 		{
-			return new BasicSet0( keysToValues.keySet() );
+			return new BasicSet0( keysToValues.keySet(), codomain() );
 		}
 
 		@Override
 		public Set0<K> targets( V source )
 		{
-			return new BasicSet0( valuesToKeys.get( source ) );
+			return new BasicSet0( valuesToKeys.get( source ), codomain() );
 		}
 
 		@Override
@@ -225,7 +225,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		@Override
 		public Set0<Entry<V, K>> relations()
 		{
-			return new BasicSet0( valuesToKeys.entries() );
+			return new BasicSet0( valuesToKeys.entries(), Map.Entry.class );
 		}
 
 		@Override

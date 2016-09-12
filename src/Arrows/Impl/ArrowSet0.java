@@ -45,4 +45,10 @@ public class ArrowSet0<K, V> implements Set0<V>
 	{
 		return arrow.targets( source ).contains( target );
 	}
+
+	@Override
+	public Class domain()
+	{
+		return arrow.codomain();
+	}
 }

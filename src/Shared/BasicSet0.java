@@ -6,10 +6,12 @@ import java.util.*;
 public class BasicSet0<T> implements Set0<T>
 {
 	Set<T> set;
+	Class domain;
 
-	public BasicSet0( Set<T> set )
+	public BasicSet0( Set<T> set, Class domain )
 	{
 		this.set = set;
+		this.domain = domain;
 	}
 
 	@Override
@@ -63,6 +65,12 @@ public class BasicSet0<T> implements Set0<T>
 	public String toString()
 	{
 		return set.toString();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return domain;
 	}
 
 }

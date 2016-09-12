@@ -43,7 +43,7 @@ public class UnionArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.createGeneric().end();
+		toUpperCaseArrow1 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
@@ -51,7 +51,7 @@ public class UnionArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
-		toUpperCaseArrow2 = diagram.createGeneric().end();
+		toUpperCaseArrow2 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
@@ -130,6 +130,16 @@ public class UnionArrowTest
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
 		}
+		assertEquals( Character.class, sources.domain() );
+		assertEquals( Character.class, targets.domain() );
+		assertEquals( Character.class, inverseSources.domain() );
+		assertEquals( Character.class, inverseTargets.domain() );
 	}
 
+	public void testDomain()
+	{
+		//TOFIX - make some better tests, where domain != codomain
+		assertEquals( Character.class, unionArrow.domain() );
+		assertEquals( Character.class, unionArrow.codomain() );
+	}
 }

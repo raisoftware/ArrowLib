@@ -14,7 +14,7 @@ public class ArrowUtils
 {
 	public static Set0 generateRelations( ArrowView arrow )
 	{
-		Set0<Map.Entry> relations = new BasicSet0( new HashSet<>() );
+		Set0<Map.Entry> relations = new BasicSet0( new HashSet<>(), Map.Entry.class );
 		for( Object source : arrow.sources() )
 		{
 			for( Object target : arrow.targets( source ) )

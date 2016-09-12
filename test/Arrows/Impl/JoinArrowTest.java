@@ -1,7 +1,6 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Arrows.Utils.ArrowUtils;
 import Shared.Set0;
 import org.junit.*;
 
@@ -46,7 +45,7 @@ public class JoinArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.createGeneric().end();
+		toUpperCaseArrow1 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
@@ -54,7 +53,7 @@ public class JoinArrowTest
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
 
 
-		toUpperCaseArrow2 = diagram.createGeneric().end();
+		toUpperCaseArrow2 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
@@ -91,7 +90,6 @@ public class JoinArrowTest
 
 			assertTrue( sources.equals( targets ) );
 			assertTrue( toUpperCaseArrow1.inverse().targets().equals( targets ) );
-
 		}
 
 		{ // tests on joinUpperCaseArrow
@@ -104,6 +102,11 @@ public class JoinArrowTest
 				char c = Character.toUpperCase( mergedWord34.charAt( i ) );
 				assertTrue( targets.contains( c ) );
 			}
+
+			Set0 sources = joinUpperCaseArrow.sources();
+
+			assertEquals( Character.class, sources.domain() );
+			assertEquals( Character.class, targets.domain() );
 		}
 	}
 
