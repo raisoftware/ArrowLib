@@ -3,9 +3,8 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
 import Arrows.Utils.ExceptionUtils;
-import Shared.Collection0.BasicSet0;
+import Shared.Collection0.*;
 import Shared.MethodBus.MethodBus;
-import Shared.Collection0.Set0;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -80,7 +79,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public MethodBus<Editor> listeners()
+	public OrderedSet0<Editor> subscribers()
 	{
 		return methodBus;
 	}
@@ -241,7 +240,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 
 		@Override
-		public MethodBus<Editor> listeners()
+		public OrderedSet0<Editor> subscribers()
 		{
 			return methodBus;
 		}

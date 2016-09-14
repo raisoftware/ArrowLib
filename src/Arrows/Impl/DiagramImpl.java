@@ -75,4 +75,11 @@ public class DiagramImpl implements Diagram
 		return new ComputedArrowImpl.Builder( this );
 	}
 
+	@Override
+	public ArrowView identity( Set0 set )
+	{
+		//TOFIX
+		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+	}
+
 }

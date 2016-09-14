@@ -1,5 +1,9 @@
 package Arrows;
 
+import Arrows.Arrow;
+import Arrows.Diagram;
+import Arrows.ArrowProperty;
+import Arrows.Property;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +31,7 @@ public class ArrowPropertyTest
 	@Test
 	public void testProperties() throws Exception
 	{
-		Property<Integer> property1 = new ArrowProperty<>( destringify, "five", 5 );
+		Property<Integer> property1 = Property.property( destringify, "five", 5 );
 		assertEquals( property1.get(), Integer.valueOf( 5 ) );
 		property1.set( 6 );
 		assertEquals( property1.get(), Integer.valueOf( 6 ) );

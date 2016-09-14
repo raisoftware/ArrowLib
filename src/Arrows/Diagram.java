@@ -31,4 +31,5 @@ public interface Diagram
 
 	ArrowView join( ArrowView... arrows );
 
+	ArrowView identity( Set0 set );
 }

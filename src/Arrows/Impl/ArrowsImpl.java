@@ -109,14 +109,14 @@ public class ArrowsImpl implements Arrows
 			ObjectRegistrarRule objectRegistrarRule = new ObjectRegistrarRule( diagram.objects() );
 			Arrow2ObjectRule arrow2ObjectRule = new Arrow2ObjectRule( listenedArrow, this );
 
-			listenedArrow.listeners().add( objectRegistrarRule );
-			listenedArrow.listeners().add( arrow2ObjectRule );
-			listenedArrow.listeners().add( class2ObjectRule );
+			listenedArrow.subscribers().add( objectRegistrarRule );
+			listenedArrow.subscribers().add( arrow2ObjectRule );
+			listenedArrow.subscribers().add( class2ObjectRule );
 
 
 			for( Editor rule : customRules )
 			{
-				listenedArrow.listeners().add( rule );
+				listenedArrow.subscribers().add( rule );
 			}
 		}
 
