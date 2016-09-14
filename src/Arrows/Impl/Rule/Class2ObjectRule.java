@@ -38,7 +38,7 @@ public class Class2ObjectRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
@@ -52,7 +52,7 @@ public class Class2ObjectRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
@@ -66,7 +66,7 @@ public class Class2ObjectRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;
@@ -102,14 +102,14 @@ public class Class2ObjectRule implements ArrowEditor
 				Class clazz = type.getRawType();
 				if( !clazz.equals( Object.class ) )
 				{
-					class2Object.editor().connect( clazz, object );
+					class2Object.editor().aim( clazz, object );
 				}
 			}
 			Set<TypeToken> interfaces = typeSet.interfaces();
 			for( TypeToken type : interfaces )
 			{
 				Class clazz = type.getRawType();
-				class2Object.editor().connect( clazz, object );
+				class2Object.editor().aim( clazz, object );
 			}
 		}
 	}

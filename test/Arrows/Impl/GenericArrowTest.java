@@ -51,20 +51,20 @@ public class GenericArrowTest
 		chars.add( 'n' );
 		chars.add( 'g' );
 
-		arrow.editor().connect( word1, chars );
+		arrow.editor().aim( word1, chars );
 		for( int i = 0; i < word2.length(); ++i )
 		{
-			arrow.editor().connect( word2, word2.charAt( i ) );
+			arrow.editor().aim( word2, word2.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3.length(); ++i )
 		{
-			arrow.editor().connect( word3, word3.charAt( i ) );
+			arrow.editor().aim( word3, word3.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3Again.length(); ++i )
 		{
-			arrow.editor().connect( word3Again, word3Again.charAt( i ) );
+			arrow.editor().aim( word3Again, word3Again.charAt( i ) );
 		}
 
 		System.out.println( arrow );
@@ -173,6 +173,28 @@ public class GenericArrowTest
 		arrow.editor().remove( word3, null );
 		assertTrue( arrow.targets( word3 ).size() == 0 );
 
+	}
+
+	@Test
+	public void testSources()
+	{
+		for( int i = 0; i < word1.length(); ++i )
+		{
+			char c = word1.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
+
+		for( int i = 0; i < word2.length(); ++i )
+		{
+			char c = word2.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
+
+		for( int i = 0; i < word3.length(); ++i )
+		{
+			char c = word3.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
 	}
 
 }

@@ -18,7 +18,7 @@ public class ArrowSet0<K, V> implements Set0<V>
 	@Override
 	public void add( V target )
 	{
-		arrow.editor().connect( source, target );
+		arrow.editor().aim( source, target );
 	}
 
 	@Override

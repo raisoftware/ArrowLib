@@ -16,11 +16,13 @@ public interface ArrowView<K, V>
 	}
 
 	Set0<K> sources();
+	default Set0<K> sources( V target )
+	{
+		return inverse().targets( target );
+	}
 
 	Set0<V> targets();
-
 	V target( K source ) throws Exception;
-
 	Set0<V> targets( K source );
 
 	Set0<Map.Entry<K, V>> relations();

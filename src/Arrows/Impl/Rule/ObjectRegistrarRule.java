@@ -14,7 +14,7 @@ public class ObjectRegistrarRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
@@ -33,7 +33,7 @@ public class ObjectRegistrarRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
@@ -51,7 +51,7 @@ public class ObjectRegistrarRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;

@@ -30,7 +30,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public void addSource( K source )
 	{
-		precomputedArrow.editor().connect( source, function.apply( source ) );
+		precomputedArrow.editor().aim( source, function.apply( source ) );
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 		for( K source : sources )
 		{
-			precomputedArrow.editor().connect( source, function.apply( source ) );
+			precomputedArrow.editor().aim( source, function.apply( source ) );
 		}
 	}
 

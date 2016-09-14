@@ -14,7 +14,7 @@ public class ArrowProperty<K, V> implements Property<V>
 	{
 		this.arrow = arrow;
 		this.source = source;
-		this.arrow.connect( source, initialValue );
+		this.arrow.aim( source, initialValue );
 	}
 
 	Arrow<K, V> arrow()
@@ -29,7 +29,7 @@ public class ArrowProperty<K, V> implements Property<V>
 
 	Set0<K> similar() // returns sources of the arrow with the same value as property
 	{
-		return arrow.inverse().targets( get() );
+		return arrow.sources( get() );
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ArrowProperty<K, V> implements Property<V>
 	public void set( V newValue )
 	{
 		arrow.remove( source, null );
-		arrow.connect( source, newValue );
+		arrow.aim( source, newValue );
 	}
 
 }

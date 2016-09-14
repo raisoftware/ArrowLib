@@ -81,8 +81,8 @@ public class ArrowsImpl implements Arrows
 
 	public final void addInternal( ArrowView arrow )
 	{
-		id2arrow.editor().connect( sequence.incrementAndGet(), arrow );
-		id2arrow.editor().connect( sequence.incrementAndGet(), arrow.inverse() );
+		id2arrow.editor().aim( sequence.incrementAndGet(), arrow );
+		id2arrow.editor().aim( sequence.incrementAndGet(), arrow.inverse() );
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class ArrowsImpl implements Arrows
 		if( name2arrow.targets().contains( arrow ) )
 			throw new RuntimeException( "Arrow already has a name" );
 
-		name2arrow.inverse().editor().connect( arrow, arrowName );
-		name2arrow.inverse().editor().connect( arrow.inverse(), arrowInverseName );
+		name2arrow.inverse().editor().aim( arrow, arrowName );
+		name2arrow.inverse().editor().aim( arrow.inverse(), arrowInverseName );
 	}
 
 	@Override

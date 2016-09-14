@@ -47,10 +47,10 @@ public class Arrow2ObjectRuleTest
 
 			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );
-			arrow.editor().connect( 1, "one" );
-			arrow.editor().connect( 2, "two" );
-			arrow.editor().connect( 3, "three" );
-			arrow.editor().connect( 4, "four" );
+			arrow.editor().aim( 1, "one" );
+			arrow.editor().aim( 2, "two" );
+			arrow.editor().aim( 3, "three" );
+			arrow.editor().aim( 4, "four" );
 
 			arrows = diagram.arrows();
 			object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
@@ -115,8 +115,8 @@ public class Arrow2ObjectRuleTest
 	public void test2Remove() throws Exception
 	{
 		String string_5or8 = "fiveOrEight";
-		editableStringifyArrow.editor().connect( 5, string_5or8 );
-		editableStringifyArrow.editor().connect( 8, string_5or8 );
+		editableStringifyArrow.editor().aim( 5, string_5or8 );
+		editableStringifyArrow.editor().aim( 8, string_5or8 );
 
 
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );

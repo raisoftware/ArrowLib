@@ -36,7 +36,7 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
@@ -50,7 +50,7 @@ public class Arrow2ObjectRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;
@@ -60,7 +60,7 @@ public class Arrow2ObjectRule implements ArrowEditor
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
@@ -81,7 +81,7 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		// at this point its config is gone so we have to remove it regardless of the tracksInboundArrows/tracksOutboundArrows properties
 
-		if( Set0Utils.isEmpty( listenedArrow.inverse().targets( target ) ) )
+		if( Set0Utils.isEmpty( listenedArrow.sources( target ) ) )
 		{
 			inboundArrow2object.editor().remove( listenedArrow, target );
 			outboundArrow2object.editor().remove( listenedArrow.inverse(), target );
@@ -120,12 +120,12 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		if( config.tracksOutboundArrows() )
 		{
-			outboundArrow2object.editor().connect( arrow, object );
+			outboundArrow2object.editor().aim( arrow, object );
 		}
 
 		if( config.tracksInboundArrows() )
 		{
-			inboundArrow2object.editor().connect( arrow.inverse(), object );
+			inboundArrow2object.editor().aim( arrow.inverse(), object );
 		}
 	}
 

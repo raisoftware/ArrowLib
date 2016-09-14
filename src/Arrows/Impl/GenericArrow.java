@@ -129,7 +129,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public void connect( Iterable<? extends K> sources, V target )
+	public void aim( Iterable<? extends K> sources, V target )
 	{
 		assert ( codomain().isInstance( target ) );
 		for( K source : sources )
@@ -147,11 +147,11 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 			mapChanged |= changed;
 		}
 
-		methodBus.publisher().connect( sources, target );
+		methodBus.publisher().aim( sources, target );
 	}
 
 	@Override
-	public void connect( K source, Iterable<? extends V> targets )
+	public void aim( K source, Iterable<? extends V> targets )
 	{
 		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
 		for( V target : targets )
@@ -169,11 +169,11 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 			mapChanged |= changed;
 		}
 
-		methodBus.publisher().connect( source, targets );
+		methodBus.publisher().aim( source, targets );
 	}
 
 	@Override
-	public void connect( K source, V target )
+	public void aim( K source, V target )
 	{
 		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
 		assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
@@ -186,9 +186,8 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 		put( source, target );
 
-		methodBus.publisher().connect( source, target );
+		methodBus.publisher().aim( source, target );
 	}
-
 
 	private final class InverseGenericArrow implements Arrow<V, K>
 	{
@@ -253,15 +252,15 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		}
 
 		@Override
-		public void connect( V source, Iterable<? extends K> targets )
+		public void aim( V source, Iterable<? extends K> targets )
 		{
-			GenericArrow.this.editor().connect( targets, source );
+			GenericArrow.this.editor().aim( targets, source );
 		}
 
 		@Override
-		public void connect( V source, K target )
+		public void aim( V source, K target )
 		{
-			GenericArrow.this.editor().connect( target, source );
+			GenericArrow.this.editor().aim( target, source );
 		}
 
 		@Override
@@ -271,9 +270,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		}
 
 		@Override
-		public void connect( Iterable<? extends V> sources, K target )
+		public void aim( Iterable<? extends V> sources, K target )
 		{
-			GenericArrow.this.editor().connect( target, sources );
+			GenericArrow.this.editor().aim( target, sources );
 		}
 
 	}
