@@ -14,7 +14,7 @@ public class ArrowProperty<K, V> implements Property<V>
 	{
 		this.arrow = arrow;
 		this.source = source;
-		this.arrow.editor().connect( source, initialValue );
+		this.arrow.connect( source, initialValue );
 	}
 
 	Arrow<K, V> arrow()
@@ -50,8 +50,8 @@ public class ArrowProperty<K, V> implements Property<V>
 	@Override
 	public void set( V newValue )
 	{
-		arrow.editor().remove( source, null );
-		arrow.editor().connect( source, newValue );
+		arrow.remove( source, null );
+		arrow.connect( source, newValue );
 	}
 
 }

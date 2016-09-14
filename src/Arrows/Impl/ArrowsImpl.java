@@ -1,7 +1,7 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Arrows.Arrow.Editor;
+import Arrows.ArrowEditor;
 import Arrows.Impl.Rule.*;
 import Shared.Collection0.BasicSet0;
 import Shared.Collection0.Set0;
@@ -19,7 +19,7 @@ public class ArrowsImpl implements Arrows
 	AtomicInteger sequence = new AtomicInteger();
 
 	Class2ObjectRule class2ObjectRule;
-	Set0<Arrow.Editor> customRules;
+	Set0<ArrowEditor> customRules;
 
 	public ArrowsImpl( Diagram diagram )
 	{
@@ -70,11 +70,11 @@ public class ArrowsImpl implements Arrows
 		name( owner2property, Owner_Property, Property_Owner );
 
 		class2ObjectRule = new Class2ObjectRule( this );
-		customRules = new BasicSet0( new HashSet(), Arrow.Editor.class );
+		customRules = new BasicSet0( new HashSet(), ArrowEditor.class );
 	}
 
 	@Override
-	public Set0<Editor> customRules()
+	public Set0<ArrowEditor> customRules()
 	{
 		return customRules;
 	}
@@ -114,7 +114,7 @@ public class ArrowsImpl implements Arrows
 			listenedArrow.subscribers().add( class2ObjectRule );
 
 
-			for( Editor rule : customRules )
+			for( ArrowEditor rule : customRules )
 			{
 				listenedArrow.subscribers().add( rule );
 			}

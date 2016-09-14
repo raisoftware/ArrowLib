@@ -1,9 +1,9 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Arrows.Arrow.Editor;
+import Arrows.ArrowEditor;
 
-public class ObjectRegistrarRule implements Editor
+public class ObjectRegistrarRule implements ArrowEditor
 {
 
 	private Objects objects;

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import static Arrows.Arrows.Names.*;
 
-public class Arrow2ObjectRule implements Arrow.Editor
+public class Arrow2ObjectRule implements ArrowEditor
 {
 	private final Arrow listenedArrow;
 

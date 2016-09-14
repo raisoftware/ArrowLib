@@ -1,6 +1,6 @@
 package Arrows;
 
-import Arrows.Arrow.Editor;
+import Arrows.ArrowEditor;
 import Shared.Collection0.Set0;
 
 public interface Arrows extends Set0<ArrowView>
@@ -25,5 +25,5 @@ public interface Arrows extends Set0<ArrowView>
 	ArrowView arrowView( Object arrowName ) throws Exception;
 	Arrow arrow( Object arrowName ) throws Exception;
 
-	Set0<Editor> customRules();
+	Set0<ArrowEditor> customRules();
 }

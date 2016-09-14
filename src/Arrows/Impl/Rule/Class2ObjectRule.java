@@ -7,7 +7,7 @@ import java.util.Set;
 
 import static Arrows.Arrows.Names.*;
 
-public class Class2ObjectRule implements Arrow.Editor
+public class Class2ObjectRule implements ArrowEditor
 {
 	private Arrow<Class, Object> class2Object = null;
 	private ArrowView<Arrow, Object> inboundArrow2object;

@@ -14,9 +14,8 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final SetMultimap<K, V> keysToValues = HashMultimap.create();
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
-	private final MethodBus<Arrow.Editor> methodBus;
+	private final MethodBus<ArrowEditor> methodBus;
 	private final Arrow<V, K> inverseArrow = new InverseGenericArrow();
-	private final Editor<K, V> arrowEditor = new GenericArrowEditor();
 	private final Class domain;
 	private final Class codomain;
 	private final boolean allowsMultipleSources;
@@ -27,8 +26,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
-		methodBus = new MethodBus( Arrow.Editor.class );
-		methodBus.add( arrowEditor );
+		methodBus = new MethodBus<>( ArrowEditor.class );
 		this.domain = domain;
 		this.codomain = codomain;
 		this.listenable = listenable;
@@ -79,15 +77,9 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public OrderedSet0<Editor> subscribers()
+	public OrderedSet0<ArrowEditor> subscribers()
 	{
 		return methodBus;
-	}
-
-	@Override
-	public Editor<K, V> editor()
-	{
-		return listenable ? methodBus.publisher() : arrowEditor;
 	}
 
 	@Override
@@ -108,94 +100,98 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		return domain;
 	}
 
-	private final class GenericArrowEditor implements Arrow.Editor<K, V>
+	@Override
+	public void remove( K source, V target )
 	{
-		@Override
-		public void remove( K source, V target )
+		if( target == null )
 		{
-			if( target == null )
+			Set<V> removedTargets = keysToValues.removeAll( source );
+			for( V removedTarget : removedTargets )
 			{
-				Set<V> removedTargets = keysToValues.removeAll( source );
-				for( V removedTarget : removedTargets )
-				{
-					valuesToKeys.remove( removedTarget, source );
-				}
-			}
-			else if( source == null )
-			{
-				Set<K> removedSources = valuesToKeys.removeAll( target );
-				for( K removedSource : removedSources )
-				{
-					keysToValues.remove( removedSource, target );
-				}
-			}
-			else
-			{
-				keysToValues.remove( source, target );
-				valuesToKeys.remove( target, source );
+				valuesToKeys.remove( removedTarget, source );
 			}
 		}
-
-		@Override
-		public void connect( Iterable<? extends K> sources, V target )
+		else if( source == null )
 		{
-			assert ( codomain().isInstance( target ) );
-			for( K source : sources )
+			Set<K> removedSources = valuesToKeys.removeAll( target );
+			for( K removedSource : removedSources )
 			{
-				assert ( domain().isInstance( source ) );
-			}
-
-			ArrowUtils.checkForMultipleSourcesTargets( inverse(), allowsMultipleTargets, allowsMultipleSources, target, sources );
-
-			boolean mapChanged = valuesToKeys.putAll( target, sources );
-
-			for( K source : sources )
-			{
-				boolean changed = keysToValues.put( source, target );
-				mapChanged |= changed;
+				keysToValues.remove( removedSource, target );
 			}
 		}
-
-		@Override
-		public void connect( K source, Iterable<? extends V> targets )
+		else
 		{
-			assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
-			for( V target : targets )
-			{
-				assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
-			}
-
-			ArrowUtils.checkForMultipleSourcesTargets( GenericArrow.this, allowsMultipleSources, allowsMultipleTargets, source, targets );
-
-			boolean mapChanged = keysToValues.putAll( source, targets );
-
-			for( V target : targets )
-			{
-				boolean changed = valuesToKeys.put( target, source );
-				mapChanged |= changed;
-			}
+			keysToValues.remove( source, target );
+			valuesToKeys.remove( target, source );
 		}
 
-		@Override
-		public void connect( K source, V target )
-		{
-			assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
-			assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
-
-			if( ( !allowsMultipleTargets && sources().contains( source ) )
-				|| ( !allowsMultipleSources && sources().contains( source ) ) )
-			{
-				throw ExceptionUtils.multipleSourcesTargetsException( source, target );
-			}
-
-			put( source, target );
-		}
+		methodBus.publisher().remove( source, target );
 	}
+
+	@Override
+	public void connect( Iterable<? extends K> sources, V target )
+	{
+		assert ( codomain().isInstance( target ) );
+		for( K source : sources )
+		{
+			assert ( domain().isInstance( source ) );
+		}
+
+		ArrowUtils.checkForMultipleSourcesTargets( inverse(), allowsMultipleTargets, allowsMultipleSources, target, sources );
+
+		boolean mapChanged = valuesToKeys.putAll( target, sources );
+
+		for( K source : sources )
+		{
+			boolean changed = keysToValues.put( source, target );
+			mapChanged |= changed;
+		}
+
+		methodBus.publisher().connect( sources, target );
+	}
+
+	@Override
+	public void connect( K source, Iterable<? extends V> targets )
+	{
+		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
+		for( V target : targets )
+		{
+			assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
+		}
+
+		ArrowUtils.checkForMultipleSourcesTargets( GenericArrow.this, allowsMultipleSources, allowsMultipleTargets, source, targets );
+
+		boolean mapChanged = keysToValues.putAll( source, targets );
+
+		for( V target : targets )
+		{
+			boolean changed = valuesToKeys.put( target, source );
+			mapChanged |= changed;
+		}
+
+		methodBus.publisher().connect( source, targets );
+	}
+
+	@Override
+	public void connect( K source, V target )
+	{
+		assert ( domain().isInstance( source ) ) : source + " not of type " + domain();
+		assert ( codomain().isInstance( target ) ) : target + " not of type " + codomain();
+
+		if( ( !allowsMultipleTargets && sources().contains( source ) )
+			|| ( !allowsMultipleSources && sources().contains( source ) ) )
+		{
+			throw ExceptionUtils.multipleSourcesTargetsException( source, target );
+		}
+
+		put( source, target );
+
+		methodBus.publisher().connect( source, target );
+	}
+
 
 	private final class InverseGenericArrow implements Arrow<V, K>
 	{
-		Editor<V, K> inverseGenericArrowEditor = new InverseGenericArrowEditor();
-
 		@Override
 		public Set0<V> sources()
 		{
@@ -238,17 +234,10 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 			return ArrowUtils.toString( diagram, this, "InverseGenericArrow" );
 		}
 
-
 		@Override
-		public OrderedSet0<Editor> subscribers()
+		public OrderedSet0<ArrowEditor> subscribers()
 		{
 			return methodBus;
-		}
-
-		@Override
-		public Editor<V, K> editor()
-		{
-			return inverseGenericArrowEditor;
 		}
 
 		@Override
@@ -263,33 +252,30 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 			return codomain;
 		}
 
-		private final class InverseGenericArrowEditor implements Arrow.Editor<V, K>
+		@Override
+		public void connect( V source, Iterable<? extends K> targets )
 		{
-			@Override
-			public void connect( V source, Iterable<? extends K> targets )
-			{
-				GenericArrow.this.editor().connect( targets, source );
-			}
-
-			@Override
-			public void connect( V source, K target )
-			{
-				GenericArrow.this.editor().connect( target, source );
-			}
-
-			@Override
-			public void remove( V source, K target )
-			{
-				GenericArrow.this.editor().remove( target, source );
-			}
-
-			@Override
-			public void connect( Iterable<? extends V> sources, K target )
-			{
-				GenericArrow.this.editor().connect( target, sources );
-			}
-
+			GenericArrow.this.editor().connect( targets, source );
 		}
+
+		@Override
+		public void connect( V source, K target )
+		{
+			GenericArrow.this.editor().connect( target, source );
+		}
+
+		@Override
+		public void remove( V source, K target )
+		{
+			GenericArrow.this.editor().remove( target, source );
+		}
+
+		@Override
+		public void connect( Iterable<? extends V> sources, K target )
+		{
+			GenericArrow.this.editor().connect( target, sources );
+		}
+
 	}
 
 }
