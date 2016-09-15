@@ -2,7 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.Collection0.Set0;
-import Shared.Collection0.Set0Utils;
+import Shared.Collection0.Sets;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -119,9 +119,9 @@ public class UnionArrowTest
 		Set0 inverseTargets = unionArrow.inverse().targets();
 
 		assertEquals( sources.size(), inverseTargets.size() );
-		assertTrue( Set0Utils.containsAll( sources, inverseTargets ) );
+		assertTrue(Sets.containsAll( sources, inverseTargets ) );
 		assertEquals( targets.size(), inverseSources.size() );
-		assertTrue( Set0Utils.containsAll( targets, inverseSources ) );
+		assertTrue(Sets.containsAll( targets, inverseSources ) );
 
 		for( int i = 0; i < unionString.length(); ++i )
 		{

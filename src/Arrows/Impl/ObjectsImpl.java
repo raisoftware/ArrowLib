@@ -2,7 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.Collection0.Set0;
-import Shared.Collection0.Set0Utils;
+import Shared.Collection0.Sets;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -76,7 +76,7 @@ public class ObjectsImpl implements Objects
 	@Override
 	public void remove( Object obj, boolean cascade )
 	{
-		if( Set0Utils.isEmpty( object2config.targets( obj ) ) )
+		if( Sets.isEmpty( object2config.targets( obj ) ) )
 			return;
 
 		ObjectConfig objConfig;

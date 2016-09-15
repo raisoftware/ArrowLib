@@ -1,6 +1,6 @@
 package Arrows.Impl;
 
-import Shared.Collection0.Set0Utils;
+import Shared.Collection0.Sets;
 import Shared.Collection0.BasicSet0;
 import Shared.Collection0.Set0;
 import Arrows.*;
@@ -141,7 +141,7 @@ public class IntersectArrow implements ArrowView
 
 		for( Object source : firstArrowSources )
 		{
-			Set0Utils.addAll( intersectTargets, arrow.targets( source ) );
+			intersectTargets.addAll( arrow.targets( source ) );
 		}
 		return intersectTargets;
 	}
@@ -156,7 +156,7 @@ public class IntersectArrow implements ArrowView
 		}
 
 		Set0 intersectTargets = new BasicSet0( new HashSet<>(), codomain() );
-		Set0Utils.addAll( intersectTargets, firstArrow.targets( source ) );
+		intersectTargets.addAll( firstArrow.targets( source ) );
 
 		while( arrowIt.hasNext() )
 		{
@@ -165,7 +165,7 @@ public class IntersectArrow implements ArrowView
 			{
 				arrow = arrow.inverse();
 			}
-			Set0Utils.retainAll( intersectTargets, arrow.targets( source ) );
+			Sets.retainAll( intersectTargets, arrow.targets( source ) );
 		}
 
 		return intersectTargets;

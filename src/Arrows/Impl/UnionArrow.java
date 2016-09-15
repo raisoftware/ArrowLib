@@ -1,6 +1,5 @@
 package Arrows.Impl;
 
-import Shared.Collection0.Set0Utils;
 import Shared.Collection0.BasicSet0;
 import Shared.Collection0.Set0;
 import Arrows.*;
@@ -52,7 +51,7 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionSources, arrow.sources() );
+			unionSources.addAll( arrow.sources() );
 		}
 		return unionSources;
 	}
@@ -69,7 +68,7 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionTargets, arrow.targets() );
+			unionTargets.addAll( arrow.targets() );
 		}
 		return unionTargets;
 	}
@@ -86,7 +85,7 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionTargets, arrow.targets( source ) );
+			unionTargets.addAll( arrow.targets( source ) );
 		}
 		return unionTargets;
 	}

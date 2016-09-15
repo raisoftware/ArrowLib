@@ -2,7 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.Collection0.Set0;
-import Shared.Collection0.Set0Utils;
+import Shared.Collection0.Sets;
 import java.util.function.BiPredicate;
 import org.junit.*;
 
@@ -102,6 +102,6 @@ public class FilterArrowTest
 		assertTrue( word3Results.contains( 'f' ) );
 
 		Set0<Character> word4Results = filterArrow.targets( word4 );//"over"
-		assertTrue( Set0Utils.isEmpty( word4Results ) );
+		assertTrue(Sets.isEmpty( word4Results ) );
 	}
 }

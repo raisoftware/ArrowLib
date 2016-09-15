@@ -2,7 +2,6 @@ package Arrows.Impl;
 
 
 
-import Shared.Collection0.Set0Utils;
 import Shared.Collection0.BasicSet0;
 import Shared.Collection0.Set0;
 import Arrows.*;
@@ -56,7 +55,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 		Set0<V> filteredTargets = new BasicSet0( new HashSet<>(), codomain() );
 		for( K source : arrow.sources() )
 		{
-			Set0Utils.addAll( filteredTargets, targets( source ) );
+			filteredTargets.addAll( targets( source ) );
 		}
 		return filteredTargets;
 	}

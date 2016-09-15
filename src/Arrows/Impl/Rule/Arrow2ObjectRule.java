@@ -1,7 +1,7 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Shared.Collection0.Set0Utils;
+import Shared.Collection0.Sets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,13 +81,13 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		// at this point its config is gone so we have to remove it regardless of the tracksInboundArrows/tracksOutboundArrows properties
 
-		if( Set0Utils.isEmpty( listenedArrow.sources( target ) ) )
+		if( Sets.isEmpty( listenedArrow.sources( target ) ) )
 		{
 			inboundArrow2object.editor().remove( listenedArrow, target );
 			outboundArrow2object.editor().remove( listenedArrow.inverse(), target );
 		}
 
-		if( Set0Utils.isEmpty( listenedArrow.targets( source ) ) )
+		if( Sets.isEmpty( listenedArrow.targets( source ) ) )
 		{
 			outboundArrow2object.editor().remove( listenedArrow, source );
 			inboundArrow2object.editor().remove( listenedArrow.inverse(), source );
