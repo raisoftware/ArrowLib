@@ -47,10 +47,10 @@ public class Arrow2ObjectRuleTest
 
 			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );
-			arrow.editor().aim( 1, "one" );
-			arrow.editor().aim( 2, "two" );
-			arrow.editor().aim( 3, "three" );
-			arrow.editor().aim( 4, "four" );
+			arrow.aim( 1, "one" );
+			arrow.aim( 2, "two" );
+			arrow.aim( 3, "three" );
+			arrow.aim( 4, "four" );
 
 			arrows = diagram.arrows();
 			object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
@@ -101,7 +101,7 @@ public class Arrow2ObjectRuleTest
 		assertTrue( targets.contains( "two" ) );
 		assertFalse( targets.contains( 2 ) );
 
-		editableStringifyArrow.editor().remove( 2, "two" );
+		editableStringifyArrow.remove( 2, "two" );
 		Set0 targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
 
 		assertFalse( targetsAfterRemove.contains( 2 ) );
@@ -115,8 +115,8 @@ public class Arrow2ObjectRuleTest
 	public void test2Remove() throws Exception
 	{
 		String string_5or8 = "fiveOrEight";
-		editableStringifyArrow.editor().aim( 5, string_5or8 );
-		editableStringifyArrow.editor().aim( 8, string_5or8 );
+		editableStringifyArrow.aim( 5, string_5or8 );
+		editableStringifyArrow.aim( 8, string_5or8 );
 
 
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
@@ -125,14 +125,14 @@ public class Arrow2ObjectRuleTest
 
 
 
-		editableStringifyArrow.editor().remove( 5, string_5or8 );
+		editableStringifyArrow.remove( 5, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );
 		assertTrue( inboundArrow2object.targets( editableStringifyArrow ).contains( string_5or8 ) );
 
 
-		editableStringifyArrow.editor().remove( 8, string_5or8 );
+		editableStringifyArrow.remove( 8, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );

@@ -18,13 +18,13 @@ public class ArrowSet0<K, V> implements Set0<V>
 	@Override
 	public void add( V target )
 	{
-		arrow.editor().aim( source, target );
+		arrow.aim( source, target );
 	}
 
 	@Override
 	public void remove( V target )
 	{
-		arrow.editor().remove( source, target );
+		arrow.remove( source, target );
 	}
 
 	@Override

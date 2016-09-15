@@ -1,6 +1,7 @@
 package Arrows;
 
 import Shared.Collection0.Set0;
+import Shared.Collection0.Sets;
 import java.util.Map;
 
 public interface ArrowView<K, V>
@@ -16,14 +17,35 @@ public interface ArrowView<K, V>
 	}
 
 	Set0<K> sources();
+	default K source( V target ) throws Exception
+	{
+		return inverse().target( target );
+	}
 	default Set0<K> sources( V target )
 	{
 		return inverse().targets( target );
 	}
+	default Set0<K> sources( Iterable<? extends V> targets )
+	{
+		return inverse().targets( targets );
+	}
+
+
 
 	Set0<V> targets();
 	V target( K source ) throws Exception;
 	Set0<V> targets( K source );
+	default Set0<V> targets( Iterable<? extends K> sources )
+	{
+		Set0<V> targets = Sets.create( codomain() );
+		for( K source : sources )
+		{
+			targets.addAll( targets( source ) );
+		}
+		return targets;
+	}
+
+
 
 	Set0<Map.Entry<K, V>> relations();
 

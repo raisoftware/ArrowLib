@@ -85,6 +85,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Arrow<V, K> inverse()
 	{
+		//TOFIX
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 

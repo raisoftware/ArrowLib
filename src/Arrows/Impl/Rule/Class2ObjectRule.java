@@ -79,12 +79,12 @@ public class Class2ObjectRule implements ArrowEditor
 	{
 		if( !inboundArrow2object.targets().contains( source ) && !outboundArrow2object.targets().contains( source ) )
 		{
-			class2Object.inverse().editor().remove( source, null );
+			class2Object.inverse().remove( source, null );
 		}
 
 		if( !inboundArrow2object.targets().contains( target ) && !outboundArrow2object.targets().contains( target ) )
 		{
-			class2Object.inverse().editor().remove( target, null );
+			class2Object.inverse().remove( target, null );
 		}
 	}
 
@@ -102,14 +102,14 @@ public class Class2ObjectRule implements ArrowEditor
 				Class clazz = type.getRawType();
 				if( !clazz.equals( Object.class ) )
 				{
-					class2Object.editor().aim( clazz, object );
+					class2Object.aim( clazz, object );
 				}
 			}
 			Set<TypeToken> interfaces = typeSet.interfaces();
 			for( TypeToken type : interfaces )
 			{
 				Class clazz = type.getRawType();
-				class2Object.editor().aim( clazz, object );
+				class2Object.aim( clazz, object );
 			}
 		}
 	}

@@ -55,10 +55,10 @@ public class ObjectRegistrarRuleTest
 
 		Arrow<String, String> arrow = diagram.createGeneric().end();
 		diagram.arrows().name( arrow, English2Rom, Rom2English );
-		arrow.editor().aim( "one", "unu" );// id 2 and 1
-		arrow.editor().aim( "two", "doi" );// ids 0 and 3
-		arrow.editor().aim( "three", "trei" );// ids are 4 and 5
-		arrow.editor().aim( "four", "patru" );// ids are 6 and 7
+		arrow.aim( "one", "unu" );// id 2 and 1
+		arrow.aim( "two", "doi" );// ids 0 and 3
+		arrow.aim( "three", "trei" );// ids are 4 and 5
+		arrow.aim( "four", "patru" );// ids are 6 and 7
 
 		diagram.objects().config( "three", bestObjConfig );
 		objects.name( "three", BestObject );

@@ -45,16 +45,16 @@ public class UnionArrowTest
 
 		toUpperCaseArrow1 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word2 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word4 );
 
 
 		toUpperCaseArrow2 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
 		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word4 );
 
 		unionArrow = diagram.union( toUpperCaseArrow1, toUpperCaseArrow2 );
 
@@ -119,9 +119,9 @@ public class UnionArrowTest
 		Set0 inverseTargets = unionArrow.inverse().targets();
 
 		assertEquals( sources.size(), inverseTargets.size() );
-		assertTrue(Sets.containsAll( sources, inverseTargets ) );
+		assertTrue( Sets.containsAll( sources, inverseTargets ) );
 		assertEquals( targets.size(), inverseSources.size() );
-		assertTrue(Sets.containsAll( targets, inverseSources ) );
+		assertTrue( Sets.containsAll( targets, inverseSources ) );
 
 		for( int i = 0; i < unionString.length(); ++i )
 		{

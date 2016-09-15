@@ -9,7 +9,7 @@ public class Sets
 //	{
 //		return new BasicSet0()
 //	}
-	public static <T> boolean containsAll( Set0<T> set1, Set0<T> set2 )
+	public static <T> boolean containsAll( Set0<T> set1, Iterable<T> set2 )
 	{
 		for( T value : set2 )
 		{
@@ -92,5 +92,10 @@ public class Sets
 		difference.addAll( first );
 		difference.removeAll( second );
 		return difference;
+	}
+
+	public static <T> Set0<T> create( Class domain )
+	{
+		return new BasicSet0( new HashSet(), domain );
 	}
 }

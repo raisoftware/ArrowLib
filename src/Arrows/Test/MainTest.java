@@ -31,15 +31,15 @@ public class MainTest
 
 		//test arrows
 
-		arrow.editor().aim( "sir", chars );
+		arrow.aim( "sir", chars );
 
-		arrow.editor().aim( "irs", chars );
-		arrow.editor().aim( "ra", 'r' );
-		arrow.editor().aim( "ra", 'a' );
+		arrow.aim( "irs", chars );
+		arrow.aim( "ra", 'r' );
+		arrow.aim( "ra", 'a' );
 
-		squareArrow.editor().aim( 9.f, 81.f );
-		squareArrow.editor().aim( 2.f, 4.f );
-		squareArrow.editor().aim( 7.f, 49.f );
+		squareArrow.aim( 9.f, 81.f );
+		squareArrow.aim( 2.f, 4.f );
+		squareArrow.aim( 7.f, 49.f );
 
 		//----------------------------------------------------
 

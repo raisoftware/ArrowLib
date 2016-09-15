@@ -22,10 +22,10 @@ public class ArrowPropertyTest
 
 		destringify = diagram.createGeneric().allowsMultipleSources( true ).allowsMultipleTargets( false ).end();
 		diagram.arrows().name( destringify, Destringify, Stringify );
-		destringify.editor().aim( "one", 1 );
-		destringify.editor().aim( "two", 2 );
-		destringify.editor().aim( "three", 3 );
-		destringify.editor().aim( "four", 4 );
+		destringify.aim( "one", 1 );
+		destringify.aim( "two", 2 );
+		destringify.aim( "three", 3 );
+		destringify.aim( "four", 4 );
 	}
 
 	@Test

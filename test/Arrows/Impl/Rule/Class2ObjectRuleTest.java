@@ -36,10 +36,10 @@ public class Class2ObjectRuleTest
 
 		Arrow<Integer, String> arrow = diagram.createGeneric().end();
 		diagram.arrows().name( arrow, Stringify, Destringify );
-		arrow.editor().aim( 1, "unu" );
-		arrow.editor().aim( 2, "doi" );
-		arrow.editor().aim( 3, "trei" );
-		arrow.editor().aim( 4, "patru" );
+		arrow.aim( 1, "unu" );
+		arrow.aim( 2, "doi" );
+		arrow.aim( 3, "trei" );
+		arrow.aim( 4, "patru" );
 	}
 
 	@After

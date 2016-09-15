@@ -254,25 +254,25 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		@Override
 		public void aim( V source, Iterable<? extends K> targets )
 		{
-			GenericArrow.this.editor().aim( targets, source );
+			GenericArrow.this.aim( targets, source );
 		}
 
 		@Override
 		public void aim( V source, K target )
 		{
-			GenericArrow.this.editor().aim( target, source );
+			GenericArrow.this.aim( target, source );
 		}
 
 		@Override
 		public void remove( V source, K target )
 		{
-			GenericArrow.this.editor().remove( target, source );
+			GenericArrow.this.remove( target, source );
 		}
 
 		@Override
 		public void aim( Iterable<? extends V> sources, K target )
 		{
-			GenericArrow.this.editor().aim( target, sources );
+			GenericArrow.this.aim( target, sources );
 		}
 
 	}

@@ -9,9 +9,4 @@ public interface Arrow<K, V> extends ArrowView<K, V>, ArrowEditor<K, V>
 
 	@Override
 	Arrow<V, K> inverse();
-
-	default Arrow<K, V> editor()
-	{
-		return this;
-	}
 }

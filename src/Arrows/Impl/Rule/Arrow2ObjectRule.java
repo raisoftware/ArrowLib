@@ -83,14 +83,14 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		if( Sets.isEmpty( listenedArrow.sources( target ) ) )
 		{
-			inboundArrow2object.editor().remove( listenedArrow, target );
-			outboundArrow2object.editor().remove( listenedArrow.inverse(), target );
+			inboundArrow2object.remove( listenedArrow, target );
+			outboundArrow2object.remove( listenedArrow.inverse(), target );
 		}
 
 		if( Sets.isEmpty( listenedArrow.targets( source ) ) )
 		{
-			outboundArrow2object.editor().remove( listenedArrow, source );
-			inboundArrow2object.editor().remove( listenedArrow.inverse(), source );
+			outboundArrow2object.remove( listenedArrow, source );
+			inboundArrow2object.remove( listenedArrow.inverse(), source );
 		}
 	}
 
@@ -120,12 +120,12 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		if( config.tracksOutboundArrows() )
 		{
-			outboundArrow2object.editor().aim( arrow, object );
+			outboundArrow2object.aim( arrow, object );
 		}
 
 		if( config.tracksInboundArrows() )
 		{
-			inboundArrow2object.editor().aim( arrow.inverse(), object );
+			inboundArrow2object.aim( arrow.inverse(), object );
 		}
 	}
 

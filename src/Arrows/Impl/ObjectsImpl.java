@@ -44,8 +44,8 @@ public class ObjectsImpl implements Objects
 			throw new RuntimeException( "Object already registered. [object = " + object + "]" );
 
 		ObjectConfig config = new ObjectConfigBuilderImpl().end();
-		id2object.editor().aim( sequence.getAndIncrement(), object );
-		object2config.editor().aim( object, config );
+		id2object.aim( sequence.getAndIncrement(), object );
+		object2config.aim( object, config );
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ObjectsImpl implements Objects
 		if( name2object.targets().contains( object ) )
 			throw new RuntimeException( "Object already has a name  [object = " + object + "  new-name = " + name + "]" );
 
-		name2object.inverse().editor().aim( object, name );
+		name2object.inverse().aim( object, name );
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class ObjectsImpl implements Objects
 			Set0<Arrow> arrows = inboundArrow2object.sources( obj );
 			for( Arrow arrow : arrows )
 			{
-				arrow.inverse().editor().remove( obj, null );
+				arrow.inverse().remove( obj, null );
 			}
 		}
 
@@ -110,7 +110,7 @@ public class ObjectsImpl implements Objects
 				{
 					targets = arrow.targets( obj );
 				}
-				arrow.editor().remove( obj, null );
+				arrow.remove( obj, null );
 				if( cascade )
 				{
 					for( Object target : targets )
@@ -144,8 +144,8 @@ public class ObjectsImpl implements Objects
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
 
-		object2config.editor().remove( object, null );
-		object2config.editor().aim( object, config );
+		object2config.remove( object, null );
+		object2config.aim( object, config );
 	}
 
 	@Override
