@@ -45,7 +45,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public void remove( K source )
 	{
-		precomputedArrow.remove( source, null );
+		precomputedArrow.removeTargets( source );
 	}
 
 	@Override

@@ -13,22 +13,24 @@ public class ObjectRegistrarRule implements ArrowEditor
 		this.objects = objects;
 	}
 
+	private void addObject( Object object )
+	{
+		if( !objects.contains( object ) )
+		{
+			objects.add( object );
+		}
+	}
+
 	@Override
 	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
-		if( !objects.contains( source ) )
-		{
-			objects.add( source );
-		}
+		addObject( source );
 		for( Object target : targets )
 		{
-			if( !objects.contains( target ) )
-			{
-				objects.add( target );
-			}
+			addObject( target );
 		}
 	}
 
@@ -37,16 +39,11 @@ public class ObjectRegistrarRule implements ArrowEditor
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
-		if( !objects.contains( target ) )
-		{
-			objects.add( target );
-		}
+
+		addObject( target );
 		for( Object source : sources )
 		{
-			if( !objects.contains( source ) )
-			{
-				objects.add( source );
-			}
+			addObject( source );
 		}
 	}
 
@@ -56,20 +53,25 @@ public class ObjectRegistrarRule implements ArrowEditor
 		if( source == null || target == null )
 			return;
 
-		if( !objects.contains( source ) )
-		{
-			objects.add( source );
-		}
-
-		if( !objects.contains( target ) )
-		{
-			objects.add( target );
-		}
+		addObject( source );
+		addObject( target );
 	}
 
 
 	@Override
 	public void remove( Object source, Object target )
+	{
+		//TOFIX implement
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		//TOFIX implement
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
 	{
 		//TOFIX implement
 	}

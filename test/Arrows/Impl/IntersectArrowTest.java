@@ -73,7 +73,8 @@ public class IntersectArrowTest
 			char c = mergedWord34.charAt( i );
 			assertTrue( sources.contains( c ) );
 		}
-		assertEquals( Character.class, sources.domain() );
+		assertEquals( 1, sources.domains().size() );
+		assertTrue( sources.domains().contains( Character.class ) );
 
 	}
 
@@ -88,7 +89,9 @@ public class IntersectArrowTest
 			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
 			assertTrue( targets.contains( c ) );
 		}
-		assertEquals( Character.class, targets.domain() );
+
+		assertEquals( 1, targets.domains().size() );
+		assertTrue( targets.domains().contains( Character.class ) );
 	}
 
 	@Test

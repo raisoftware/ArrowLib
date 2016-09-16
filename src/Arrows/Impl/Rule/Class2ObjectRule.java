@@ -79,12 +79,12 @@ public class Class2ObjectRule implements ArrowEditor
 	{
 		if( !inboundArrow2object.targets().contains( source ) && !outboundArrow2object.targets().contains( source ) )
 		{
-			class2Object.inverse().remove( source, null );
+			class2Object.removeSources( source );
 		}
 
 		if( !inboundArrow2object.targets().contains( target ) && !outboundArrow2object.targets().contains( target ) )
 		{
-			class2Object.inverse().remove( target, null );
+			class2Object.removeSources( target );
 		}
 	}
 
@@ -123,6 +123,24 @@ public class Class2ObjectRule implements ArrowEditor
 		catch( Exception ex )
 		{
 			throw new RuntimeException( ex.getMessage() );
+		}
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		for( Object target : targets )
+		{
+			remove( source, target );
+		}
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
+	{
+		for( Object source : sources )
+		{
+			remove( source, target );
 		}
 	}
 }

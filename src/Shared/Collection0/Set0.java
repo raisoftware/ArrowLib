@@ -2,7 +2,7 @@ package Shared.Collection0;
 
 public interface Set0<V> extends Iterable<V>
 {
-	Class domain();
+	Set0<Class> domains();
 
 	void add( V target );
 

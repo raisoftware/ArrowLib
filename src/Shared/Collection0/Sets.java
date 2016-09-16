@@ -1,14 +1,24 @@
 package Shared.Collection0;
 
+import com.google.common.collect.Iterables;
 import java.util.HashSet;
+import java.util.Set;
+
+import static Shared.Collection0.Sets.*;
 
 
 public class Sets
 {
-//	public static Create()
-//	{
-//		return new BasicSet0()
-//	}
+	public static Set0 create( Class... domains )
+	{
+		return new BasicSet0( new HashSet(), domains );
+	}
+
+	public static Set0 create( Set backingSet, Class... domains )
+	{
+		return new BasicSet0( backingSet, domains );
+	}
+
 	public static <T> boolean containsAll( Set0<T> set1, Iterable<T> set2 )
 	{
 		for( T value : set2 )
@@ -23,7 +33,7 @@ public class Sets
 
 	public static <T> void retainAll( Set0<T> set1, Set0<T> set2 )
 	{
-		Set0 toRemove = new BasicSet0( new HashSet(), set1.domain() );
+		Set0 toRemove = create( Object.class );
 		for( T value : set1 )
 		{
 			if( !set2.contains( value ) )
@@ -39,19 +49,26 @@ public class Sets
 		return set.size() == 0;
 	}
 
-	public static Class domain( Set0... sets )
+	public static Class[] domain( Set0... sets )
 	{
-		Class domain = sets[0].domain();
-
+		Set domains = new HashSet<>();
 		for( Set0 set : sets )
 		{
-			if( set.domain() != domain )
+			for( Object o : set.domains() )
 			{
-				return Object.class;
+				domains.add( (Class) o );
 			}
 		}
 
-		return domain;
+
+		if( domains.isEmpty() )
+		{
+			domains.add( Object.class );
+		}
+
+		Class[] domainsArray = Iterables.toArray( domains, Class.class );
+
+		return domainsArray;
 	}
 
 	public static Set0 intersect( Set0... sets )
@@ -94,8 +111,4 @@ public class Sets
 		return difference;
 	}
 
-	public static <T> Set0<T> create( Class domain )
-	{
-		return new BasicSet0( new HashSet(), domain );
-	}
 }

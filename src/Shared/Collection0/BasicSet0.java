@@ -5,13 +5,13 @@ import java.util.*;
 
 public class BasicSet0<T> implements Set0<T>
 {
-	Set<T> set;
-	Class domain;
+	private final Set<T> set;
+	private final Set<Class> domains;
 
-	public BasicSet0( Set<T> set, Class domain )
+	public BasicSet0( Set<T> set, Class... domains )
 	{
 		this.set = set;
-		this.domain = domain;
+		this.domains = new HashSet<>( Arrays.asList( domains ) );
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class BasicSet0<T> implements Set0<T>
 	}
 
 	@Override
-	public Class domain()
+	public Set0<Class> domains()
 	{
-		return domain;
+		return new BasicSet0( domains, Class.class );
 	}
 
 }

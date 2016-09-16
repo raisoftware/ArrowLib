@@ -50,7 +50,7 @@ public class ArrowProperty<K, V> implements Property<V>
 	@Override
 	public void set( V newValue )
 	{
-		arrow.remove( source, null );
+		arrow.removeTargets( source );
 		arrow.aim( source, newValue );
 	}
 

@@ -18,6 +18,7 @@ public class ObjectsImpl implements Objects
 	private Arrow<Arrow, Object> inboundArrow2object = null;
 	private Arrow<Arrow, Object> outboundArrow2object = null;
 	private ArrowView<Object, Object> identity = null;
+	private Set0<Class> domains;
 
 	public ObjectsImpl( Arrows arrows )
 	{
@@ -35,6 +36,9 @@ public class ObjectsImpl implements Objects
 		{
 			throw new RuntimeException( "Default arrow not found.", ex );
 		}
+
+		domains = Sets.create( Class.class );
+		domains.add( Object.class );
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class ObjectsImpl implements Objects
 			Set0<Arrow> arrows = inboundArrow2object.sources( obj );
 			for( Arrow arrow : arrows )
 			{
-				arrow.inverse().remove( obj, null );
+				arrow.removeSources( obj );
 			}
 		}
 
@@ -110,7 +114,7 @@ public class ObjectsImpl implements Objects
 				{
 					targets = arrow.targets( obj );
 				}
-				arrow.remove( obj, null );
+				arrow.removeTargets( obj );
 				if( cascade )
 				{
 					for( Object target : targets )
@@ -144,7 +148,7 @@ public class ObjectsImpl implements Objects
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
 
-		object2config.remove( object, null );
+		object2config.removeTargets( object );
 		object2config.aim( object, config );
 	}
 
@@ -171,8 +175,8 @@ public class ObjectsImpl implements Objects
 	}
 
 	@Override
-	public Class domain()
+	public Set0<Class> domains()
 	{
-		return Object.class;
+		return domains;
 	}
 }

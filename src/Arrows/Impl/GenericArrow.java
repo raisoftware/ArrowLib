@@ -100,32 +100,39 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		return domain;
 	}
 
+	private void removeInternal( K source, V target )
+	{
+		keysToValues.remove( source, target );
+		valuesToKeys.remove( target, source );
+	}
+
 	@Override
 	public void remove( K source, V target )
 	{
-		if( target == null )
-		{
-			Set<V> removedTargets = keysToValues.removeAll( source );
-			for( V removedTarget : removedTargets )
-			{
-				valuesToKeys.remove( removedTarget, source );
-			}
-		}
-		else if( source == null )
-		{
-			Set<K> removedSources = valuesToKeys.removeAll( target );
-			for( K removedSource : removedSources )
-			{
-				keysToValues.remove( removedSource, target );
-			}
-		}
-		else
-		{
-			keysToValues.remove( source, target );
-			valuesToKeys.remove( target, source );
-		}
-
+		removeInternal( source, target );
 		methodBus.publisher().remove( source, target );
+	}
+
+	@Override
+	public void removeAll( K source, Iterable<? extends V> targets )
+	{
+		ImmutableList<? extends V> targetsList = ImmutableList.copyOf( targets );
+		for( V target : targetsList )
+		{
+			removeInternal( source, target );
+		}
+		methodBus.publisher().removeAll( source, targetsList );
+	}
+
+	@Override
+	public void removeAll( Iterable<? extends K> sources, V target )
+	{
+		ImmutableList<? extends K> sourcesList = ImmutableList.copyOf( sources );
+		for( K source : sourcesList )
+		{
+			removeInternal( source, target );
+		}
+		methodBus.publisher().removeAll( sourcesList, target );
 	}
 
 	@Override
@@ -273,6 +280,18 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		public void aim( Iterable<? extends V> sources, K target )
 		{
 			GenericArrow.this.aim( target, sources );
+		}
+
+		@Override
+		public void removeAll( V source, Iterable<? extends K> targets )
+		{
+			GenericArrow.this.removeAll( targets, source );
+		}
+
+		@Override
+		public void removeAll( Iterable<? extends V> sources, K target )
+		{
+			GenericArrow.this.removeAll( target, sources );
 		}
 
 	}

@@ -81,7 +81,8 @@ public class Set0Test
 	{
 		Set0<Integer> voidIntersection = Sets.intersect( evenNumbers, oddNumbers );
 		assertEquals( 0, voidIntersection.size() );
-		assertEquals( Integer.class, voidIntersection.domain() );
+		assertEquals( 1, voidIntersection.domains().size() );
+		assertTrue( voidIntersection.domains().contains( Integer.class ) );
 
 
 		Set0<Integer> numbers = Sets.union( evenNumbers, oddNumbers );
@@ -90,17 +91,23 @@ public class Set0Test
 		{
 			assertTrue( numbers.contains( i ) );
 		}
-		assertEquals( Integer.class, numbers.domain() );
+
+		assertEquals( 1, numbers.domains().size() );
+		assertTrue( numbers.domains().contains( Integer.class ) );
+
 
 		Set0<Integer> diff = Sets.difference( evenNumbers, oddNumbers );
 		assertEquals( evenNumbers.size(), diff.size() );
 		assertTrue( Sets.containsAll( diff, evenNumbers ) );
-		assertEquals( Integer.class, voidIntersection.domain() );
-
+		assertEquals( 1, diff.domains().size() );
+		assertTrue( diff.domains().contains( Integer.class ) );
 
 		Set0 union = Sets.union( evenNumbers, words, words2 );
 		assertEquals( words.size() + words2.size() + evenNumbers.size(), union.size() );
-		assertEquals( Object.class, union.domain() );
+		assertEquals( 2, union.domains().size() );
+		assertTrue( union.domains().contains( Integer.class ) );
+		assertTrue( union.domains().contains( String.class ) );
+
 		assertTrue( Sets.containsAll( union, evenNumbers ) );
 		assertTrue( Sets.containsAll( union, words ) );
 		assertTrue( Sets.containsAll( union, words2 ) );
@@ -108,7 +115,8 @@ public class Set0Test
 
 		Set0<Integer> evenNumbersDiff = Sets.difference( numbers, oddNumbers );
 		assertEquals( evenNumbers.size(), evenNumbersDiff.size() );
-		assertEquals( Integer.class, evenNumbersDiff.domain() );
+		assertEquals( 1, evenNumbersDiff.domains().size() );
+		assertTrue( evenNumbersDiff.domains().contains( Integer.class ) );
 	}
 
 

@@ -84,7 +84,7 @@ public class ArrowUtils
 
 	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
 	{
-		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";// + "  Relations:" + arrow.relations();
+		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain().getSimpleName() + "," + arrow.codomain().getSimpleName() + ">";// + "  Relations:" + arrow.relations();
 	}
 
 	public static void generateGraph( Diagram diagram, String path )

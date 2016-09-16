@@ -1,6 +1,6 @@
 package Shared.MethodBus;
 
-import Shared.Collection0.OrderedSet0;
+import Shared.Collection0.*;
 import Shared.Collection0.OrderedSet0.Position;
 import java.lang.reflect.*;
 import java.util.*;
@@ -13,6 +13,7 @@ public class MethodBus<ListenerType> implements OrderedSet0<ListenerType>
 	private final Class type;
 	private final ArrayList<ListenerType> listeners = new ArrayList<>();
 	private final ListenerType publisher;
+	private final Set0<Class> domains;
 
 	public static <ListenerType> ListenerType methodList( Class<ListenerType> type, ListenerType... listeners )
 	{
@@ -38,6 +39,9 @@ public class MethodBus<ListenerType> implements OrderedSet0<ListenerType>
 				type
 			},
 			handler );
+
+		domains = Sets.create( Class.class );
+		domains.add( type );
 	}
 
 	public Object publishEvent( final MethodCall event )
@@ -135,9 +139,9 @@ public class MethodBus<ListenerType> implements OrderedSet0<ListenerType>
 	}
 
 	@Override
-	public Class domain()
+	public Set0<Class> domains()
 	{
-		return type;
+		return domains;
 	}
 
 	@Override

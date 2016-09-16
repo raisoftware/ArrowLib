@@ -4,6 +4,7 @@ import Arrows.*;
 import Shared.Collection0.Set0;
 import java.util.function.BiPredicate;
 
+
 public class DiagramImpl implements Diagram
 {
 	ArrowsImpl arrows;
@@ -81,5 +82,6 @@ public class DiagramImpl implements Diagram
 		//TOFIX
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
+
 
 }

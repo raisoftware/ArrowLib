@@ -3,8 +3,7 @@ package Arrows.Impl;
 import Arrows.*;
 import Arrows.ArrowEditor;
 import Arrows.Impl.Rule.*;
-import Shared.Collection0.BasicSet0;
-import Shared.Collection0.Set0;
+import Shared.Collection0.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,6 +19,7 @@ public class ArrowsImpl implements Arrows
 
 	Class2ObjectRule class2ObjectRule;
 	Set0<ArrowEditor> customRules;
+	Set0<Class> domains;
 
 	public ArrowsImpl( Diagram diagram )
 	{
@@ -70,7 +70,10 @@ public class ArrowsImpl implements Arrows
 		name( owner2property, Owner_Property, Property_Owner );
 
 		class2ObjectRule = new Class2ObjectRule( this );
-		customRules = new BasicSet0( new HashSet(), ArrowEditor.class );
+		customRules = Sets.create( ArrowEditor.class );
+
+		domains = Sets.create( Class.class );
+		domains.add( ArrowView.class );
 	}
 
 	@Override
@@ -138,7 +141,7 @@ public class ArrowsImpl implements Arrows
 	@Override
 	public void remove( ArrowView target )
 	{
-		id2arrow.inverse().remove( target, null );
+		id2arrow.inverse().remove( target, (Integer) null );
 	}
 
 	@Override
@@ -160,11 +163,8 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public Class domain()
+	public Set0<Class> domains()
 	{
-		return ArrowView.class;
+		return domains;
 	}
-
-
-
 }

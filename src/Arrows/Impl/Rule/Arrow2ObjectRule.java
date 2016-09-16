@@ -73,6 +73,25 @@ public class Arrow2ObjectRule implements ArrowEditor
 		trackTarget( target );
 	}
 
+	private void removeTarget( Object target )
+	{
+		if( Sets.isEmpty( listenedArrow.sources( target ) ) )
+		{
+			inboundArrow2object.remove( listenedArrow, target );
+			outboundArrow2object.remove( listenedArrow.inverse(), target );
+		}
+
+	}
+
+	private void removeSource( Object source )
+	{
+		if( Sets.isEmpty( listenedArrow.targets( source ) ) )
+		{
+			outboundArrow2object.remove( listenedArrow, source );
+			inboundArrow2object.remove( listenedArrow.inverse(), source );
+		}
+	}
+
 	@Override
 	public void remove( Object source, Object target )
 	{
@@ -81,17 +100,9 @@ public class Arrow2ObjectRule implements ArrowEditor
 
 		// at this point its config is gone so we have to remove it regardless of the tracksInboundArrows/tracksOutboundArrows properties
 
-		if( Sets.isEmpty( listenedArrow.sources( target ) ) )
-		{
-			inboundArrow2object.remove( listenedArrow, target );
-			outboundArrow2object.remove( listenedArrow.inverse(), target );
-		}
+		removeTarget( target );
+		removeSource( source );
 
-		if( Sets.isEmpty( listenedArrow.targets( source ) ) )
-		{
-			outboundArrow2object.remove( listenedArrow, source );
-			inboundArrow2object.remove( listenedArrow.inverse(), source );
-		}
 	}
 
 	private void trackSource( Object source )
@@ -138,6 +149,24 @@ public class Arrow2ObjectRule implements ArrowEditor
 		catch( Exception ex )
 		{
 			throw new RuntimeException( ex.getMessage() );
+		}
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		for( Object target : targets )
+		{
+			remove( source, target );
+		}
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
+	{
+		for( Object source : sources )
+		{
+			remove( source, target );
 		}
 	}
 

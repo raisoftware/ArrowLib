@@ -105,8 +105,10 @@ public class JoinArrowTest
 
 			Set0 sources = joinUpperCaseArrow.sources();
 
-			assertEquals( Character.class, sources.domain() );
-			assertEquals( Character.class, targets.domain() );
+			assertEquals( 1, sources.domains().size() );
+			assertTrue( sources.domains().contains( Character.class ) );
+			assertEquals( 1, targets.domains().size() );
+			assertTrue( targets.domains().contains( Character.class ) );
 		}
 	}
 

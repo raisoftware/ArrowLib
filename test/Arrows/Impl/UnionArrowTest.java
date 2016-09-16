@@ -130,10 +130,18 @@ public class UnionArrowTest
 			assertEquals( results.size(), 1 );
 			assertEquals( results.iterator().next(), Character.toLowerCase( c ) );
 		}
-		assertEquals( Character.class, sources.domain() );
-		assertEquals( Character.class, targets.domain() );
-		assertEquals( Character.class, inverseSources.domain() );
-		assertEquals( Character.class, inverseTargets.domain() );
+
+		assertEquals( 1, sources.domains().size() );
+		assertTrue( sources.domains().contains( Character.class ) );
+
+		assertEquals( 1, targets.domains().size() );
+		assertTrue( targets.domains().contains( Character.class ) );
+
+		assertEquals( 1, inverseSources.domains().size() );
+		assertTrue( inverseSources.domains().contains( Character.class ) );
+
+		assertEquals( 1, inverseTargets.domains().size() );
+		assertTrue( inverseTargets.domains().contains( Character.class ) );
 	}
 
 	public void testDomain()

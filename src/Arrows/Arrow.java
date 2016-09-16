@@ -9,4 +9,14 @@ public interface Arrow<K, V> extends ArrowView<K, V>, ArrowEditor<K, V>
 
 	@Override
 	Arrow<V, K> inverse();
+
+	default void removeTargets( K source )
+	{
+		removeAll( source, targets( source ) );
+	}
+
+	default void removeSources( V target )
+	{
+		removeAll( sources( target ), target );
+	}
 }
