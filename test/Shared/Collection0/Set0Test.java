@@ -113,6 +113,21 @@ public class Set0Test
 		assertTrue( Sets.containsAll( union, words2 ) );
 
 
+		{ // filters
+			Set0 onlyInts = Sets.filter( union, Integer.class );
+			assertEquals( onlyInts.size(), evenNumbers.size() );
+			assertTrue( Sets.containsAll( onlyInts, evenNumbers ) );
+
+			Set0 onlyStrings = Sets.filter( union, String.class );
+			assertEquals( onlyStrings.size(), union.size() - evenNumbers.size() );
+			assertTrue( Sets.containsAll( onlyStrings, words ) );
+			assertTrue( Sets.containsAll( onlyStrings, words2 ) );
+
+			Set0 uselessFilter = Sets.filter( union, String.class, Integer.class );
+			assertEquals( uselessFilter.size(), union.size() );
+			assertTrue( Sets.containsAll( uselessFilter, union ) );
+		}
+
 		Set0<Integer> evenNumbersDiff = Sets.difference( numbers, oddNumbers );
 		assertEquals( evenNumbers.size(), evenNumbersDiff.size() );
 		assertEquals( 1, evenNumbersDiff.domains().size() );

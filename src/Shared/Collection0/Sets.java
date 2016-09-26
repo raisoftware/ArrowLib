@@ -9,6 +9,35 @@ import static Shared.Collection0.Sets.*;
 
 public class Sets
 {
+	private Sets()
+	{
+
+	}
+
+	public static Set0 filter( Set0 set, Class... classes )
+	{
+		Set0 filteredSet = create( classes );
+
+		if( classes.length == 0 )
+		{
+			filteredSet.addAll( set );
+			return filteredSet;
+		}
+
+		for( Object obj : set )
+		{
+			for( Class cls : classes )
+			{
+				if( cls.isInstance( obj ) )
+				{
+					filteredSet.add( obj );
+					break;
+				}
+			}
+		}
+		return filteredSet;
+	}
+
 	public static Set0 create( Class... domains )
 	{
 		return new BasicSet0( new HashSet(), domains );
