@@ -81,7 +81,7 @@ public class JoinArrow implements ArrowView
 	}
 
 	@Override
-	public Object target( Object source ) throws Exception
+	public Object target( Object source )
 	{
 		return ArrowUtils.target( this, source );
 	}
@@ -124,7 +124,7 @@ public class JoinArrow implements ArrowView
 		}
 
 		@Override
-		public Object target( Object source ) throws Exception
+		public Object target( Object source )
 		{
 			return ArrowUtils.target( this, source );
 		}

@@ -10,8 +10,6 @@ import Arrows.Arrows.Names;
 import Shared.Collection0.Set0;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -51,9 +49,7 @@ public class Arrow2ObjectRuleTest
 	@Before
 	public void setUp()
 	{
-		try
-		{
-			diagram = Diagram.create();
+		diagram = Diagram.create();
 
 			Arrow<Integer, String> arrow = diagram.createGeneric().end();
 			diagram.arrows().name( arrow, Stringify, Destringify );
@@ -81,11 +77,7 @@ public class Arrow2ObjectRuleTest
 			name2Arrow = arrows.arrow( Names.Name_Arrow );
 			stringifyArrow = name2Arrow.target( Stringify );
 			editableStringifyArrow = arrows.arrow( Stringify );
-		}
-		catch( Exception ex )
-		{
-			Logger.getLogger( Arrow2ObjectRuleTest.class.getName() ).log( Level.SEVERE, null, ex );
-		}
+
 	}
 
 

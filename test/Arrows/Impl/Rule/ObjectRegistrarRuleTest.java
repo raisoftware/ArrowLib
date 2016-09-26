@@ -71,7 +71,7 @@ public class ObjectRegistrarRuleTest
 	}
 
 	@Test
-	public void testObjectRegistrarRule() throws Exception
+	public void testObjectRegistrarRule()
 	{
 		Arrows arrows = diagram.arrows();
 

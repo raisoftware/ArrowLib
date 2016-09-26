@@ -127,13 +127,13 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public ArrowView arrowView( Object arrowName ) throws Exception
+	public ArrowView arrowView( Object arrowName )
 	{
 		return name2arrow.target( arrowName );
 	}
 
 	@Override
-	public Arrow arrow( Object arrowName ) throws Exception
+	public Arrow arrow( Object arrowName )
 	{
 		return (Arrow) name2arrow.target( arrowName );
 	}

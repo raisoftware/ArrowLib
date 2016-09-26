@@ -83,16 +83,7 @@ public class ObjectsImpl implements Objects
 		if( Sets.isEmpty( object2config.targets( obj ) ) )
 			return;
 
-		ObjectConfig objConfig;
-
-		try
-		{
-			objConfig = object2config.target( obj );
-		}
-		catch( Exception ex )
-		{
-			throw new RuntimeException( ex.getMessage() );
-		}
+		ObjectConfig objConfig = object2config.target( obj );
 
 		if( objConfig.tracksInboundArrows() )
 		{
@@ -158,14 +149,8 @@ public class ObjectsImpl implements Objects
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
 
-		try
-		{
-			return object2config.target( object );
-		}
-		catch( Exception ex )
-		{
-			throw new RuntimeException( ex.getMessage() );
-		}
+		return object2config.target( object );
+
 	}
 
 	@Override

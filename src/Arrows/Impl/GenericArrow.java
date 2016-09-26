@@ -65,7 +65,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	}
 
 	@Override
-	public V target( K source ) throws Exception
+	public V target( K source )
 	{
 		return (V) ArrowUtils.target( this, source );
 	}
@@ -229,7 +229,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		}
 
 		@Override
-		public K target( V source ) throws Exception
+		public K target( V source )
 		{
 			return (K) ArrowUtils.target( this, source );
 		}

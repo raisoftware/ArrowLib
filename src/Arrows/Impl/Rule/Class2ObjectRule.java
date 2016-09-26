@@ -116,14 +116,8 @@ public class Class2ObjectRule implements ArrowEditor
 
 	private ObjectConfig config( Object object )
 	{
-		try
-		{
-			return object2config.target( object );
-		}
-		catch( Exception ex )
-		{
-			throw new RuntimeException( ex.getMessage() );
-		}
+		return object2config.target( object );
+
 	}
 
 	@Override

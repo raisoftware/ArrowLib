@@ -3,9 +3,13 @@ package Arrows.Utils;
 
 public class ExceptionUtils
 {
-	public static Exception targetsNumberException( int number )
+	private ExceptionUtils()
 	{
-		return new Exception( "Number of targets is " + number + ". There should only be one target." );
+	}
+
+	public static RuntimeException targetsNumberException( int number )
+	{
+		return new RuntimeException( "Number of targets is " + number + ". There should only be one target." );
 	}
 
 	public static RuntimeException multipleSourcesTargetsException( Object sources, Object targets )

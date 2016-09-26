@@ -48,7 +48,7 @@ public class Class2ObjectRuleTest
 	}
 
 	@Test
-	public void testClass2ObjectRule() throws Exception
+	public void testClass2ObjectRule()
 	{
 		Arrows arrows = diagram.arrows();
 		ArrowView<Enum, Arrow> name2Arrow = arrows.arrowView( Names.Name_Arrow );

@@ -17,7 +17,7 @@ public interface ArrowView<K, V>
 	}
 
 	Set0<K> sources();
-	default K source( V target ) throws Exception
+	default K source( V target )
 	{
 		return inverse().target( target );
 	}
@@ -33,7 +33,7 @@ public interface ArrowView<K, V>
 
 
 	Set0<V> targets();
-	V target( K source ) throws Exception;
+	V target( K source );
 	Set0<V> targets( K source );
 	default Set0<V> targets( Iterable<? extends K> sources )
 	{

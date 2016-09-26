@@ -77,7 +77,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	}
 
 	@Override
-	public V target( K source ) throws Exception
+	public V target( K source )
 	{
 		return (V) ArrowUtils.target( this, source );
 	}

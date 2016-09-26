@@ -29,7 +29,7 @@ public class ArrowPropertyTest
 	}
 
 	@Test
-	public void testProperties() throws Exception
+	public void testProperties()
 	{
 		Property<Integer> property1 = Property.property( destringify, "five", 5 );
 		assertEquals( property1.get(), Integer.valueOf( 5 ) );

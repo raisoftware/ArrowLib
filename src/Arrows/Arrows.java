@@ -22,8 +22,8 @@ public interface Arrows extends Set0<ArrowView>
 
 	void name( ArrowView arrow, Object arrowName, Object arrowInverseName );
 
-	ArrowView arrowView( Object arrowName ) throws Exception;
-	Arrow arrow( Object arrowName ) throws Exception;
+	ArrowView arrowView( Object arrowName );
+	Arrow arrow( Object arrowName );
 
 	Set0<ArrowEditor> customRules();
 }

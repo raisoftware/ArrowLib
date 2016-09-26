@@ -1,8 +1,6 @@
 package Arrows;
 
 import Shared.Collection0.Set0;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class ArrowProperty<K, V> implements Property<V>
@@ -35,16 +33,7 @@ public class ArrowProperty<K, V> implements Property<V>
 	@Override
 	public V get()
 	{
-		try
-		{
-			return arrow.target( source );
-		}
-		catch( Exception ex )
-		{
-			//TOFIX
-			Logger.getLogger( ArrowProperty.class.getName() ).log( Level.SEVERE, null, ex );
-		}
-		return null;
+		return arrow.target( source );
 	}
 
 	@Override

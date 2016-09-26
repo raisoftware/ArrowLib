@@ -11,7 +11,7 @@ public class Reference
 		this.arrow = arrow;
 	}
 
-	public Object value() throws Exception
+	public Object value()
 	{
 		return arrow.target( nick );
 	}

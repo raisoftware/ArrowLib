@@ -6,12 +6,23 @@ import Shared.Collection0.BasicSet0;
 import Shared.Collection0.Set0;
 import java.io.*;
 import java.util.*;
+import java.util.function.BiPredicate;
 
 import static Arrows.Arrows.Names.*;
 
 
 public class ArrowUtils
 {
+	private ArrowUtils()
+	{
+	}
+
+	public static ArrowView filterByClassArrow( Diagram diagram, ArrowView arrow, Class clazz )
+	{
+		BiPredicate<Object, Object> filter = (Object source, Object target) -> clazz.isInstance( target );
+		return diagram.filter( arrow, filter );
+	}
+
 	public static Set0 generateRelations( ArrowView arrow )
 	{
 		Set0<Map.Entry> relations = new BasicSet0( new HashSet<>(), Map.Entry.class );
@@ -26,7 +37,7 @@ public class ArrowUtils
 		return relations;
 	}
 
-	public static Object target( ArrowView arrow, Object source ) throws Exception
+	public static Object target( ArrowView arrow, Object source )
 	{
 		Set0 targets = arrow.targets( source );
 		if( targets.size() != 1 )
@@ -63,6 +74,7 @@ public class ArrowUtils
 			Integer id = arrow2id.target( arrow );
 			String formattedId = String.format( "%03d", id );
 
+
 			Object name;
 			try
 			{
@@ -70,12 +82,13 @@ public class ArrowUtils
 			}
 			catch( Exception ex )
 			{
+				//TOFIX5
 				name = "Unnamed";
 			}
 			idName += "(#" + formattedId + "-" + name + ")";
 		}
 		catch( Exception ex )
-		{
+		{			//TOFIX5
 			idName = "Unknown id/name";
 		}
 
