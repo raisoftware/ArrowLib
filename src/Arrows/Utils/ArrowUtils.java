@@ -2,8 +2,7 @@ package Arrows.Utils;
 
 import Arrows.*;
 import Arrows.Impl.JoinArrow;
-import Shared.Collection0.BasicSet0;
-import Shared.Collection0.Set0;
+import Shared.Collection0.*;
 import java.io.*;
 import java.util.*;
 import java.util.function.BiPredicate;
@@ -65,39 +64,38 @@ public class ArrowUtils
 
 	public static String shortToString( Diagram diagram, ArrowView arrow )
 	{
-		String idName = "";
-		try
+		ArrowView<ArrowView, Integer> arrow2id = diagram.arrows().arrowView( Arrow_Id );
+		ArrowView arrow2name = diagram.arrows().arrowView( Arrow_Name );
+
+
+		Set0<Integer> ids = arrow2id.targets( arrow );
+
+		if( Sets.isEmpty( ids ) )
+			return "Unknown id/name";
+
+		Integer id = ids.iterator().next();
+
+		Set0<Object> names = arrow2name.targets( arrow );
+		if( names.size() > 1 )
+			throw new RuntimeException( "More arrows with the same name" );
+
+		Object name;
+		if( Sets.isEmpty( names ) )
 		{
-			ArrowView<ArrowView, Integer> arrow2id = diagram.arrows().arrowView( Arrow_Id );
-			ArrowView arrow2name = diagram.arrows().arrowView( Arrow_Name );
-
-			Integer id = arrow2id.target( arrow );
-			String formattedId = String.format( "%03d", id );
-
-
-			Object name;
-			try
-			{
-				name = arrow2name.target( arrow );
-			}
-			catch( Exception ex )
-			{
-				//TOFIX5
-				name = "Unnamed";
-			}
-			idName += "(#" + formattedId + "-" + name + ")";
+			name = "Unnamed";
 		}
-		catch( Exception ex )
-		{			//TOFIX5
-			idName = "Unknown id/name";
+		else
+		{
+			name = names.iterator().next();
 		}
+		String idName = String.format( "(#%03d_%s)", id, name );
 
 		return idName;
 	}
 
 	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
 	{
-		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain().getSimpleName() + "," + arrow.codomain().getSimpleName() + ">";// + "  Relations:" + arrow.relations();
+		return String.format( "%s = %s<%s,%s>", shortToString( diagram, arrow ), arrowType, arrow.domain().getSimpleName(), arrow.codomain().getSimpleName() );// + "  Relations:" + arrow.relations();
 	}
 
 	public static void generateGraph( Diagram diagram, String path )
