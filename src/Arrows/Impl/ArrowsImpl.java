@@ -11,15 +11,19 @@ import static Arrows.Arrows.Names.*;
 
 public class ArrowsImpl implements Arrows
 {
-	Arrow<Object, ArrowView> name2arrow;
-	Arrow<Integer, ArrowView> id2arrow;
+	private final Arrow<Object, ArrowView> name2arrow;
+	private final Arrow<Integer, ArrowView> id2arrow;
 
-	Diagram diagram;
-	AtomicInteger sequence = new AtomicInteger();
+	private final Arrow<Arrow, Object> inboundArrow_object;
+	private final Arrow<Arrow, Object> outboundArrow_object;
+	private final Arrow<Class, Object> class_object;
 
-	Class2ObjectRule class2ObjectRule;
-	Set0<ArrowEditor> customRules;
-	Set0<Class> domains;
+	private final Diagram diagram;
+	private final AtomicInteger sequence = new AtomicInteger();
+
+	private final Class2ObjectRule class2ObjectRule;
+	private final Set0<ArrowEditor> customRules;
+	private final Set0<Class> domains;
 
 	public ArrowsImpl( Diagram diagram )
 	{
@@ -34,9 +38,9 @@ public class ArrowsImpl implements Arrows
 		name( id2arrow, Names.Id_Arrow, Names.Arrow_Id );
 
 
-		Arrow class2object = new GenericArrow( diagram, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
-		addInternal( class2object );
-		name( class2object, Class_Object, Object_Class );
+		class_object = new GenericArrow( diagram, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		addInternal( class_object );
+		name( class_object, Class_Object, Object_Class );
 
 
 		Arrow name2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
@@ -56,14 +60,14 @@ public class ArrowsImpl implements Arrows
 		name( object2config, Object_Config, Config_Object );
 
 
-		Arrow inboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
-		addInternal( inboundArrow2object );
-		name( inboundArrow2object, InboundArrow_Object, Object_InboundArrow );
+		inboundArrow_object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		addInternal( inboundArrow_object );
+		name( inboundArrow_object, InboundArrow_Object, Object_InboundArrow );
 
 
-		Arrow outboundArrow2object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
-		addInternal( outboundArrow2object );
-		name( outboundArrow2object, OutboundArrow_Object, Object_OutboundArrow );
+		outboundArrow_object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		addInternal( outboundArrow_object );
+		name( outboundArrow_object, OutboundArrow_Object, Object_OutboundArrow );
 
 		Arrow owner2property = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( owner2property );
@@ -82,7 +86,7 @@ public class ArrowsImpl implements Arrows
 		return customRules;
 	}
 
-	public final void addInternal( ArrowView arrow )
+	private final void addInternal( ArrowView arrow )
 	{
 		id2arrow.aim( sequence.incrementAndGet(), arrow );
 		id2arrow.aim( sequence.incrementAndGet(), arrow.inverse() );
@@ -166,5 +170,23 @@ public class ArrowsImpl implements Arrows
 	public Set0<Class> domains()
 	{
 		return domains;
+	}
+
+	@Override
+	public Arrow<Arrow, Object> inboundArrow_object()
+	{
+		return inboundArrow_object;
+	}
+
+	@Override
+	public Arrow<Arrow, Object> outboundArrow_object()
+	{
+		return outboundArrow_object;
+	}
+
+	@Override
+	public Arrow<Class, Object> class_object()
+	{
+		return class_object;
 	}
 }

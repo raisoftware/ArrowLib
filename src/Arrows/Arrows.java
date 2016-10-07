@@ -26,4 +26,8 @@ public interface Arrows extends Set0<ArrowView>
 	Arrow arrow( Object arrowName );
 
 	Set0<ArrowEditor> customRules();
+
+	Arrow<Arrow, Object> inboundArrow_object();
+	Arrow<Arrow, Object> outboundArrow_object();
+	Arrow<Class, Object> class_object();
 }

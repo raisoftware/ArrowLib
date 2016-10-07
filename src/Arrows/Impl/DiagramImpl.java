@@ -83,5 +83,26 @@ public class DiagramImpl implements Diagram
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
+	@Override
+	public <T> T identify( T object )
+	{
+		Set0<Object> foundObjects = objects.identity().targets( object );
 
+		if( foundObjects.size() == 0 )
+			return null;
+
+		if( foundObjects.size() > 1 )
+			throw new RuntimeException( "Found too many objects" );
+
+
+		return (T) foundObjects.iterator().next();
+	}
+
+	@Override
+	public <T> void remove( T object )
+	{
+		//TOFIX test this / what should it do?
+		Object foundObject = foundObject = objects.identity().target( object );
+		objects.remove( foundObject );
+	}
 }
