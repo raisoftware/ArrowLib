@@ -16,6 +16,7 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 	private final MethodBus<ArrowEditor> methodBus;
 	private final Arrow<V, K> inverseArrow;
+	private int id = ID_NOT_SET;
 	private final String name;
 	private final Class domain;
 	private final Class codomain;
@@ -203,9 +204,22 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		methodBus.publisher().aim( source, target );
 	}
 
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseGenericArrow implements Arrow<V, K>
 	{
-		String inverseName;
+		private String inverseName;
+		private int id = ID_NOT_SET;
 
 		public InverseGenericArrow( String inverseName )
 		{
@@ -306,6 +320,18 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 		public void removeAll( Iterable<? extends V> sources, K target )
 		{
 			GenericArrow.this.removeAll( target, sources );
+		}
+
+		@Override
+		public int id()
+		{
+			return this.id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
 		}
 
 	}

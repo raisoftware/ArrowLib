@@ -17,6 +17,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 
 	private final ArrowView<K, V> arrow;
 	private final BiPredicate<K, V> filter;
+	private int id = ID_NOT_SET;
 
 	public FilterArrow( Diagram diagram, ArrowView<K, V> arrow, BiPredicate<K, V> filter )
 	{
@@ -100,4 +101,17 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	{
 		return arrow.domain();
 	}
+
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 }

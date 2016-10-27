@@ -15,6 +15,7 @@ public class IntersectArrow implements ArrowView
 	private List<ArrowView> arrows = new ArrayList<>();
 
 	private InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
+	private int id = ID_NOT_SET;
 
 	public IntersectArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
@@ -194,8 +195,22 @@ public class IntersectArrow implements ArrowView
 		return arrows.get( 0 ).domain();
 	}
 
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseIntersectArrow implements ArrowView
 	{
+		private int id = ID_NOT_SET;
+
 		@Override
 		public Set0 sources()
 		{
@@ -257,6 +272,19 @@ public class IntersectArrow implements ArrowView
 		{
 			return IntersectArrow.this.codomain();
 		}
+
+		@Override
+		public int id()
+		{
+			return id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 
 	}
 

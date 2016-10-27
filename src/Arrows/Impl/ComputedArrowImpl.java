@@ -9,13 +9,15 @@ import java.util.function.Function;
 
 public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
-	Arrow<K, V> precomputedArrow;
-	Function<K, Set<V>> function;
-	Diagram diagram;
-	Class domain;
-	Class codomain;
+	private Arrow<K, V> precomputedArrow;
+	private Function<K, Set<V>> function;
+	private Diagram diagram;
+	private Class domain;
+	private Class codomain;
 
-	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
+	private ArrowView<V, K> inverseArrow = new InverseComputedArrow();
+
+	private int id = ID_NOT_SET;
 
 	public ComputedArrowImpl( Diagram diagram, Function<K, Set<V>> function, Class domain, Class codomain )
 	{
@@ -102,8 +104,21 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		return ArrowUtils.toString( diagram, this, "ComputedArrow" );
 	}
 
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseComputedArrow implements ArrowView<V, K>
 	{
+		private int id = ID_NOT_SET;
 
 		@Override
 		public Set0<V> sources()
@@ -158,6 +173,19 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		{
 			return ArrowUtils.toString( diagram, this, "InverseComputedArrow" );
 		}
+
+		@Override
+		public int id()
+		{
+			return id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 	}
 
 

@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface ArrowView<K, V>
 {
+	int ID_NOT_SET = -1;
+
 	default Class codomain()
 	{
 		return Object.class;
@@ -50,4 +52,7 @@ public interface ArrowView<K, V>
 	Set0<Map.Entry<K, V>> relations();
 
 	ArrowView<V, K> inverse();
+
+	int id();
+	void id( int id );
 }

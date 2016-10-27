@@ -10,7 +10,7 @@ import static Arrows.Arrows.Names.*;
 public class ObjectsImpl implements Objects
 {
 	private Diagram diagram;
-	private Arrow<Object, Object> id2object = null;
+	private Arrow<Integer, Object> id2object = null;
 	private Arrow<Object, Object> name2object = null;
 	private Arrow<Object, ObjectConfig> object2config = null;
 	private Arrow<Class, Object> class2object = null;

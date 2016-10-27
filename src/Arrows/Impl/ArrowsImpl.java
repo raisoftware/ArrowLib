@@ -41,11 +41,11 @@ public class ArrowsImpl implements Arrows
 		name( class_object, Class_Object, Object_Class );
 
 
-		Arrow name2object = new GenericArrow( diagram, Name_Object, Object_Name, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow<Object, Object> name2object = new GenericArrow( diagram, Name_Object, Object_Name, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( name2object );
 		name( name2object, Name_Object, Object_Name );
 
-		Arrow id2object = new GenericArrow( diagram, Id_Object, Object_Id, Object.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		Arrow<Integer, Object> id2object = new GenericArrow( diagram, Id_Object, Object_Id, Integer.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( id2object );
 		name( id2object, Id_Object, Object_Id );
 
@@ -67,7 +67,7 @@ public class ArrowsImpl implements Arrows
 		addInternal( outboundArrow_object );
 		name( outboundArrow_object, OutboundArrow_Object, Object_OutboundArrow );
 
-		Arrow owner2property = new GenericArrow( diagram, Owner_Property, Property_Owner, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		Arrow<Object, Object> owner2property = new GenericArrow( diagram, Owner_Property, Property_Owner, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( owner2property );
 		name( owner2property, Owner_Property, Property_Owner );
 
@@ -86,8 +86,11 @@ public class ArrowsImpl implements Arrows
 
 	private final void addInternal( ArrowView arrow )
 	{
-		id2arrow.aim( diagram.incrementAndGetSequence(), arrow );
-		id2arrow.aim( diagram.incrementAndGetSequence(), arrow.inverse() );
+		int arrowId = diagram.incrementAndGetSequence();
+		int arrowInverseId = diagram.incrementAndGetSequence();
+		arrow.id( arrowId );
+		id2arrow.aim( arrowId, arrow );
+		id2arrow.aim( arrowInverseId, arrow.inverse() );
 	}
 
 	@Override

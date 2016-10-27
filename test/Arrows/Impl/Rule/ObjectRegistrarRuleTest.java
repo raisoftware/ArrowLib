@@ -75,7 +75,7 @@ public class ObjectRegistrarRuleTest
 		Arrows arrows = diagram.arrows();
 
 		ArrowView<Object, Object> name2Object = arrows.arrowView( Names.Name_Object );
-		ArrowView<Object, Object> id2Object = arrows.arrowView( Names.Id_Object );
+		ArrowView<Integer, Object> id2Object = arrows.arrowView( Names.Id_Object );
 		ArrowView<Object, ObjectConfig> object2Config = arrows.arrowView( Object_Config );
 
 		assertEquals( name2Object.target( RootObject ), "two" );
