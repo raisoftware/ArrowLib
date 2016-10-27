@@ -30,4 +30,7 @@ public interface Diagram
 
 	<T> T identify( T object );
 	<T> void remove( T object );
+
+	int incrementAndGetSequence();
+	int getAndIncrementSequence();
 }

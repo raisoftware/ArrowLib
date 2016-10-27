@@ -5,7 +5,6 @@ import Arrows.ArrowEditor;
 import Arrows.Impl.Rule.*;
 import Shared.Collection0.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static Arrows.Arrows.Names.*;
 
@@ -19,7 +18,6 @@ public class ArrowsImpl implements Arrows
 	private final Arrow<Class, Object> class_object;
 
 	private final Diagram diagram;
-	private final AtomicInteger sequence = new AtomicInteger();
 
 	private final Class2ObjectRule class2ObjectRule;
 	private final Set0<ArrowEditor> customRules;
@@ -88,8 +86,8 @@ public class ArrowsImpl implements Arrows
 
 	private final void addInternal( ArrowView arrow )
 	{
-		id2arrow.aim( sequence.incrementAndGet(), arrow );
-		id2arrow.aim( sequence.incrementAndGet(), arrow.inverse() );
+		id2arrow.aim( diagram.incrementAndGetSequence(), arrow );
+		id2arrow.aim( diagram.incrementAndGetSequence(), arrow.inverse() );
 	}
 
 	@Override

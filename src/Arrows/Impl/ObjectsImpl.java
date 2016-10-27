@@ -4,13 +4,12 @@ import Arrows.*;
 import Shared.Collection0.Set0;
 import Shared.Collection0.Sets;
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static Arrows.Arrows.Names.*;
 
 public class ObjectsImpl implements Objects
 {
-	private AtomicInteger sequence = new AtomicInteger();
+	private Diagram diagram;
 	private Arrow<Object, Object> id2object = null;
 	private Arrow<Object, Object> name2object = null;
 	private Arrow<Object, ObjectConfig> object2config = null;
@@ -20,8 +19,10 @@ public class ObjectsImpl implements Objects
 	private ArrowView<Object, Object> identity = null;
 	private Set0<Class> domains;
 
-	public ObjectsImpl( Arrows arrows )
+	public ObjectsImpl( Diagram diagram )
 	{
+		this.diagram = diagram;
+		Arrows arrows = diagram.arrows();
 		try
 		{
 			this.id2object = arrows.arrow( Id_Object );
@@ -48,7 +49,7 @@ public class ObjectsImpl implements Objects
 			throw new RuntimeException( "Object already registered. [object = " + object + "]" );
 
 		ObjectConfig config = new ObjectConfigBuilderImpl().end();
-		id2object.aim( sequence.getAndIncrement(), object );
+		id2object.aim( diagram.getAndIncrementSequence(), object );
 		object2config.aim( object, config );
 	}
 

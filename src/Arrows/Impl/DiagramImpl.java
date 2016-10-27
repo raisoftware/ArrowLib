@@ -2,6 +2,7 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Shared.Collection0.Set0;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 
 
@@ -9,11 +10,12 @@ public class DiagramImpl implements Diagram
 {
 	ArrowsImpl arrows;
 	Objects objects;
+	private final AtomicInteger sequence = new AtomicInteger();
 
 	public DiagramImpl()
 	{
 		arrows = new ArrowsImpl( this );
-		objects = new ObjectsImpl( arrows );
+		objects = new ObjectsImpl( this );
 	}
 
 	@Override
@@ -105,4 +107,17 @@ public class DiagramImpl implements Diagram
 		Object foundObject = objects.identity().target( object );
 		objects.remove( foundObject );
 	}
+
+	@Override
+	public int incrementAndGetSequence()
+	{
+		return sequence.incrementAndGet();
+	}
+
+	@Override
+	public int getAndIncrementSequence()
+	{
+		return sequence.getAndIncrement();
+	}
+
 }
