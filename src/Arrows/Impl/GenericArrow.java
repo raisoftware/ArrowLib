@@ -15,7 +15,8 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final SetMultimap<V, K> valuesToKeys = HashMultimap.create();
 
 	private final MethodBus<ArrowEditor> methodBus;
-	private final Arrow<V, K> inverseArrow = new InverseGenericArrow();
+	private final Arrow<V, K> inverseArrow;
+	private final String name;
 	private final Class domain;
 	private final Class codomain;
 	private final boolean allowsMultipleSources;
@@ -23,16 +24,22 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 	private final boolean listenable;
 	private final Diagram diagram;
 
+	public GenericArrow( Diagram diagram, Enum name, Enum inverseName, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
+	{
+		this( diagram, name.toString(), inverseName.toString(), domain, codomain, allowsMultipleSources, allowsMultipleTargets, listenable );
+	}
 
-	public GenericArrow( Diagram diagram, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
+	public GenericArrow( Diagram diagram, String name, String inverseName, Class domain, Class codomain, boolean allowsMultipleSources, boolean allowsMultipleTargets, boolean listenable )
 	{
 		methodBus = new MethodBus<>( ArrowEditor.class );
+		this.name = name;
 		this.domain = domain;
 		this.codomain = codomain;
 		this.listenable = listenable;
 		this.allowsMultipleSources = allowsMultipleSources;
 		this.allowsMultipleTargets = allowsMultipleTargets;
 		this.diagram = diagram;
+		inverseArrow = new InverseGenericArrow( inverseName );
 	}
 
 	private boolean put( K key, V value )
@@ -198,6 +205,13 @@ public class GenericArrow<K, V> implements Arrow<K, V>
 
 	private final class InverseGenericArrow implements Arrow<V, K>
 	{
+		String inverseName;
+
+		public InverseGenericArrow( String inverseName )
+		{
+			this.inverseName = inverseName;
+		}
+
 		@Override
 		public Set0<V> sources()
 		{

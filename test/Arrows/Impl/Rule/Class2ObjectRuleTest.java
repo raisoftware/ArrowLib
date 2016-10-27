@@ -34,8 +34,7 @@ public class Class2ObjectRuleTest
 		diagram.objects().add( 2 );
 		diagram.objects().add( "unu" );
 
-		Arrow<Integer, String> arrow = diagram.createGeneric().end();
-		diagram.arrows().name( arrow, Stringify, Destringify );
+		Arrow<Integer, String> arrow = diagram.createGeneric().name( Stringify ).inverseName( Destringify ).end();
 		arrow.aim( 1, "unu" );
 		arrow.aim( 2, "doi" );
 		arrow.aim( 3, "trei" );
@@ -51,12 +50,12 @@ public class Class2ObjectRuleTest
 	public void testClass2ObjectRule()
 	{
 		Arrows arrows = diagram.arrows();
-		ArrowView<Enum, Arrow> name2Arrow = arrows.arrowView( Names.Name_Arrow );
+		ArrowView<String, Arrow> name2Arrow = arrows.arrowView( Names.Name_Arrow );
 
 		//Test name2Arrow
-		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
+		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify.toString() );
 		assertEquals( stringifyArrow.target( 1 ), "unu" );
-		assertEquals( name2Arrow.target( Destringify ).target( "doi" ), 2 );
+		assertEquals( name2Arrow.target( Destringify.toString() ).target( "doi" ), 2 );
 
 		//Test class2Object
 		ArrowView class2Object = arrows.arrowView( Names.Class_Object );

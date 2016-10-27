@@ -25,7 +25,7 @@ public class Arrow2ObjectRuleTest
 	Arrow<Arrow, Object> inboundArrow2object;
 	Arrow<Integer, String> editableStringifyArrow;
 	Arrow<Integer, String> stringifyArrow;
-	Arrow<Enum, Arrow> name2Arrow;
+	Arrow<String, Arrow> name2Arrow;
 
 	Arrow<String, Character> containsArrow;
 
@@ -51,32 +51,30 @@ public class Arrow2ObjectRuleTest
 	{
 		diagram = Diagram.create();
 
-			Arrow<Integer, String> arrow = diagram.createGeneric().end();
-			diagram.arrows().name( arrow, Stringify, Destringify );
-			arrow.aim( 1, "one_" );
-			arrow.aim( 2, "two_" );
-			arrow.aim( 3, "three_" );
-			arrow.aim( 4, "four_" );
+		Arrow<Integer, String> arrow = diagram.createGeneric().name( Stringify ).inverseName( Destringify ).end();
+		arrow.aim( 1, "one_" );
+		arrow.aim( 2, "two_" );
+		arrow.aim( 3, "three_" );
+		arrow.aim( 4, "four_" );
 
 
 
-			containsArrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
-			diagram.arrows().name( containsArrow, Contains, IsContainedBy );
-			connectWordToLetters( containsArrow, word1 );
-			connectWordToLetters( containsArrow, word2 );
-			connectWordToLetters( containsArrow, word3 );
-			connectWordToLetters( containsArrow, word4 );
+		containsArrow = diagram.createGeneric().name( Contains ).inverseName( IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
+		connectWordToLetters( containsArrow, word1 );
+		connectWordToLetters( containsArrow, word2 );
+		connectWordToLetters( containsArrow, word3 );
+		connectWordToLetters( containsArrow, word4 );
 
 
 
-			arrows = diagram.arrows();
-			object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
-			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = arrows.arrow( Names.Object_InboundArrow );
-			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = arrows.arrow( Names.Name_Arrow );
-			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = arrows.arrow( Stringify );
+		arrows = diagram.arrows();
+		object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
+		outboundArrow2object = object2outboundArrow.inverse();
+		object2inboundArrow = arrows.arrow( Names.Object_InboundArrow );
+		inboundArrow2object = object2inboundArrow.inverse();
+		name2Arrow = arrows.arrow( Names.Name_Arrow );
+		stringifyArrow = name2Arrow.target( Stringify.toString() );
+		editableStringifyArrow = arrows.arrow( Stringify );
 
 	}
 

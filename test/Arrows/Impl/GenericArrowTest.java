@@ -39,7 +39,7 @@ public class GenericArrowTest
 	{
 		Diagram diagram = Diagram.create();
 
-		arrow = new GenericArrow( diagram, String.class, Character.class, true, true, true );
+		arrow = new GenericArrow( diagram, Contains, IsContainedBy, String.class, Character.class, true, true, true );
 		diagram.arrows().add( arrow );
 		diagram.arrows().name( arrow, Contains, IsContainedBy );
 		List<Character> chars = new ArrayList();

@@ -29,8 +29,8 @@ public class ArrowsImpl implements Arrows
 	{
 		this.diagram = diagram;
 
-		name2arrow = new GenericArrow( diagram, Object.class, ArrowView.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
-		id2arrow = new GenericArrow( diagram, Integer.class, ArrowView.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		name2arrow = new GenericArrow( diagram, Names.Name_Arrow, Names.Arrow_Name, Object.class, ArrowView.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		id2arrow = new GenericArrow( diagram, Names.Id_Arrow, Names.Arrow_Id, Integer.class, ArrowView.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 
 		addInternal( name2arrow );
 		addInternal( id2arrow );
@@ -38,16 +38,16 @@ public class ArrowsImpl implements Arrows
 		name( id2arrow, Names.Id_Arrow, Names.Arrow_Id );
 
 
-		class_object = new GenericArrow( diagram, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		class_object = new GenericArrow( diagram, Class_Object, Object_Class, Class.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( class_object );
 		name( class_object, Class_Object, Object_Class );
 
 
-		Arrow name2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow name2object = new GenericArrow( diagram, Name_Object, Object_Name, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( name2object );
 		name( name2object, Name_Object, Object_Name );
 
-		Arrow id2object = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		Arrow id2object = new GenericArrow( diagram, Id_Object, Object_Id, Object.class, Object.class, /*allowsMultipleSources=*/ false, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( id2object );
 		name( id2object, Id_Object, Object_Id );
 
@@ -55,21 +55,21 @@ public class ArrowsImpl implements Arrows
 		addInternal( object2object );
 		name( object2object, Object_Object, Object_Object_Inverse );
 
-		Arrow object2config = new GenericArrow( diagram, Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		Arrow object2config = new GenericArrow( diagram, Object_Config, Config_Object, Object.class, ObjectConfig.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( object2config );
 		name( object2config, Object_Config, Config_Object );
 
 
-		inboundArrow_object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		inboundArrow_object = new GenericArrow( diagram, InboundArrow_Object, Object_InboundArrow, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( inboundArrow_object );
 		name( inboundArrow_object, InboundArrow_Object, Object_InboundArrow );
 
 
-		outboundArrow_object = new GenericArrow( diagram, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
+		outboundArrow_object = new GenericArrow( diagram, OutboundArrow_Object, Object_OutboundArrow, Arrow.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ true, /*listenable=*/ false );
 		addInternal( outboundArrow_object );
 		name( outboundArrow_object, OutboundArrow_Object, Object_OutboundArrow );
 
-		Arrow owner2property = new GenericArrow( diagram, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
+		Arrow owner2property = new GenericArrow( diagram, Owner_Property, Property_Owner, Object.class, Object.class, /*allowsMultipleSources=*/ true, /*allowsMultipleTargets=*/ false, /*listenable=*/ false );
 		addInternal( owner2property );
 		name( owner2property, Owner_Property, Property_Owner );
 
@@ -93,7 +93,13 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public final void name( ArrowView arrow, Object arrowName, Object arrowInverseName )
+	public final void name( ArrowView arrow, Enum arrowName, Enum arrowInverseName )
+	{
+		name( arrow, arrowName.toString(), arrowInverseName.toString() );
+	}
+
+	@Override
+	public final void name( ArrowView arrow, String arrowName, String arrowInverseName )
 	{
 		if( !contains( arrow ) )
 			throw new RuntimeException( "Arrow not registered." );
@@ -131,15 +137,27 @@ public class ArrowsImpl implements Arrows
 	}
 
 	@Override
-	public ArrowView arrowView( Object arrowName )
+	public ArrowView arrowView( String arrowName )
 	{
 		return name2arrow.target( arrowName );
 	}
 
 	@Override
-	public Arrow arrow( Object arrowName )
+	public Arrow arrow( String arrowName )
 	{
 		return (Arrow) name2arrow.target( arrowName );
+	}
+
+	@Override
+	public ArrowView arrowView( Enum arrowName )
+	{
+		return arrowView( arrowName.toString() );
+	}
+
+	@Override
+	public Arrow arrow( Enum arrowName )
+	{
+		return arrow( arrowName.toString() );
 	}
 
 	@Override

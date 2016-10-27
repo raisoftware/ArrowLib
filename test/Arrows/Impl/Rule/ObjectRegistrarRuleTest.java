@@ -53,8 +53,7 @@ public class ObjectRegistrarRuleTest
 		objects.name( "unu", CoolestObject );
 
 
-		Arrow<String, String> arrow = diagram.createGeneric().end();
-		diagram.arrows().name( arrow, English2Rom, Rom2English );
+		Arrow<String, String> arrow = diagram.createGeneric().name( English2Rom ).inverseName( Rom2English ).end();
 		arrow.aim( "one", "unu" );// id 2 and 1
 		arrow.aim( "two", "doi" );// ids 0 and 3
 		arrow.aim( "three", "trei" );// ids are 4 and 5

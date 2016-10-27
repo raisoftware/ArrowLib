@@ -20,8 +20,7 @@ public class ArrowPropertyTest
 	{
 		diagram = Diagram.create();
 
-		destringify = diagram.createGeneric().allowsMultipleSources( true ).allowsMultipleTargets( false ).end();
-		diagram.arrows().name( destringify, Destringify, Stringify );
+		destringify = diagram.createGeneric().name( Destringify ).inverseName( Stringify ).allowsMultipleSources( true ).allowsMultipleTargets( false ).end();
 		destringify.aim( "one", 1 );
 		destringify.aim( "two", 2 );
 		destringify.aim( "three", 3 );

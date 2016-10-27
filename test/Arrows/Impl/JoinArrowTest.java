@@ -45,16 +45,14 @@ public class JoinArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
-		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
+		toUpperCaseArrow1 = diagram.createGeneric().name( ToUpperCase ).inverseName( ToLowerCase ).domain( Character.class ).codomain( Character.class ).end();
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word2 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word4 );
 
 
-		toUpperCaseArrow2 = diagram.createGeneric().domain( Character.class ).codomain( Character.class ).end();
-		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
+		toUpperCaseArrow2 = diagram.createGeneric().name( ToUpperCase2 ).inverseName( ToLowerCase2 ).domain( Character.class ).codomain( Character.class ).end();
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word3 );
 		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word4 );
 

@@ -20,10 +20,14 @@ public interface Arrows extends Set0<ArrowView>
 		Owner_Property, Property_Owner
 	}
 
-	void name( ArrowView arrow, Object arrowName, Object arrowInverseName );
+	void name( ArrowView arrow, String arrowName, String arrowInverseName );
+	void name( ArrowView arrow, Enum arrowName, Enum arrowInverseName );
 
-	ArrowView arrowView( Object arrowName );
-	Arrow arrow( Object arrowName );
+	ArrowView arrowView( String arrowName );
+	Arrow arrow( String arrowName );
+
+	ArrowView arrowView( Enum arrowName );
+	Arrow arrow( Enum arrowName );
 
 	Set0<ArrowEditor> customRules();
 

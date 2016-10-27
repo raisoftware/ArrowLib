@@ -21,7 +21,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 		this.domain = domain;
 		this.codomain = codomain;
-		precomputedArrow = new GenericArrow( diagram, domain, codomain, true, true, false );
+		precomputedArrow = new GenericArrow( diagram, "ComputedArrow", "InverseComputedArrow", domain, codomain, true, true, false );
 
 		this.diagram = diagram;
 		this.function = function;
