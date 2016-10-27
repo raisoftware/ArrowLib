@@ -78,6 +78,11 @@ public class Sets
 		return set.size() == 0;
 	}
 
+	public static boolean isNullOrEmpty( Set0 set )
+	{
+		return set == null || set.size() == 0;
+	}
+
 	public static Class[] domain( Set0... sets )
 	{
 		Set domains = new HashSet<>();
