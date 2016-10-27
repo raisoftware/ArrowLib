@@ -102,7 +102,7 @@ public class DiagramImpl implements Diagram
 	public <T> void remove( T object )
 	{
 		//TOFIX test this / what should it do?
-		Object foundObject = foundObject = objects.identity().target( object );
+		Object foundObject = objects.identity().target( object );
 		objects.remove( foundObject );
 	}
 }
