@@ -103,9 +103,14 @@ public class DiagramImpl implements Diagram
 	@Override
 	public <T> void remove( T object )
 	{
-		//TOFIX test this / what should it do?
 		Object foundObject = objects.identity().target( object );
 		objects.remove( foundObject );
+	}
+
+	@Override
+	public void remove( ArrowView arrow )
+	{
+		arrows.remove( arrow );
 	}
 
 	@Override

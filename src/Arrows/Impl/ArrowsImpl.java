@@ -164,7 +164,8 @@ public class ArrowsImpl implements Arrows
 	@Override
 	public void remove( ArrowView target )
 	{
-		id2arrow.inverse().remove( target, (Integer) null );
+		id2arrow.removeSources( target );
+		name2arrow.removeSources( target );
 	}
 
 	@Override

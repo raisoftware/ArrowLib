@@ -31,6 +31,8 @@ public interface Diagram
 	<T> T identify( T object );
 	<T> void remove( T object );
 
+	<T> void remove( ArrowView arrow );
+
 	int incrementAndGetSequence();
 	int getAndIncrementSequence();
 }

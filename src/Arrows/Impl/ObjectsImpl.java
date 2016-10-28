@@ -3,6 +3,7 @@ package Arrows.Impl;
 import Arrows.*;
 import Shared.Collection0.Set0;
 import Shared.Collection0.Sets;
+import com.google.common.collect.ImmutableSet;
 import java.util.Iterator;
 
 import static Arrows.Arrows.Names.*;
@@ -89,7 +90,8 @@ public class ObjectsImpl implements Objects
 		if( objConfig.tracksInboundArrows() )
 		{
 			Set0<Arrow> arrows = inboundArrow2object.sources( obj );
-			for( Arrow arrow : arrows )
+			ImmutableSet<Arrow> arrowsCopy = ImmutableSet.copyOf( arrows );
+			for( Arrow arrow : arrowsCopy )
 			{
 				arrow.removeSources( obj );
 			}
@@ -109,11 +111,17 @@ public class ObjectsImpl implements Objects
 				arrow.removeTargets( obj );
 				if( cascade )
 				{
-					for( Object target : targets )
+					ImmutableSet targetsCopy = ImmutableSet.copyOf( targets );
+					for( Object target : targetsCopy )
 						remove( target, cascade );
 				}
 			}
 		}
+
+		id2object.removeSources( obj );
+		name2object.removeSources( obj );
+		object2config.removeTargets( obj );
+		class2object.removeSources( obj );
 	}
 
 	@Override
