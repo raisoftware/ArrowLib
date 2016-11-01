@@ -17,11 +17,9 @@ public class MainTest
 		Diagram diagram = Diagram.create();
 
 		//create custom arrows
-		Arrow arrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
-		diagram.arrows().name( arrow, Contains, IsContainedBy );
+		Arrow arrow = diagram.createGeneric().name( Contains ).inverseName( IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
 
-		Arrow squareArrow = diagram.createGeneric().domain( Float.class ).codomain( Float.class ).end();
-		diagram.arrows().name( squareArrow, Square, SquareRoot );
+		Arrow squareArrow = diagram.createGeneric().name(  Square ).inverseName( SquareRoot ).domain( Float.class ).codomain( Float.class ).end();
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );

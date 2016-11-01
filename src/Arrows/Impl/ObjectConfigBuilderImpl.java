@@ -66,4 +66,9 @@ public class ObjectConfigBuilderImpl implements ObjectConfig, ObjectConfig.Build
 	{
 		return tracksOutboundArrows;
 	}
+    
+    public String toString()
+    {
+        return String.format("ObjectConfig(enabled=%s, in=%s, out=%s, cls=%s)", enabled, tracksInboundArrows, tracksOutboundArrows, tracksClass);
+    }
 }

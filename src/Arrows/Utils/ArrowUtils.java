@@ -122,8 +122,10 @@ public class ArrowUtils
 					generateGraphForJoinArrow( diagram, arrow, path );
 				}
 
-				try( Writer writer = new BufferedWriter( new OutputStreamWriter(
-					new FileOutputStream( path + shortToString( diagram, arrow ) + ".dot" ), "utf-8" ) ) )
+				String fileName = path + shortToString( diagram, arrow ) + ".dot";
+                System.out.println( "Created Graphviz file: " + fileName);
+                try( Writer writer = new BufferedWriter( new OutputStreamWriter(
+					new FileOutputStream( fileName ), "utf-8" ) ) )
 				{
 					writer.write( "digraph Arrow{\n" );
 					for( Object source : arrow.sources() )
