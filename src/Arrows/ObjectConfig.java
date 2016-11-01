@@ -29,6 +29,4 @@ public interface ObjectConfig
 
 		ObjectConfig end();
 	}
-
-
 }

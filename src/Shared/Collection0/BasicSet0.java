@@ -1,15 +1,17 @@
-package Shared;
+package Shared.Collection0;
 
 import java.util.*;
 
 
 public class BasicSet0<T> implements Set0<T>
 {
-	Set<T> set;
+	private final Set<T> set;
+	private final Set<Class> domains;
 
-	public BasicSet0( Set<T> set )
+	public BasicSet0( Set<T> set, Class... domains )
 	{
 		this.set = set;
+		this.domains = new HashSet<>( Arrays.asList( domains ) );
 	}
 
 	@Override
@@ -63,6 +65,12 @@ public class BasicSet0<T> implements Set0<T>
 	public String toString()
 	{
 		return set.toString();
+	}
+
+	@Override
+	public Set0<Class> domains()
+	{
+		return new BasicSet0( domains, Class.class );
 	}
 
 }

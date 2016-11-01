@@ -1,10 +1,13 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
+import com.google.common.reflect.TypeToken;
+import com.google.common.reflect.TypeToken.TypeSet;
+import java.util.Set;
 
 import static Arrows.Arrows.Names.*;
 
-public class Class2ObjectRule implements Arrow.Editor
+public class Class2ObjectRule implements ArrowEditor
 {
 	private Arrow<Class, Object> class2Object = null;
 	private ArrowView<Arrow, Object> inboundArrow2object;
@@ -15,13 +18,13 @@ public class Class2ObjectRule implements Arrow.Editor
 	{
 		try
 		{
-			this.class2Object = (Arrow) arrows.arrow( Class_Object );
+			this.class2Object = arrows.arrow( Class_Object );
 
 			//This Rule should be executed after the ObjectRegistrarRule and after the Arrow2ObjectRule
 
-			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
-			this.object2config = arrows.arrow( Object_Config );
+			this.inboundArrow2object = arrows.arrowView( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrowView( OutboundArrow_Object );
+			this.object2config = arrows.arrowView( Object_Config );
 		}
 		catch( Exception ex )
 		{
@@ -35,7 +38,7 @@ public class Class2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
@@ -49,7 +52,7 @@ public class Class2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
@@ -63,7 +66,7 @@ public class Class2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;
@@ -76,34 +79,62 @@ public class Class2ObjectRule implements Arrow.Editor
 	{
 		if( !inboundArrow2object.targets().contains( source ) && !outboundArrow2object.targets().contains( source ) )
 		{
-			class2Object.inverse().editor().remove( source, null );
+			class2Object.removeSources( source );
 		}
 
 		if( !inboundArrow2object.targets().contains( target ) && !outboundArrow2object.targets().contains( target ) )
 		{
-			class2Object.inverse().editor().remove( target, null );
+			class2Object.removeSources( target );
 		}
 	}
 
 
 	private void trackClass( Object object )
 	{
-
 		if( config( object ).tracksClass() )
 		{
-			class2Object.editor().connect( object.getClass(), object );
+			Class cls = object.getClass();
+
+			final TypeSet typeSet = TypeToken.of( cls ).getTypes();
+			Set<TypeToken> classes = typeSet.classes();
+			for( TypeToken type : classes )
+			{
+				Class clazz = type.getRawType();
+				if( !clazz.equals( Object.class ) )
+				{
+					class2Object.aim( clazz, object );
+				}
+			}
+			Set<TypeToken> interfaces = typeSet.interfaces();
+			for( TypeToken type : interfaces )
+			{
+				Class clazz = type.getRawType();
+				class2Object.aim( clazz, object );
+			}
 		}
 	}
 
 	private ObjectConfig config( Object object )
 	{
-		try
+		return object2config.target( object );
+
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		for( Object target : targets )
 		{
-			return object2config.target( object );
+			remove( source, target );
 		}
-		catch( Exception ex )
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
+	{
+		for( Object source : sources )
 		{
-			throw new RuntimeException( ex.getMessage() );
+			remove( source, target );
 		}
 	}
 }

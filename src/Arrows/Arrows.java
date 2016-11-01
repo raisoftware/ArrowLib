@@ -1,7 +1,7 @@
 package Arrows;
 
-import Arrows.Arrow.Editor;
-import Shared.Set0;
+import Arrows.ArrowEditor;
+import Shared.Collection0.Set0;
 
 public interface Arrows extends Set0<ArrowView>
 {
@@ -13,14 +13,25 @@ public interface Arrows extends Set0<ArrowView>
 		Class_Object, Object_Class,
 		Name_Object, Object_Name,
 		Id_Object, Object_Id,
+		Object_Object, Object_Object_Inverse,
 		Object_Config, Config_Object,
 		InboundArrow_Object, Object_InboundArrow,
-		OutboundArrow_Object, Object_OutboundArrow
+		OutboundArrow_Object, Object_OutboundArrow,
+		Owner_Property, Property_Owner
 	}
 
-	void name( ArrowView arrow, Object arrowName, Object arrowInverseName );
+	void name( ArrowView arrow, String arrowName, String arrowInverseName );
+	void name( ArrowView arrow, Enum arrowName, Enum arrowInverseName );
 
-	ArrowView arrow( Object arrowName ) throws Exception;
+	ArrowView arrowView( String arrowName );
+	Arrow arrow( String arrowName );
 
-	Set0<Editor> customRules();
+	ArrowView arrowView( Enum arrowName );
+	Arrow arrow( Enum arrowName );
+
+	Set0<ArrowEditor> customRules();
+
+	Arrow<Arrow, Object> inboundArrow_object();
+	Arrow<Arrow, Object> outboundArrow_object();
+	Arrow<Class, Object> class_object();
 }

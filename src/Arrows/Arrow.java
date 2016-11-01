@@ -1,25 +1,22 @@
 package Arrows;
 
-import Shared.Set0;
+import Shared.Collection0.OrderedSet0;
 
 
-public interface Arrow<K, V> extends ArrowView<K, V>
+public interface Arrow<K, V> extends ArrowView<K, V>, ArrowEditor<K, V>
 {
-	Set0<Editor> listeners();
-
-	Editor<K, V> editor();
+	OrderedSet0<ArrowEditor> subscribers();
 
 	@Override
 	Arrow<V, K> inverse();
 
-	public interface Editor<K, V>
+	default void removeTargets( K source )
 	{
-		void connect( K source, V target );
+		removeAll( source, targets( source ) );
+	}
 
-		void connect( K source, Iterable<? extends V> targets );
-
-		void connect( Iterable<? extends K> sources, V target );
-
-		void remove( K source, V target );
+	default void removeSources( V target )
+	{
+		removeAll( sources( target ), target );
 	}
 }

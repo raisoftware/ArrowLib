@@ -3,7 +3,7 @@ package Arrows.Test;
 import Arrows.*;
 import Arrows.Impl.ObjectConfigBuilderImpl;
 import Arrows.Utils.ArrowUtils;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 
 import static Arrows.Arrows.Names.*;
@@ -17,11 +17,9 @@ public class MainTest
 		Diagram diagram = Diagram.create();
 
 		//create custom arrows
-		Arrow arrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
-		diagram.arrows().name( arrow, Contains, IsContainedBy );
+		Arrow arrow = diagram.createGeneric().name( Contains ).inverseName( IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
 
-		Arrow squareArrow = diagram.createGeneric().domain( Float.class ).codomain( Float.class ).end();
-		diagram.arrows().name( squareArrow, Square, SquareRoot );
+		Arrow squareArrow = diagram.createGeneric().name(  Square ).inverseName( SquareRoot ).domain( Float.class ).codomain( Float.class ).end();
 
 		ArrayList<Character> chars = new ArrayList<>();
 		chars.add( 's' );
@@ -31,20 +29,20 @@ public class MainTest
 
 		//test arrows
 
-		arrow.editor().connect( "sir", chars );
+		arrow.aim( "sir", chars );
 
-		arrow.editor().connect( "irs", chars );
-		arrow.editor().connect( "ra", 'r' );
-		arrow.editor().connect( "ra", 'a' );
+		arrow.aim( "irs", chars );
+		arrow.aim( "ra", 'r' );
+		arrow.aim( "ra", 'a' );
 
-		squareArrow.editor().connect( 9.f, 81.f );
-		squareArrow.editor().connect( 2.f, 4.f );
-		squareArrow.editor().connect( 7.f, 49.f );
+		squareArrow.aim( 9.f, 81.f );
+		squareArrow.aim( 2.f, 4.f );
+		squareArrow.aim( 7.f, 49.f );
 
 		//----------------------------------------------------
 
 		//Test class2ObjectRule
-		Arrow class2Object = (Arrow) diagram.arrows().arrow( Class_Object );
+		Arrow class2Object = diagram.arrows().arrow( Class_Object );
 		System.out.println( class2Object );
 		System.out.println( class2Object.inverse() );
 		System.out.println( "class2Object.relations()" + class2Object.relations() );
@@ -55,11 +53,11 @@ public class MainTest
 		ObjectConfig rootObjConfig = new ObjectConfigBuilderImpl().end();
 		diagram.objects().config( 's', rootObjConfig );
 		diagram.objects().name( 's', RootObject );
-		Arrow name2Object = (Arrow) diagram.arrows().arrow( Name_Object );
-		Arrow object2Config = (Arrow) diagram.arrows().arrow( Object_Config );
+		Arrow name2Object = diagram.arrows().arrow( Name_Object );
+		Arrow object2Config = diagram.arrows().arrow( Object_Config );
 		//----------
 
-		Arrow<String, Character> containsArrow = (Arrow) diagram.arrows().arrow( Contains );
+		Arrow<String, Character> containsArrow = diagram.arrows().arrow( Contains );
 
 		ArrowView joinArrow = diagram.join( containsArrow.inverse() );
 		Set0 results = joinArrow.targets( 'r' );

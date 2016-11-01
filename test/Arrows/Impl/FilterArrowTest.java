@@ -1,8 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
-import Shared.Set0Utils;
+import Shared.Collection0.Set0;
+import Shared.Collection0.Sets;
 import java.util.function.BiPredicate;
 import org.junit.*;
 
@@ -39,12 +39,11 @@ public class FilterArrowTest
 	{
 		diagram = Diagram.create();
 
-		containsArrow = diagram.createGeneric().domain( String.class ).codomain( Character.class ).end();
-		diagram.arrows().name( containsArrow, Contains, IsContainedBy );
-		connectWordToLetters( containsArrow.editor(), word1 );
-		connectWordToLetters( containsArrow.editor(), word2 );
-		connectWordToLetters( containsArrow.editor(), word3 );
-		connectWordToLetters( containsArrow.editor(), word4 );
+		containsArrow = diagram.createGeneric().name( Contains ).inverseName( IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
+		connectWordToLetters( containsArrow, word1 );
+		connectWordToLetters( containsArrow, word2 );
+		connectWordToLetters( containsArrow, word3 );
+		connectWordToLetters( containsArrow, word4 );
 
 		BiPredicate<String, Character> filter = (String source, Character target) -> !target.equals( 'o' ) && !target.equals( 'v' ) && !target.equals( 'e' ) && !target.equals( 'r' );
 
@@ -102,6 +101,28 @@ public class FilterArrowTest
 		assertTrue( word3Results.contains( 'f' ) );
 
 		Set0<Character> word4Results = filterArrow.targets( word4 );//"over"
-		assertTrue( Set0Utils.isEmpty( word4Results ) );
+		assertTrue( Sets.isEmpty( word4Results ) );
+
+		{
+			Set0 words = Sets.create( String.class );
+			words.add( word2 );
+			words.add( word3 );
+			words.add( word4 );
+			Set0<Character> letters = filterArrow.targets( words );
+
+
+			assertEquals( 6, letters.size() );
+
+			//extra
+			assertTrue( letters.contains( 'x' ) );
+			assertTrue( letters.contains( 't' ) );
+			assertTrue( letters.contains( 'a' ) );
+
+			//stuff
+			assertTrue( letters.contains( 's' ) );
+			assertTrue( letters.contains( 'f' ) );
+			assertTrue( letters.contains( 'u' ) );
+
+		}
 	}
 }

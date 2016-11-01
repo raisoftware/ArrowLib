@@ -1,8 +1,10 @@
 package Arrows.Impl;
 
+import Shared.Collection0.Sets;
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.*;
 import java.util.*;
 
 
@@ -13,6 +15,7 @@ public class IntersectArrow implements ArrowView
 	private List<ArrowView> arrows = new ArrayList<>();
 
 	private InverseIntersectArrow inverseArrow = new InverseIntersectArrow();
+	private int id = ID_NOT_SET;
 
 	public IntersectArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
@@ -68,7 +71,7 @@ public class IntersectArrow implements ArrowView
 	}
 
 	@Override
-	public Object target( Object source ) throws Exception
+	public Object target( Object source )
 	{
 		return ArrowUtils.target( this, source );
 	}
@@ -76,7 +79,7 @@ public class IntersectArrow implements ArrowView
 	private Set0 intersectSources( boolean inverse )
 	{
 		Iterator<ArrowView> arrowIt = arrows.iterator();
-		Set0 intersectSources = new BasicSet0( new HashSet<>() );
+		Set0 intersectSources = new BasicSet0( new HashSet<>(), domain() );
 
 		ArrowView firstArrow = arrowIt.next();
 		if( inverse )
@@ -121,7 +124,7 @@ public class IntersectArrow implements ArrowView
 
 	private Set0 intersectTargets( boolean inverse )
 	{
-		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
+		Set0 intersectTargets = new BasicSet0( new HashSet<>(), codomain() );
 
 		Iterator<ArrowView> arrowIt = arrows.iterator();
 		ArrowView firstArrow = arrowIt.next();
@@ -139,7 +142,7 @@ public class IntersectArrow implements ArrowView
 
 		for( Object source : firstArrowSources )
 		{
-			Set0Utils.addAll( intersectTargets, arrow.targets( source ) );
+			intersectTargets.addAll( arrow.targets( source ) );
 		}
 		return intersectTargets;
 	}
@@ -153,8 +156,8 @@ public class IntersectArrow implements ArrowView
 			firstArrow = firstArrow.inverse();
 		}
 
-		Set0 intersectTargets = new BasicSet0( new HashSet<>() );
-		Set0Utils.addAll( intersectTargets, firstArrow.targets( source ) );
+		Set0 intersectTargets = new BasicSet0( new HashSet<>(), codomain() );
+		intersectTargets.addAll( firstArrow.targets( source ) );
 
 		while( arrowIt.hasNext() )
 		{
@@ -163,7 +166,7 @@ public class IntersectArrow implements ArrowView
 			{
 				arrow = arrow.inverse();
 			}
-			Set0Utils.retainAll( intersectTargets, arrow.targets( source ) );
+			Sets.retainAll( intersectTargets, arrow.targets( source ) );
 		}
 
 		return intersectTargets;
@@ -180,8 +183,34 @@ public class IntersectArrow implements ArrowView
 		return stringBuilder.toString();
 	}
 
+	@Override
+	public Class codomain()
+	{
+		return arrows.get( 0 ).codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrows.get( 0 ).domain();
+	}
+
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseIntersectArrow implements ArrowView
 	{
+		private int id = ID_NOT_SET;
+
 		@Override
 		public Set0 sources()
 		{
@@ -195,7 +224,7 @@ public class IntersectArrow implements ArrowView
 		}
 
 		@Override
-		public Object target( Object source ) throws Exception
+		public Object target( Object source )
 		{
 			return ArrowUtils.target( this, source );
 		}
@@ -231,6 +260,31 @@ public class IntersectArrow implements ArrowView
 			stringBuilder.append( relations() );
 			return stringBuilder.toString();
 		}
+
+		@Override
+		public Class codomain()
+		{
+			return IntersectArrow.this.domain();
+		}
+
+		@Override
+		public Class domain()
+		{
+			return IntersectArrow.this.codomain();
+		}
+
+		@Override
+		public int id()
+		{
+			return id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 
 	}
 

@@ -1,24 +1,24 @@
 package Arrows.Utils;
 
-import Arrows.Arrow.Editor;
+import Arrows.ArrowEditor;
 
 
 public class TestsUtils
 {
-	public static void connectWordToLetters( Editor arrow, String word )
+	public static void connectWordToLetters( ArrowEditor arrow, String word )
 	{
 		for( int i = 0; i < word.length(); ++i )
 		{
-			arrow.connect( word, word.charAt( i ) );
+			arrow.aim( word, word.charAt( i ) );
 		}
 	}
 
-	public static void connectLettersToUpperCaseLetters( Editor arrow, String word )
+	public static void connectLettersToUpperCaseLetters( ArrowEditor arrow, String word )
 	{
 		for( int i = 0; i < word.length(); ++i )
 		{
 			char c = word.charAt( i );
-			arrow.connect( c, Character.toUpperCase( c ) );
+			arrow.aim( c, Character.toUpperCase( c ) );
 		}
 	}
 

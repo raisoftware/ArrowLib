@@ -2,19 +2,29 @@ package Arrows.Utils;
 
 import Arrows.*;
 import Arrows.Impl.JoinArrow;
-import Shared.BasicSet0;
-import Shared.Set0;
+import Shared.Collection0.*;
 import java.io.*;
 import java.util.*;
+import java.util.function.BiPredicate;
 
 import static Arrows.Arrows.Names.*;
 
 
 public class ArrowUtils
 {
+	private ArrowUtils()
+	{
+	}
+
+	public static ArrowView filterByClassArrow( Diagram diagram, ArrowView arrow, Class clazz )
+	{
+		BiPredicate<Object, Object> filter = (Object source, Object target) -> clazz.isInstance( target );
+		return diagram.filter( arrow, filter );
+	}
+
 	public static Set0 generateRelations( ArrowView arrow )
 	{
-		Set0<Map.Entry> relations = new BasicSet0( new HashSet<>() );
+		Set0<Map.Entry> relations = new BasicSet0( new HashSet<>(), Map.Entry.class );
 		for( Object source : arrow.sources() )
 		{
 			for( Object target : arrow.targets( source ) )
@@ -26,7 +36,7 @@ public class ArrowUtils
 		return relations;
 	}
 
-	public static Object target( ArrowView arrow, Object source ) throws Exception
+	public static Object target( ArrowView arrow, Object source )
 	{
 		Set0 targets = arrow.targets( source );
 		if( targets.size() != 1 )
@@ -54,37 +64,38 @@ public class ArrowUtils
 
 	public static String shortToString( Diagram diagram, ArrowView arrow )
 	{
-		String idName = "";
-		try
-		{
-			ArrowView<ArrowView, Integer> arrow2id = diagram.arrows().arrow( Arrow_Id );
-			ArrowView arrow2name = diagram.arrows().arrow( Arrow_Name );
+		ArrowView<ArrowView, Integer> arrow2id = diagram.arrows().arrowView( Arrow_Id );
+		ArrowView arrow2name = diagram.arrows().arrowView( Arrow_Name );
 
-			Integer id = arrow2id.target( arrow );
-			String formattedId = String.format( "%03d", id );
 
-			Object name;
-			try
-			{
-				name = arrow2name.target( arrow );
-			}
-			catch( Exception ex )
-			{
-				name = "Unnamed";
-			}
-			idName += "(#" + formattedId + "-" + name + ")";
-		}
-		catch( Exception ex )
+		Set0<Integer> ids = arrow2id.targets( arrow );
+
+		if( Sets.isEmpty( ids ) )
+			return "Unknown id/name";
+
+		Integer id = ids.iterator().next();
+
+		Set0<Object> names = arrow2name.targets( arrow );
+		if( names.size() > 1 )
+			throw new RuntimeException( "More arrows with the same name" );
+
+		Object name;
+		if( Sets.isEmpty( names ) )
 		{
-			idName = "Unknown id/name";
+			name = "Unnamed";
 		}
+		else
+		{
+			name = names.iterator().next();
+		}
+		String idName = String.format( "(#%03d_%s)", id, name );
 
 		return idName;
 	}
 
 	public static String toString( Diagram diagram, ArrowView arrow, String arrowType )
 	{
-		return shortToString( diagram, arrow ) + " = " + arrowType + "<" + arrow.domain() + "," + arrow.codomain() + ">";// + "  Relations:" + arrow.relations();
+		return String.format( "%s = %s<%s,%s>", shortToString( diagram, arrow ), arrowType, arrow.domain().getSimpleName(), arrow.codomain().getSimpleName() );// + "  Relations:" + arrow.relations();
 	}
 
 	public static void generateGraph( Diagram diagram, String path )
@@ -101,7 +112,7 @@ public class ArrowUtils
 		Arrows arrows = diagram.arrows();
 		try
 		{
-			Arrow<Integer, ArrowView> id_arrow = (Arrow) arrows.arrow( Id_Arrow );
+			Arrow<Integer, ArrowView> id_arrow = arrows.arrow( Id_Arrow );
 
 
 			for( ArrowView arrow : id_arrow.targets() )
@@ -111,8 +122,10 @@ public class ArrowUtils
 					generateGraphForJoinArrow( diagram, arrow, path );
 				}
 
-				try( Writer writer = new BufferedWriter( new OutputStreamWriter(
-					new FileOutputStream( path + shortToString( diagram, arrow ) + ".dot" ), "utf-8" ) ) )
+				String fileName = path + shortToString( diagram, arrow ) + ".dot";
+                System.out.println( "Created Graphviz file: " + fileName);
+                try( Writer writer = new BufferedWriter( new OutputStreamWriter(
+					new FileOutputStream( fileName ), "utf-8" ) ) )
 				{
 					writer.write( "digraph Arrow{\n" );
 					for( Object source : arrow.sources() )

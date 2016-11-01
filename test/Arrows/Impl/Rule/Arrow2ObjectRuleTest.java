@@ -7,12 +7,13 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import Arrows.Arrows.Names;
-import Shared.Set0;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import Shared.Collection0.Set0;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
+import static Arrows.Utils.TestsUtils.*;
 import static org.junit.Assert.*;
 
 public class Arrow2ObjectRuleTest
@@ -24,7 +25,14 @@ public class Arrow2ObjectRuleTest
 	Arrow<Arrow, Object> inboundArrow2object;
 	Arrow<Integer, String> editableStringifyArrow;
 	Arrow<Integer, String> stringifyArrow;
-	Arrow<Enum, Arrow> name2Arrow;
+	Arrow<String, Arrow> name2Arrow;
+
+	Arrow<String, Character> containsArrow;
+
+	private final String word1 = "one";
+	private final String word2 = "two";
+	private final String word3 = "three";
+	private final String word4 = "four";
 
 	@BeforeClass
 	public static void setUpClass()
@@ -41,30 +49,33 @@ public class Arrow2ObjectRuleTest
 	@Before
 	public void setUp()
 	{
-		try
-		{
-			diagram = Diagram.create();
+		diagram = Diagram.create();
 
-			Arrow<Integer, String> arrow = diagram.createGeneric().end();
-			diagram.arrows().name( arrow, Stringify, Destringify );
-			arrow.editor().connect( 1, "one" );
-			arrow.editor().connect( 2, "two" );
-			arrow.editor().connect( 3, "three" );
-			arrow.editor().connect( 4, "four" );
+		Arrow<Integer, String> arrow = diagram.createGeneric().name( Stringify ).inverseName( Destringify ).end();
+		arrow.aim( 1, "one_" );
+		arrow.aim( 2, "two_" );
+		arrow.aim( 3, "three_" );
+		arrow.aim( 4, "four_" );
 
-			arrows = diagram.arrows();
-			object2outboundArrow = (Arrow) arrows.arrow( Names.Object_OutboundArrow );
-			outboundArrow2object = object2outboundArrow.inverse();
-			object2inboundArrow = (Arrow) arrows.arrow( Names.Object_InboundArrow );
-			inboundArrow2object = object2inboundArrow.inverse();
-			name2Arrow = (Arrow) arrows.arrow( Names.Name_Arrow );
-			stringifyArrow = name2Arrow.target( Stringify );
-			editableStringifyArrow = (Arrow) arrows.arrow( Stringify );
-		}
-		catch( Exception ex )
-		{
-			Logger.getLogger( Arrow2ObjectRuleTest.class.getName() ).log( Level.SEVERE, null, ex );
-		}
+
+
+		containsArrow = diagram.createGeneric().name( Contains ).inverseName( IsContainedBy ).domain( String.class ).codomain( Character.class ).end();
+		connectWordToLetters( containsArrow, word1 );
+		connectWordToLetters( containsArrow, word2 );
+		connectWordToLetters( containsArrow, word3 );
+		connectWordToLetters( containsArrow, word4 );
+
+
+
+		arrows = diagram.arrows();
+		object2outboundArrow = arrows.arrow( Names.Object_OutboundArrow );
+		outboundArrow2object = object2outboundArrow.inverse();
+		object2inboundArrow = arrows.arrow( Names.Object_InboundArrow );
+		inboundArrow2object = object2inboundArrow.inverse();
+		name2Arrow = arrows.arrow( Names.Name_Arrow );
+		stringifyArrow = name2Arrow.target( Stringify.toString() );
+		editableStringifyArrow = arrows.arrow( Stringify );
+
 	}
 
 
@@ -87,10 +98,10 @@ public class Arrow2ObjectRuleTest
 		assertTrue( sourceObjects.contains( 4 ) );
 
 		assertEquals( targetObjects.size(), 4 );
-		assertTrue( targetObjects.contains( "one" ) );
-		assertTrue( targetObjects.contains( "two" ) );
-		assertTrue( targetObjects.contains( "three" ) );
-		assertTrue( targetObjects.contains( "four" ) );
+		assertTrue( targetObjects.contains( "one_" ) );
+		assertTrue( targetObjects.contains( "two_" ) );
+		assertTrue( targetObjects.contains( "three_" ) );
+		assertTrue( targetObjects.contains( "four_" ) );
 	}
 
 	@Test
@@ -98,25 +109,25 @@ public class Arrow2ObjectRuleTest
 	{
 
 		Set0 targets = inboundArrow2object.targets( stringifyArrow );
-		assertTrue( targets.contains( "two" ) );
+		assertTrue( targets.contains( "two_" ) );
 		assertFalse( targets.contains( 2 ) );
 
-		editableStringifyArrow.editor().remove( 2, "two" );
+		editableStringifyArrow.remove( 2, "two_" );
 		Set0 targetsAfterRemove = inboundArrow2object.targets( editableStringifyArrow );
 
 		assertFalse( targetsAfterRemove.contains( 2 ) );
 		assertTrue( object2outboundArrow.targets( 2 ).size() == 0 );
 		assertFalse( object2outboundArrow.targets( 3 ).size() == 0 );
-		assertTrue( object2inboundArrow.targets( "two" ).size() == 0 );
-		assertFalse( object2inboundArrow.targets( "three" ).size() == 0 );
+		assertTrue( object2inboundArrow.targets( "two_" ).size() == 0 );
+		assertFalse( object2inboundArrow.targets( "three_" ).size() == 0 );
 	}
 
 	@Test
 	public void test2Remove() throws Exception
 	{
 		String string_5or8 = "fiveOrEight";
-		editableStringifyArrow.editor().connect( 5, string_5or8 );
-		editableStringifyArrow.editor().connect( 8, string_5or8 );
+		editableStringifyArrow.aim( 5, string_5or8 );
+		editableStringifyArrow.aim( 8, string_5or8 );
 
 
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
@@ -125,14 +136,14 @@ public class Arrow2ObjectRuleTest
 
 
 
-		editableStringifyArrow.editor().remove( 5, string_5or8 );
+		editableStringifyArrow.remove( 5, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertTrue( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );
 		assertTrue( inboundArrow2object.targets( editableStringifyArrow ).contains( string_5or8 ) );
 
 
-		editableStringifyArrow.editor().remove( 8, string_5or8 );
+		editableStringifyArrow.remove( 8, string_5or8 );
 
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 5 ) );
 		assertFalse( outboundArrow2object.targets( editableStringifyArrow ).contains( 8 ) );
@@ -140,5 +151,74 @@ public class Arrow2ObjectRuleTest
 	}
 
 
+	@Test
+	public void test3Remove() throws Exception
+	{
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 9, letters.size() );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 4, words.size() );
+		}
+
+		containsArrow.remove( word1, 'o' );
+		containsArrow.remove( word2, 'o' );
+		containsArrow.remove( word4, 'o' );
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 8, letters.size() );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 4, words.size() );
+		}
+
+		List toRemove = new ArrayList<>();
+		toRemove.add( 'h' );
+		toRemove.add( 'e' );
+		containsArrow.removeAll( word3, toRemove );
+
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 7, letters.size() );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 4, words.size() );
+		}
+
+		toRemove.clear();
+		toRemove.add( word4 );
+		toRemove.add( word3 );
+		containsArrow.removeAll( toRemove, 'u' );
+		containsArrow.removeAll( toRemove, 'f' );
+		containsArrow.removeAll( toRemove, 'r' );
+
+		containsArrow.removeAll( word4, toRemove );
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 4, letters.size() );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 3, words.size() );
+		}
+
+		containsArrow.removeTargets( word1 );
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 2, letters.size() );
+			assertTrue( letters.contains( 'w' ) );
+			assertTrue( letters.contains( 't' ) );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 2, words.size() );
+			assertTrue( words.contains( word2 ) );
+			assertTrue( words.contains( word3 ) );
+		}
+
+		containsArrow.removeSources( 't' );
+		{
+			Set0 letters = inboundArrow2object.targets( containsArrow );
+			assertEquals( 1, letters.size() );
+			assertTrue( letters.contains( 'w' ) );
+			Set0 words = outboundArrow2object.targets( containsArrow );
+			assertEquals( 1, words.size() );
+			assertTrue( words.contains( word2 ) );
+		}
+	}
 
 }

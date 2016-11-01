@@ -2,9 +2,10 @@ package Arrows.Impl;
 
 
 
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.*;
 import java.util.*;
 import java.util.function.BiPredicate;
 
@@ -16,6 +17,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 
 	private final ArrowView<K, V> arrow;
 	private final BiPredicate<K, V> filter;
+	private int id = ID_NOT_SET;
 
 	public FilterArrow( Diagram diagram, ArrowView<K, V> arrow, BiPredicate<K, V> filter )
 	{
@@ -33,7 +35,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<K> sources()
 	{
-		Set0<K> filteredSources = new BasicSet0( new HashSet<>() );
+		Set0<K> filteredSources = new BasicSet0( new HashSet<>(), domain() );
 		for( K source : arrow.sources() )
 		{
 			for( V target : arrow.targets( source ) )
@@ -51,10 +53,10 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<V> targets()
 	{
-		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>(), codomain() );
 		for( K source : arrow.sources() )
 		{
-			Set0Utils.addAll( filteredTargets, targets( source ) );
+			filteredTargets.addAll( targets( source ) );
 		}
 		return filteredTargets;
 	}
@@ -62,7 +64,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Set0<V> targets( K source )
 	{
-		Set0<V> filteredTargets = new BasicSet0( new HashSet<>() );
+		Set0<V> filteredTargets = new BasicSet0( new HashSet<>(), codomain() );
 
 		for( V target : arrow.targets( source ) )
 		{
@@ -76,7 +78,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	}
 
 	@Override
-	public V target( K source ) throws Exception
+	public V target( K source )
 	{
 		return (V) ArrowUtils.target( this, source );
 	}
@@ -84,6 +86,7 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	@Override
 	public Arrow<V, K> inverse()
 	{
+		//TOFIX
 		throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -98,4 +101,17 @@ public class FilterArrow<K, V> implements ArrowView<K, V>
 	{
 		return arrow.domain();
 	}
+
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 }

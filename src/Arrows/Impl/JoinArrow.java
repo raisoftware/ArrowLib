@@ -1,8 +1,9 @@
 package Arrows.Impl;
 
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.*;
 import java.util.*;
 
 public class JoinArrow implements ArrowView
@@ -13,7 +14,7 @@ public class JoinArrow implements ArrowView
 	private final List<ArrowView> arrowsInverse = new LinkedList<>();
 
 	private final ArrowView inverseArrow = new InverseJoinArrow();
-
+	private int id = -1;
 
 	public JoinArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
@@ -80,7 +81,7 @@ public class JoinArrow implements ArrowView
 	}
 
 	@Override
-	public Object target( Object source ) throws Exception
+	public Object target( Object source )
 	{
 		return ArrowUtils.target( this, source );
 	}
@@ -108,8 +109,22 @@ public class JoinArrow implements ArrowView
 		return arrows.get( 0 ).domain();
 	}
 
+	@Override
+	public int id()
+	{
+		return this.id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseJoinArrow implements ArrowView
 	{
+		private int id = -1;
+
 		@Override
 		public Set0 sources()
 		{
@@ -123,7 +138,7 @@ public class JoinArrow implements ArrowView
 		}
 
 		@Override
-		public Object target( Object source ) throws Exception
+		public Object target( Object source )
 		{
 			return ArrowUtils.target( this, source );
 		}
@@ -168,6 +183,19 @@ public class JoinArrow implements ArrowView
 		{
 			return JoinArrow.this.codomain();
 		}
+
+		@Override
+		public int id()
+		{
+			return this.id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 	}
 
 
@@ -198,7 +226,8 @@ public class JoinArrow implements ArrowView
 			}
 		}
 
-		Set0 results = new BasicSet0( new HashSet( newResults ) );
+		Class domain = arrowsList.get( arrowsList.size() - 1 ).codomain();
+		Set0 results = new BasicSet0( new HashSet( newResults ), domain );
 		return results;
 	}
 }

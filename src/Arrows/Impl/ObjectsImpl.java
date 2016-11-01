@@ -1,63 +1,69 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
-import Shared.Set0Utils;
+import Shared.Collection0.Set0;
+import Shared.Collection0.Sets;
+import com.google.common.collect.ImmutableSet;
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static Arrows.Arrows.Names.*;
 
 public class ObjectsImpl implements Objects
 {
-	private AtomicInteger sequence = new AtomicInteger();
-	private Arrow<Object, Object> id2object = null;
+	private Diagram diagram;
+	private Arrow<Integer, Object> id2object = null;
 	private Arrow<Object, Object> name2object = null;
 	private Arrow<Object, ObjectConfig> object2config = null;
 	private Arrow<Class, Object> class2object = null;
 	private Arrow<Arrow, Object> inboundArrow2object = null;
 	private Arrow<Arrow, Object> outboundArrow2object = null;
+	private ArrowView<Object, Object> identity = null;
+	private Set0<Class> domains;
 
-	public ObjectsImpl( Arrows arrows )
+	public ObjectsImpl( Diagram diagram )
 	{
+		this.diagram = diagram;
+		Arrows arrows = diagram.arrows();
 		try
 		{
-			this.id2object = (Arrow) arrows.arrow( Id_Object );
-			this.name2object = (Arrow) arrows.arrow( Name_Object );
-			this.object2config = (Arrow) arrows.arrow( Object_Config );
-			this.class2object = (Arrow) arrows.arrow( Class_Object );
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+			this.id2object = arrows.arrow( Id_Object );
+			this.name2object = arrows.arrow( Name_Object );
+			this.object2config = arrows.arrow( Object_Config );
+			this.class2object = arrows.arrow( Class_Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
+			this.identity = arrows.arrowView( Object_Object );
 		}
 		catch( Exception ex )
 		{
-			Logger.getLogger( ObjectsImpl.class.getName() ).log( Level.SEVERE, null, ex );
+			throw new RuntimeException( "Default arrow not found.", ex );
 		}
+
+		domains = Sets.create( Class.class );
+		domains.add( Object.class );
 	}
 
 	@Override
 	public void add( Object object )
 	{
 		if( contains( object ) )
-			throw new RuntimeException( "Object already registered." );
+			throw new RuntimeException( "Object already registered. [object = " + object + "]" );
 
 		ObjectConfig config = new ObjectConfigBuilderImpl().end();
-		id2object.editor().connect( sequence.getAndIncrement(), object );
-		object2config.editor().connect( object, config );
+		id2object.aim( diagram.getAndIncrementSequence(), object );
+		object2config.aim( object, config );
 	}
 
 	@Override
 	public void name( Object object, Object name )
 	{
 		if( !contains( object ) )
-			throw new RuntimeException( "Object not registered." );
+			throw new RuntimeException( "Object not registered.  [object = " + object + "  name = " + name + "]" );
 
 		if( name2object.targets().contains( object ) )
-			throw new RuntimeException( "Object already has a name" );
+			throw new RuntimeException( "Object already has a name  [object = " + object + "  new-name = " + name + "]" );
 
-		name2object.inverse().editor().connect( object, name );
+		name2object.inverse().aim( object, name );
 	}
 
 	@Override
@@ -76,33 +82,25 @@ public class ObjectsImpl implements Objects
 	@Override
 	public void remove( Object obj, boolean cascade )
 	{
-		if( Set0Utils.isEmpty( object2config.targets( obj ) ) )
+		if( Sets.isEmpty( object2config.targets( obj ) ) )
 			return;
 
-		ObjectConfig objConfig;
-
-		try
-		{
-			objConfig = object2config.target( obj );
-		}
-		catch( Exception ex )
-		{
-			throw new RuntimeException( ex.getMessage() );
-		}
+		ObjectConfig objConfig = object2config.target( obj );
 
 		if( objConfig.tracksInboundArrows() )
 		{
-			Set0<Arrow> arrows = inboundArrow2object.inverse().targets( obj );
-			for( Arrow arrow : arrows )
+			Set0<Arrow> arrows = inboundArrow2object.sources( obj );
+			ImmutableSet<Arrow> arrowsCopy = ImmutableSet.copyOf( arrows );
+			for( Arrow arrow : arrowsCopy )
 			{
-				arrow.inverse().editor().remove( obj, null );
+				arrow.removeSources( obj );
 			}
 		}
 
 
 		if( objConfig.tracksOutboundArrows() )
 		{
-			Set0<Arrow> arrows = outboundArrow2object.inverse().targets( obj );
+			Set0<Arrow> arrows = outboundArrow2object.sources( obj );
 			for( Arrow arrow : arrows )
 			{
 				Set0 targets = null;
@@ -110,14 +108,20 @@ public class ObjectsImpl implements Objects
 				{
 					targets = arrow.targets( obj );
 				}
-				arrow.editor().remove( obj, null );
+				arrow.removeTargets( obj );
 				if( cascade )
 				{
-					for( Object target : targets )
+					ImmutableSet targetsCopy = ImmutableSet.copyOf( targets );
+					for( Object target : targetsCopy )
 						remove( target, cascade );
 				}
 			}
 		}
+
+		id2object.removeSources( obj );
+		name2object.removeSources( obj );
+		object2config.removeTargets( obj );
+		class2object.removeSources( obj );
 	}
 
 	@Override
@@ -144,8 +148,8 @@ public class ObjectsImpl implements Objects
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
 
-		object2config.editor().remove( object, null );
-		object2config.editor().connect( object, config );
+		object2config.removeTargets( object );
+		object2config.aim( object, config );
 	}
 
 	@Override
@@ -154,13 +158,19 @@ public class ObjectsImpl implements Objects
 		if( !contains( object ) )
 			throw new RuntimeException( "Object is not registered." );
 
-		try
-		{
-			return object2config.target( object );
-		}
-		catch( Exception ex )
-		{
-			throw new RuntimeException( ex.getMessage() );
-		}
+		return object2config.target( object );
+
+	}
+
+	@Override
+	public ArrowView identity()
+	{
+		return identity;
+	}
+
+	@Override
+	public Set0<Class> domains()
+	{
+		return domains;
 	}
 }

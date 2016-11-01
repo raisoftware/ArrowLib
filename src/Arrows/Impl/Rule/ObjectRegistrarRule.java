@@ -1,9 +1,9 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Arrows.Arrow.Editor;
+import Arrows.ArrowEditor;
 
-public class ObjectRegistrarRule implements Editor
+public class ObjectRegistrarRule implements ArrowEditor
 {
 
 	private Objects objects;
@@ -13,63 +13,65 @@ public class ObjectRegistrarRule implements Editor
 		this.objects = objects;
 	}
 
+	private void addObject( Object object )
+	{
+		if( !objects.contains( object ) )
+		{
+			objects.add( object );
+		}
+	}
+
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
 
-		if( !objects.contains( source ) )
-		{
-			objects.add( source );
-		}
+		addObject( source );
 		for( Object target : targets )
 		{
-			if( !objects.contains( target ) )
-			{
-				objects.add( target );
-			}
+			addObject( target );
 		}
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
-		if( !objects.contains( target ) )
-		{
-			objects.add( target );
-		}
+
+		addObject( target );
 		for( Object source : sources )
 		{
-			if( !objects.contains( source ) )
-			{
-				objects.add( source );
-			}
+			addObject( source );
 		}
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;
 
-		if( !objects.contains( source ) )
-		{
-			objects.add( source );
-		}
-
-		if( !objects.contains( target ) )
-		{
-			objects.add( target );
-		}
+		addObject( source );
+		addObject( target );
 	}
 
 
 	@Override
 	public void remove( Object source, Object target )
+	{
+		//TOFIX implement
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		//TOFIX implement
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
 	{
 		//TOFIX implement
 	}

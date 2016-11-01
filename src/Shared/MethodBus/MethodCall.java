@@ -1,4 +1,4 @@
-package Shared.MethodSet;
+package Shared.MethodBus;
 
 import java.lang.reflect.Method;
 

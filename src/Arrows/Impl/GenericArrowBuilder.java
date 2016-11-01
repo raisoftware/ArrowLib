@@ -5,6 +5,8 @@ import Arrows.Diagram;
 
 public class GenericArrowBuilder
 {
+	private Object name = null;
+	private Object inverseName = null;
 	private Class domain = Object.class;
 	private Class codomain = Object.class;
 	private boolean allowsMultipleSources = true;
@@ -14,6 +16,30 @@ public class GenericArrowBuilder
 	public GenericArrowBuilder( Diagram diagram )
 	{
 		this.diagram = diagram;
+	}
+
+	public GenericArrowBuilder name( Enum name )
+	{
+		this.name = name;
+		return this;
+	}
+
+	public GenericArrowBuilder name( String name )
+	{
+		this.name = name;
+		return this;
+	}
+
+	public GenericArrowBuilder inverseName( String inverseName )
+	{
+		this.inverseName = inverseName;
+		return this;
+	}
+
+	public GenericArrowBuilder inverseName( Enum inverseName )
+	{
+		this.inverseName = inverseName;
+		return this;
 	}
 
 	public GenericArrowBuilder domain( Class allowedClasses )
@@ -42,10 +68,13 @@ public class GenericArrowBuilder
 
 	public Arrow end()
 	{
-		Arrow arrow = new GenericArrow( diagram, domain, codomain, allowsMultipleSources, allowsMultipleTargets, /*listenable=*/ true );
+		String arrowName = name != null ? name.toString() : "GenericArrow";
+		String arrowNameInverse = inverseName != null ? inverseName.toString() : "InversesGenericArrow";
+
+		Arrow arrow = new GenericArrow( diagram, arrowName, arrowNameInverse, domain, codomain, allowsMultipleSources, allowsMultipleTargets, /*listenable=*/ true );
 
 		diagram.arrows().add( arrow );
-
+		diagram.arrows().name( arrow, arrowName, arrowNameInverse );
 		return arrow;
 	}
 }

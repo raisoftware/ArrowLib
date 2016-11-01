@@ -2,26 +2,28 @@ package Arrows.Impl;
 
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 import java.util.function.Function;
 
 
 public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 {
-	Arrow<K, V> precomputedArrow;
-	Function<K, Set<V>> function;
-	Diagram diagram;
-	Class domain;
-	Class codomain;
+	private Arrow<K, V> precomputedArrow;
+	private Function<K, Set<V>> function;
+	private Diagram diagram;
+	private Class domain;
+	private Class codomain;
 
-	ArrowView<V, K> inverseArrow = new InverseComputedArrow();
+	private ArrowView<V, K> inverseArrow = new InverseComputedArrow();
+
+	private int id = ID_NOT_SET;
 
 	public ComputedArrowImpl( Diagram diagram, Function<K, Set<V>> function, Class domain, Class codomain )
 	{
 		this.domain = domain;
 		this.codomain = codomain;
-		precomputedArrow = new GenericArrow( diagram, domain, codomain, true, true, false );
+		precomputedArrow = new GenericArrow( diagram, "ComputedArrow", "InverseComputedArrow", domain, codomain, true, true, false );
 
 		this.diagram = diagram;
 		this.function = function;
@@ -30,7 +32,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	@Override
 	public void addSource( K source )
 	{
-		precomputedArrow.editor().connect( source, function.apply( source ) );
+		precomputedArrow.aim( source, function.apply( source ) );
 	}
 
 	@Override
@@ -38,14 +40,14 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	{
 		for( K source : sources )
 		{
-			precomputedArrow.editor().connect( source, function.apply( source ) );
+			precomputedArrow.aim( source, function.apply( source ) );
 		}
 	}
 
 	@Override
 	public void remove( K source )
 	{
-		precomputedArrow.editor().remove( source, null );
+		precomputedArrow.removeTargets( source );
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 	}
 
 	@Override
-	public V target( K source ) throws Exception
+	public V target( K source )
 	{
 		return (V) ArrowUtils.target( this, source );
 	}
@@ -102,8 +104,21 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		return ArrowUtils.toString( diagram, this, "ComputedArrow" );
 	}
 
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
 	private final class InverseComputedArrow implements ArrowView<V, K>
 	{
+		private int id = ID_NOT_SET;
 
 		@Override
 		public Set0<V> sources()
@@ -118,7 +133,7 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		}
 
 		@Override
-		public K target( V source ) throws Exception
+		public K target( V source )
 		{
 			return (K) ArrowUtils.target( this, source );
 		}
@@ -158,6 +173,19 @@ public class ComputedArrowImpl<K, V> implements ComputedArrow<K, V>
 		{
 			return ArrowUtils.toString( diagram, this, "InverseComputedArrow" );
 		}
+
+		@Override
+		public int id()
+		{
+			return id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 	}
 
 

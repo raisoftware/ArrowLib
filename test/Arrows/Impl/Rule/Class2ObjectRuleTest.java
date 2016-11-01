@@ -2,7 +2,7 @@ package Arrows.Impl.Rule;
 
 import Arrows.*;
 import Arrows.Arrows.Names;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -34,12 +34,11 @@ public class Class2ObjectRuleTest
 		diagram.objects().add( 2 );
 		diagram.objects().add( "unu" );
 
-		Arrow<Integer, String> arrow = diagram.createGeneric().end();
-		diagram.arrows().name( arrow, Stringify, Destringify );
-		arrow.editor().connect( 1, "unu" );
-		arrow.editor().connect( 2, "doi" );
-		arrow.editor().connect( 3, "trei" );
-		arrow.editor().connect( 4, "patru" );
+		Arrow<Integer, String> arrow = diagram.createGeneric().name( Stringify ).inverseName( Destringify ).end();
+		arrow.aim( 1, "unu" );
+		arrow.aim( 2, "doi" );
+		arrow.aim( 3, "trei" );
+		arrow.aim( 4, "patru" );
 	}
 
 	@After
@@ -48,18 +47,18 @@ public class Class2ObjectRuleTest
 	}
 
 	@Test
-	public void testClass2ObjectRule() throws Exception
+	public void testClass2ObjectRule()
 	{
 		Arrows arrows = diagram.arrows();
-		ArrowView<Enum, Arrow> name2Arrow = arrows.arrow( Names.Name_Arrow );
+		ArrowView<String, Arrow> name2Arrow = arrows.arrowView( Names.Name_Arrow );
 
 		//Test name2Arrow
-		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify );
+		Arrow<Integer, String> stringifyArrow = name2Arrow.target( Stringify.toString() );
 		assertEquals( stringifyArrow.target( 1 ), "unu" );
-		assertEquals( name2Arrow.target( Destringify ).target( "doi" ), 2 );
+		assertEquals( name2Arrow.target( Destringify.toString() ).target( "doi" ), 2 );
 
 		//Test class2Object
-		ArrowView class2Object = arrows.arrow( Names.Class_Object );
+		ArrowView class2Object = arrows.arrowView( Names.Class_Object );
 		Set0<String> strings = class2Object.targets( String.class );
 
 		for( String target : stringifyArrow.targets() )

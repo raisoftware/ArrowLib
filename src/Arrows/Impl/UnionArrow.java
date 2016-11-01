@@ -1,8 +1,9 @@
 package Arrows.Impl;
 
+import Shared.Collection0.BasicSet0;
+import Shared.Collection0.Set0;
 import Arrows.*;
 import Arrows.Utils.ArrowUtils;
-import Shared.*;
 import java.util.*;
 
 public class UnionArrow implements ArrowView
@@ -11,6 +12,7 @@ public class UnionArrow implements ArrowView
 	private List<ArrowView> arrows = new ArrayList<>();
 
 	private ArrowView inverseArrow = new InverseUnionArrow();
+	private int id = ID_NOT_SET;
 
 	public UnionArrow( Diagram diagram, ArrowView... arrows ) throws IllegalArgumentException
 	{
@@ -40,7 +42,9 @@ public class UnionArrow implements ArrowView
 
 	private Set0 unionSources( boolean inverse )
 	{
-		Set0 unionSources = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? codomain() : domain();
+
+		Set0 unionSources = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -48,14 +52,16 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionSources, arrow.sources() );
+			unionSources.addAll( arrow.sources() );
 		}
 		return unionSources;
 	}
 
 	private Set0 unionTargets( boolean inverse )
 	{
-		Set0 unionTargets = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? domain() : codomain();
+
+		Set0 unionTargets = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -63,14 +69,16 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionTargets, arrow.targets() );
+			unionTargets.addAll( arrow.targets() );
 		}
 		return unionTargets;
 	}
 
 	private Set0 unionTargets( Object source, boolean inverse )
 	{
-		Set0 unionTargets = new BasicSet0( new HashSet<>() );
+		Class domain = inverse ? domain() : codomain();
+
+		Set0 unionTargets = new BasicSet0( new HashSet<>(), domain );
 		for( ArrowView arrowInList : arrows )
 		{
 			ArrowView arrow = arrowInList;
@@ -78,7 +86,7 @@ public class UnionArrow implements ArrowView
 			{
 				arrow = arrowInList.inverse();
 			}
-			Set0Utils.addAll( unionTargets, arrow.targets( source ) );
+			unionTargets.addAll( arrow.targets( source ) );
 		}
 		return unionTargets;
 	}
@@ -109,13 +117,40 @@ public class UnionArrow implements ArrowView
 	}
 
 	@Override
-	public Object target( Object source ) throws Exception
+	public Object target( Object source )
 	{
 		return ArrowUtils.target( this, source );
 	}
 
+	@Override
+	public Class codomain()
+	{
+		return arrows.get( 0 ).codomain();
+	}
+
+	@Override
+	public Class domain()
+	{
+		return arrows.get( 0 ).domain();
+	}
+
+	@Override
+	public int id()
+	{
+		return id;
+	}
+
+	@Override
+	public void id( int id )
+	{
+		this.id = id;
+	}
+
+
 	private final class InverseUnionArrow implements ArrowView
 	{
+		private int id = ID_NOT_SET;
+
 		@Override
 		public Set0 sources()
 		{
@@ -129,7 +164,7 @@ public class UnionArrow implements ArrowView
 		}
 
 		@Override
-		public Object target( Object source ) throws Exception
+		public Object target( Object source )
 		{
 			return ArrowUtils.target( this, source );
 		}
@@ -151,6 +186,31 @@ public class UnionArrow implements ArrowView
 		{
 			return UnionArrow.this;
 		}
+
+		@Override
+		public Class codomain()
+		{
+			return UnionArrow.this.domain();
+		}
+
+		@Override
+		public Class domain()
+		{
+			return UnionArrow.this.codomain();
+		}
+
+		@Override
+		public int id()
+		{
+			return id;
+		}
+
+		@Override
+		public void id( int id )
+		{
+			this.id = id;
+		}
+
 
 	}
 

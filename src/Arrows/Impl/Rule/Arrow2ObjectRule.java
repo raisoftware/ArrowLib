@@ -1,13 +1,13 @@
 package Arrows.Impl.Rule;
 
 import Arrows.*;
-import Shared.Set0Utils;
+import Shared.Collection0.Sets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static Arrows.Arrows.Names.*;
 
-public class Arrow2ObjectRule implements Arrow.Editor
+public class Arrow2ObjectRule implements ArrowEditor
 {
 	private final Arrow listenedArrow;
 
@@ -21,11 +21,11 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		this.listenedArrow = listenedArrow;
 		try
 		{
-			this.inboundArrow2object = (Arrow) arrows.arrow( InboundArrow_Object );
-			this.outboundArrow2object = (Arrow) arrows.arrow( OutboundArrow_Object );
+			this.inboundArrow2object = arrows.arrow( InboundArrow_Object );
+			this.outboundArrow2object = arrows.arrow( OutboundArrow_Object );
 
 			//This Rule should be executed after the ObjectRegistrarRule
-			this.object2config = arrows.arrow( Object_Config );
+			this.object2config = arrows.arrowView( Object_Config );
 
 		}
 		catch( Exception ex )
@@ -36,7 +36,7 @@ public class Arrow2ObjectRule implements Arrow.Editor
 
 
 	@Override
-	public void connect( Object source, Iterable targets )
+	public void aim( Object source, Iterable targets )
 	{
 		if( source == null || targets == null || !targets.iterator().hasNext() )
 			return;
@@ -50,7 +50,7 @@ public class Arrow2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Object source, Object target )
+	public void aim( Object source, Object target )
 	{
 		if( source == null || target == null )
 			return;
@@ -60,7 +60,7 @@ public class Arrow2ObjectRule implements Arrow.Editor
 	}
 
 	@Override
-	public void connect( Iterable sources, Object target )
+	public void aim( Iterable sources, Object target )
 	{
 		if( target == null || sources == null || !sources.iterator().hasNext() )
 			return;
@@ -73,6 +73,25 @@ public class Arrow2ObjectRule implements Arrow.Editor
 		trackTarget( target );
 	}
 
+	private void removeTarget( Object target )
+	{
+		if( Sets.isEmpty( listenedArrow.sources( target ) ) )
+		{
+			inboundArrow2object.remove( listenedArrow, target );
+			outboundArrow2object.remove( listenedArrow.inverse(), target );
+		}
+
+	}
+
+	private void removeSource( Object source )
+	{
+		if( Sets.isEmpty( listenedArrow.targets( source ) ) )
+		{
+			outboundArrow2object.remove( listenedArrow, source );
+			inboundArrow2object.remove( listenedArrow.inverse(), source );
+		}
+	}
+
 	@Override
 	public void remove( Object source, Object target )
 	{
@@ -81,17 +100,9 @@ public class Arrow2ObjectRule implements Arrow.Editor
 
 		// at this point its config is gone so we have to remove it regardless of the tracksInboundArrows/tracksOutboundArrows properties
 
-		if( Set0Utils.isEmpty( listenedArrow.inverse().targets( target ) ) )
-		{
-			inboundArrow2object.editor().remove( listenedArrow, target );
-			outboundArrow2object.editor().remove( listenedArrow.inverse(), target );
-		}
+		removeTarget( target );
+		removeSource( source );
 
-		if( Set0Utils.isEmpty( listenedArrow.targets( source ) ) )
-		{
-			outboundArrow2object.editor().remove( listenedArrow, source );
-			inboundArrow2object.editor().remove( listenedArrow.inverse(), source );
-		}
 	}
 
 	private void trackSource( Object source )
@@ -120,24 +131,36 @@ public class Arrow2ObjectRule implements Arrow.Editor
 
 		if( config.tracksOutboundArrows() )
 		{
-			outboundArrow2object.editor().connect( arrow, object );
+			outboundArrow2object.aim( arrow, object );
 		}
 
 		if( config.tracksInboundArrows() )
 		{
-			inboundArrow2object.editor().connect( arrow.inverse(), object );
+			inboundArrow2object.aim( arrow.inverse(), object );
 		}
 	}
 
 	private ObjectConfig config( Object object )
 	{
-		try
+		return object2config.target( object );
+
+	}
+
+	@Override
+	public void removeAll( Object source, Iterable targets )
+	{
+		for( Object target : targets )
 		{
-			return object2config.target( object );
+			remove( source, target );
 		}
-		catch( Exception ex )
+	}
+
+	@Override
+	public void removeAll( Iterable sources, Object target )
+	{
+		for( Object source : sources )
 		{
-			throw new RuntimeException( ex.getMessage() );
+			remove( source, target );
 		}
 	}
 

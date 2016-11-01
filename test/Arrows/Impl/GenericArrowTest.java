@@ -1,12 +1,15 @@
 package Arrows.Impl;
 
-import Arrows.Diagram;
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.*;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
 import static org.junit.Assert.*;
+
+import Arrows.Diagram;
+import Shared.Collection0.Sets;
+
 
 public class GenericArrowTest
 {
@@ -36,7 +39,7 @@ public class GenericArrowTest
 	{
 		Diagram diagram = Diagram.create();
 
-		arrow = new GenericArrow( diagram, String.class, Character.class, true, true, true );
+		arrow = new GenericArrow( diagram, Contains, IsContainedBy, String.class, Character.class, true, true, true );
 		diagram.arrows().add( arrow );
 		diagram.arrows().name( arrow, Contains, IsContainedBy );
 		List<Character> chars = new ArrayList();
@@ -50,20 +53,20 @@ public class GenericArrowTest
 		chars.add( 'n' );
 		chars.add( 'g' );
 
-		arrow.editor().connect( word1, chars );
+		arrow.aim( word1, chars );
 		for( int i = 0; i < word2.length(); ++i )
 		{
-			arrow.editor().connect( word2, word2.charAt( i ) );
+			arrow.aim( word2, word2.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3.length(); ++i )
 		{
-			arrow.editor().connect( word3, word3.charAt( i ) );
+			arrow.aim( word3, word3.charAt( i ) );
 		}
 
 		for( int i = 0; i < word3Again.length(); ++i )
 		{
-			arrow.editor().connect( word3Again, word3Again.charAt( i ) );
+			arrow.aim( word3Again, word3Again.charAt( i ) );
 		}
 
 		System.out.println( arrow );
@@ -161,17 +164,70 @@ public class GenericArrowTest
 	@Test
 	public void testRemoval()
 	{
-		arrow.inverse().editor().remove( 's', null );
+		arrow.inverse().removeTargets( 's' );
 
 		assertEquals( arrow.inverse().targets( 's' ).size(), 0 );
 
-		arrow.editor().remove( word1, 'e' );
+		arrow.remove( word1, 'e' );
 		assertFalse( arrow.targets( word1 ).contains( 'e' ) );
 		assertEquals( arrow.inverse().targets( 'e' ).size(), 2 );
 
-		arrow.editor().remove( word3, null );
+		arrow.removeTargets( word3 );
 		assertTrue( arrow.targets( word3 ).size() == 0 );
 
+	}
+
+	@Test
+	public void testBatchRemoval()
+	{
+		arrow.inverse().removeAll( 's', arrow.inverse().targets( 's' ) );
+
+		assertEquals( arrow.inverse().targets( 's' ).size(), 0 );
+
+		arrow.remove( word1, 'e' );
+		assertFalse( arrow.targets( word1 ).contains( 'e' ) );
+		assertEquals( arrow.inverse().targets( 'e' ).size(), 2 );
+
+		arrow.removeTargets( word3 );
+		assertTrue( arrow.targets( word3 ).size() == 0 );
+
+	}
+
+	@Test
+	public void testSources()
+	{
+		for( int i = 0; i < word1.length(); ++i )
+		{
+			char c = word1.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
+
+		for( int i = 0; i < word2.length(); ++i )
+		{
+			char c = word2.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
+
+		for( int i = 0; i < word3.length(); ++i )
+		{
+			char c = word3.charAt( i );
+			assertEquals( arrow.sources( c ), arrow.inverse().targets( c ) );
+		}
+
+
+	}
+
+	@Test
+	public void testSourcesOverIterable()
+	{
+		Set0 letters = Sets.create( Character.class );
+		letters.add( 'g' );
+		letters.add( 'v' );
+		Set0<String> words = arrow.sources( letters );
+
+		assertEquals( 2, words.size() );
+		assertTrue( words.contains( word1 ) );
+		assertTrue( words.contains( word2 ) );
 	}
 
 }

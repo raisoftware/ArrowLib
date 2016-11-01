@@ -1,6 +1,6 @@
 package Arrows;
 
-import Shared.Set0;
+import Shared.Collection0.Set0;
 import java.util.Iterator;
 
 public interface Objects extends Set0
@@ -14,4 +14,6 @@ public interface Objects extends Set0
 	ObjectConfig config( Object object );
 
 	void name( Object obj, Object name );
+
+	ArrowView identity();
 }

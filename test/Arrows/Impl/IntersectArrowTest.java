@@ -1,8 +1,8 @@
 package Arrows.Impl;
 
 import Arrows.*;
-import Shared.Set0;
-import Shared.Set0Utils;
+import Shared.Collection0.Set0;
+import Shared.Collection0.Sets;
 import org.junit.*;
 
 import static Arrows.Test.ArrowName.*;
@@ -41,18 +41,16 @@ public class IntersectArrowTest
 	{
 		diagram = Diagram.create();
 
-		toUpperCaseArrow1 = diagram.createGeneric().end();
-		diagram.arrows().name( toUpperCaseArrow1, ToUpperCase, ToLowerCase );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word1 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow1.editor(), word4 );
+		toUpperCaseArrow1 = diagram.createGeneric().name( ToUpperCase ).inverseName( ToLowerCase ).domain( Character.class ).codomain( Character.class ).end();
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word1 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word2 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow1, word4 );
 
 
-		toUpperCaseArrow2 = diagram.createGeneric().end();
-		diagram.arrows().name( toUpperCaseArrow2, ToUpperCase2, ToLowerCase2 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word3 );
-		connectLettersToUpperCaseLetters( toUpperCaseArrow2.editor(), word4 );
+		toUpperCaseArrow2 = diagram.createGeneric().name( ToUpperCase2 ).inverseName( ToLowerCase2 ).domain( Character.class ).codomain( Character.class ).end();
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word3 );
+		connectLettersToUpperCaseLetters( toUpperCaseArrow2, word4 );
 
 		intersectArrow = diagram.intersect( toUpperCaseArrow1, toUpperCaseArrow2 );
 	}
@@ -73,6 +71,9 @@ public class IntersectArrowTest
 			char c = mergedWord34.charAt( i );
 			assertTrue( sources.contains( c ) );
 		}
+		assertEquals( 1, sources.domains().size() );
+		assertTrue( sources.domains().contains( Character.class ) );
+
 	}
 
 	@Test
@@ -86,6 +87,9 @@ public class IntersectArrowTest
 			char c = Character.toUpperCase( mergedWord34.charAt( i ) );
 			assertTrue( targets.contains( c ) );
 		}
+
+		assertEquals( 1, targets.domains().size() );
+		assertTrue( targets.domains().contains( Character.class ) );
 	}
 
 	@Test
@@ -116,9 +120,9 @@ public class IntersectArrowTest
 		Set0 inverseTargets = intersectArrow.inverse().targets();
 
 		assertEquals( sources.size(), inverseTargets.size() );
-		assertTrue( Set0Utils.containsAll( sources, inverseTargets ) );
+		assertTrue( Sets.containsAll( sources, inverseTargets ) );
 		assertEquals( targets.size(), inverseSources.size() );
-		assertTrue( Set0Utils.containsAll( targets, inverseSources ) );
+		assertTrue( Sets.containsAll( targets, inverseSources ) );
 
 		for( int i = 0; i < mergedWord34.length(); ++i )
 		{
